@@ -1,9 +1,14 @@
+import React from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 
-import React from "react";
+import Home from './pages/Home.jsx';
+import Merch from './pages/Merch.jsx';
+import About from './pages/About.jsx';
+import SugarSale from './pages/SugarSale.jsx';
+import Events from './pages/Events.jsx';
 
-/** Sticky header + fixed side rails landing page */
 const Burst = ({ children, className = "" }) => (
-  <div className={`grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] ${className}`}>
+  <div className={\`grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] \${className}\`}>
     <div className="px-4 py-2 text-center font-black uppercase tracking-wide">{children}</div>
   </div>
 );
@@ -15,22 +20,8 @@ const Marquee = ({ text }) => (
         <span key={i} className="mx-6">✦ {text} ✦</span>
       ))}
     </div>
-    <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+    <style>{\`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }\`}</style>
   </div>
-);
-
-const NavLink = ({ target, children, className = "" }) => (
-  <a
-    href={`#${target}`}
-    onClick={(e) => {
-      e.preventDefault();
-      const el = document.getElementById(target);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }}
-    className={className}
-  >
-    {children}
-  </a>
 );
 
 const Header = () => (
@@ -47,10 +38,10 @@ const Header = () => (
       </div>
     </div>
     <nav className="mx-auto flex flex-wrap items-center justify-center gap-4 px-8">
-      <NavLink target="merch" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">Merch</NavLink>
-      <NavLink target="about" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">About X</NavLink>
-      <NavLink target="sugar-sale" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">Sugar Sale</NavLink>
-      <NavLink target="events" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">Events</NavLink>
+      <Link to="/merch" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">Merch</Link>
+      <Link to="/about" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">About X</Link>
+      <Link to="/sugar-sale" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">Sugar Sale</Link>
+      <Link to="/events" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">Events</Link>
     </nav>
     <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
   </header>
@@ -80,73 +71,6 @@ const RightRail = () => (
   </aside>
 );
 
-const HeroRow = () => (
-  <section id="sugar-sale" className="py-10 px-8">
-    <div className="relative w-full rounded-2xl border-[4px] border-black bg-purple-300 shadow-[6px_6px_0_#000] p-8 text-center text-yellow-300">
-      <h2 className="text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">Sugar Liquidation! Sale!</h2>
-      <div className="absolute right-6 top-6">
-        <Burst className="h-28 w-28"><span className="text-xl font-black">ON NOW!</span></Burst>
-      </div>
-      <img src="https://placehold.co/800x400/png?text=Gary+Hero" alt="Hero" className="mx-auto mt-6 rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]" />
-    </div>
-  </section>
-);
-
-const MerchGrid = () => (
-  <section id="merch" className="px-8 py-12">
-    <h3 className="text-3xl font-black mb-6">Merch</h3>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[1,2,3,4,5,6].map((i) => (
-        <div key={i} className="rounded-xl border-[4px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
-          <div className="aspect-square rounded-lg border-[3px] border-black bg-gray-100 grid place-items-center">
-            <span className="text-gray-500">Item {i}</span>
-          </div>
-          <button className="mt-4 w-full rounded-lg border-[3px] border-black bg-yellow-300 px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">Add to cart</button>
-        </div>
-      ))}
-    </div>
-  </section>
-);
-
-const AboutSection = () => (
-  <section id="about" className="px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">About X</h3>
-    <p className="max-w-2xl">X Zero Sugar brings you bold flavor with no sugar. This landing page is a playful homage to early-2000s web design with thick borders, bright colors, and chunky buttons.</p>
-  </section>
-);
-
-const SugarSaleSection = () => (
-  <section id="sugar-sale-info" className="px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">Sugar Sale</h3>
-    <div className="rounded-2xl border-[4px] border-black bg-yellow-200 p-6 shadow-[4px_4px_0_#000]">
-      <p className="text-black">Buy a 10-pack and get the sugar free—limited time only.</p>
-    </div>
-  </section>
-);
-
-const EventsSection = () => (
-  <section id="events" className="px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">Events</h3>
-    <ul className="space-y-3">
-      {["Pop-up tasting — Sat 2pm","Demo day — Sun 12pm","Warehouse tour — Next Fri"].map((t,i) => (
-        <li key={i} className="rounded-lg border-[4px] border-black bg-white px-4 py-3 shadow-[3px_3px_0_#000]">{t}</li>
-      ))}
-    </ul>
-  </section>
-);
-
-const Footer = () => (
-  <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-8">
-    <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
-      <p className="text-center text-sm font-medium md:text-left">© {new Date().getFullYear()} Long White — X Zero Sugar.</p>
-      <div className="flex items-center gap-3">
-        <a href="#" className="rounded-lg border-[4px] border-black bg-yellow-300 px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]">Terms</a>
-        <a href="#" className="rounded-lg border-[4px] border-black bg-purple-500 px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]">Privacy</a>
-      </div>
-    </div>
-  </footer>
-);
-
 export default function App() {
   return (
     <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth">
@@ -154,15 +78,26 @@ export default function App() {
         <LeftRail />
         <RightRail />
         <div className="min-h-screen ml-[200px] mr-[200px] flex flex-col w-auto">
+          <Header />
           <main className="flex flex-col w-full">
-            <Header />
-            <HeroRow />
-            <MerchGrid />
-            <AboutSection />
-            <SugarSaleSection />
-            <EventsSection />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/merch" element={<Merch />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/sugar-sale" element={<SugarSale />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
           </main>
-          <Footer />
+          <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-8">
+            <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
+              <p className="text-center text-sm font-medium md:text-left">© {new Date().getFullYear()} Long White — X Zero Sugar.</p>
+              <div className="flex items-center gap-3">
+                <a href="#" className="rounded-lg border-[4px] border-black bg-yellow-300 px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]">Terms</a>
+                <a href="#" className="rounded-lg border-[4px] border-black bg-purple-500 px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]">Privacy</a>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>

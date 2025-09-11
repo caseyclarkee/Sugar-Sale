@@ -1,12 +1,13 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { HashRouter, Routes, Route, Link, NavLink } from "react-router-dom";
+import { InstagramEmbed, TikTokEmbed } from "react-social-media-embed";
 
-import Home from "./pages/Home.jsx";
-import Merch from "./pages/Merch.jsx";
-import About from "./pages/About.jsx";
-import SugarSale from "./pages/SugarSale.jsx";
-import Events from "./pages/Events.jsx";
+/**
+ * Sugar Sale — Full Site (Deploy Version)
+ * Includes: Home, Merch, About, Sugar Sale, Events, Social
+ */
 
+// Little starburst badge
 const Burst = ({ children, className = "" }) => (
   <div
     className={
@@ -14,12 +15,11 @@ const Burst = ({ children, className = "" }) => (
       className
     }
   >
-    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">
-      {children}
-    </div>
+    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">{children}</div>
   </div>
 );
 
+// Scrolling tape
 const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">
     <div className="whitespace-nowrap py-2 text-center text-sm font-black uppercase tracking-widest animate-[marquee_14s_linear_infinite]">
@@ -28,13 +28,12 @@ const Marquee = ({ text }) => (
       ))}
     </div>
     <style>
-      {
-        "@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }"
-      }
+      {"@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }"}
     </style>
   </div>
 );
 
+// Header with nav
 const Header = () => (
   <header className="sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-6 w-full">
     <div className="flex items-center justify-between w-full px-8">
@@ -49,26 +48,32 @@ const Header = () => (
       </div>
     </div>
     <nav className="mx-auto flex flex-wrap items-center justify-center gap-4 px-8">
-      <Link to="/" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">
-        Home
-      </Link>
-      <Link to="/merch" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">
-        Merch
-      </Link>
-      <Link to="/about" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">
-        About X
-      </Link>
-      <Link to="/sugar-sale" className="rounded-xl border-[4px] border-black bg-purple-500 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] text-white">
-        Sugar Sale
-      </Link>
-      <Link to="/events" className="rounded-xl border-[4px] border-black bg-yellow-300 px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000]">
-        Events
-      </Link>
+      {[
+        { to: "/", label: "Home", tone: "bg-yellow-300" },
+        { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+        { to: "/about", label: "About X", tone: "bg-yellow-300" },
+        { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
+        { to: "/events", label: "Events", tone: "bg-yellow-300" },
+        { to: "/social", label: "Social", tone: "bg-purple-500 text-white" },
+      ].map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.to === "/"}
+          className={({ isActive }) =>
+            `rounded-xl border-[4px] border-black px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] ${item.tone} ` +
+            (isActive ? "outline outline-4 outline-black" : "")
+          }
+        >
+          {item.label}
+        </NavLink>
+      ))}
     </nav>
     <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
   </header>
 );
 
+// Fixed side panels
 const LeftRail = () => (
   <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-black bg-yellow-300 p-4 text-center z-40">
     <div className="mt-20">
@@ -93,35 +98,112 @@ const RightRail = () => (
   </aside>
 );
 
-export default function App() {
-  return (
-    <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth">
-      <div className="min-h-screen bg-white/90">
-        <LeftRail />
-        <RightRail />
-        <div className="min-h-screen ml-[200px] mr-[200px] flex flex-col w-auto">
-          <Header />
-          <main className="flex flex-col w-full">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/merch" element={<Merch />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/sugar-sale" element={<SugarSale />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
-          </main>
-          <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-8">
-            <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
-              <p className="text-center text-sm font-medium md:text-left">© {new Date().getFullYear()} Long White — X Zero Sugar.</p>
-              <div className="flex items-center gap-3">
-                <a href="#" className="rounded-lg border-[4px] border-black bg-yellow-300 px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]">Terms</a>
-                <a href="#" className="rounded-lg border-[4px] border-black bg-purple-500 px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]">Privacy</a>
-              </div>
-            </div>
-          </footer>
+// Pages
+const Home = () => (
+  <section className="py-10 px-8">
+    <div className="relative w-full rounded-2xl border-[4px] border-black bg-purple-300 shadow-[6px_6px_0_#000] p-8 text-center text-yellow-300">
+      <h2 className="text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">Sugar Liquidation! Sale!</h2>
+      <div className="absolute right-6 top-6">
+        <Burst className="h-28 w-28"><span className="text-xl font-black">ON NOW!</span></Burst>
+      </div>
+      <img src="https://placehold.co/800x400/png?text=Gary+Hero" alt="Hero" className="mx-auto mt-6 rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]" />
+    </div>
+  </section>
+);
+
+const Merch = () => (
+  <section className="px-8 py-12">
+    <h3 className="text-3xl font-black mb-6">Merch</h3>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[1,2,3,4,5,6].map((i) => (
+        <div key={i} className="rounded-xl border-[4px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+          <div className="aspect-square rounded-lg border-[3px] border-black bg-gray-100 grid place-items-center">
+            <span className="text-gray-500">Item {i}</span>
+          </div>
+          <button className="mt-4 w-full rounded-lg border-[3px] border-black bg-yellow-300 px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">Add to cart</button>
         </div>
+      ))}
+    </div>
+  </section>
+);
+
+const About = () => (
+  <section className="px-8 py-12">
+    <h3 className="text-3xl font-black mb-4">About X</h3>
+    <p className="max-w-2xl">X Zero Sugar brings you bold flavor with no sugar. This site is a playful homage to early-2000s web design with thick borders, bright colors, and chunky buttons.</p>
+  </section>
+);
+
+const SugarSale = () => (
+  <section className="px-8 py-12">
+    <h3 className="text-3xl font-black mb-4">Sugar Sale</h3>
+    <div className="rounded-2xl border-[4px] border-black bg-yellow-200 p-6 shadow-[4px_4px_0_#000]">
+      <p className="text-black">Buy a 10-pack and get the sugar free—limited time only.</p>
+    </div>
+  </section>
+);
+
+const Events = () => (
+  <section className="px-8 py-12">
+    <h3 className="text-3xl font-black mb-4">Events</h3>
+    <ul className="space-y-3">
+      {["Pop-up tasting — Sat 2pm","Demo day — Sun 12pm","Warehouse tour — Next Fri"].map((t,i) => (
+        <li key={i} className="rounded-lg border-[4px] border-black bg-white px-4 py-3 shadow-[3px_3px_0_#000]">{t}</li>
+      ))}
+    </ul>
+  </section>
+);
+
+// Social page
+const Social = () => (
+  <section className="px-8 py-12 space-y-8">
+    <h2 className="text-3xl font-black">Social Feed</h2>
+    <div className="grid gap-8 lg:grid-cols-2">
+      <div className="rounded-xl border-[4px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+        <h3 className="mb-2 font-black">TikTok</h3>
+        <TikTokEmbed url="https://www.tiktok.com/@scout2015/video/6718335390845095173" width={325} />
+      </div>
+      <div className="rounded-xl border-[4px] border-black bg-white p-4 shadow-[4px_4px_0_#000] lg:col-span-2">
+        <h3 className="mb-2 font-black">Instagram</h3>
+        <InstagramEmbed url="https://www.instagram.com/longwhite.nz/" width={328} />
       </div>
     </div>
+  </section>
+);
+
+// App shell with Router
+export default function SugarSaleSite() {
+  return (
+    <HashRouter>
+      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth">
+        <div className="min-h-screen bg-white/90">
+          <LeftRail />
+          <RightRail />
+          <div className="min-h-screen ml-[200px] mr-[200px] flex flex-col w-auto">
+            <Header />
+            <main className="flex flex-col w-full">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/merch" element={<Merch />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/sugar-sale" element={<SugarSale />} />
+                <Route path="/events" element={<Events />} />
+                <Route path="/social" element={<Social />} />
+                <Route path="*" element={<Home />} />
+              </Routes>
+            </main>
+            <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-8">
+              <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
+                <p className="text-center text-sm font-medium md:text-left">© {new Date().getFullYear()} Long White — X Zero Sugar.</p>
+                <div className="flex items-center gap-3">
+                  <a href="#" className="rounded-lg border-[4px] border-black bg-yellow-300 px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]">Terms</a>
+                  <a href="#" className="rounded-lg border-[4px] border-black bg-purple-500 px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]">Privacy</a>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </HashRouter>
   );
 }

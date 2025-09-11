@@ -3,10 +3,18 @@ import React from "react";
 
 /** Sticky header + fixed side rails landing page */
 const Burst = ({ children, className = "" }) => (
-  <div className={`grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] ${className}`}>
-    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">{children}</div>
+  <div
+    className={
+      "grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] " +
+      className
+    }
+  >
+    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">
+      {children}
+    </div>
   </div>
 );
+
 
 const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">

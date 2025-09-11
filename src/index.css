@@ -1,1 +1,4 @@
-@tailwind base;\n@tailwind components;\n@tailwind utilities;\nbody{font-family:Arial,sans-serif;}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body{font-family:Arial,sans-serif;}

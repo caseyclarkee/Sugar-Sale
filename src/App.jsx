@@ -91,7 +91,16 @@ const Home = () => (
       <div className="absolute right-6 top-6">
         <Burst className="h-28 w-28"><span className="text-xl font-black">ON NOW!</span></Burst>
       </div>
-      <img src="https://placehold.co/800x400/png?text=Gary+Hero" alt="Hero" className="mx-auto mt-6 rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]" />
+     <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]">
+  <iframe
+    src="https://player.vimeo.com/video/843809307?h=6a8b6a8a9a&title=0&byline=0&portrait=0"
+    width="100%"
+    height="100%"
+    frameBorder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</div>
     </div>
   </section>
 );

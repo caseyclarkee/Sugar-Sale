@@ -1,10 +1,30 @@
 [
   {
-    "id": "2025-09-11",
-    "title": "2-for-1 X Lemon (Today Only)",
+    "id": "deal-1",
+    "title": "Daily Deal — IG Post",
     "price": 19.95,
     "platform": "instagram",
-    "postUrl": "https://www.instagram.com/p/POST_ID/",
-    "expires": "2025-09-12"
-  }
+    "postUrl": "https://www.instagram.com/p/DH7IDe5SwuD/",
+    "expires": "2025-12-31"
+  },
+  {
+    "id": "deal-2",
+    "title": "Daily Deal — IG Post",
+    "price": 19.95,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/DH7IDe5SwuD/",
+    "expires": "2025-12-31"
+  },
+  {
+    "id": "deal-3",
+    "title": "Daily Deal — IG Post",
+    "price": 19.95,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/DH7IDe5SwuD/",
+    "expires": "2025-12-31"
+  },
+
+  { "id": "coming-1", "comingSoon": true, "title": "Coming Soon" },
+  { "id": "coming-2", "comingSoon": true, "title": "Coming Soon" },
+  { "id": "coming-3", "comingSoon": true, "title": "Coming Soon" }
 ]

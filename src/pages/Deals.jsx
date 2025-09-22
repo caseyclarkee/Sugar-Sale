@@ -1,3 +1,27 @@
+import React, { useEffect, useState } from "react";
+import { InstagramEmbed, TikTokEmbed } from "react-social-media-embed";
+
+/* --- Small badge, same chunky vibe --- */
+const Badge = ({ children, tone = "yellow" }) => {
+  const toneClasses =
+    tone === "yellow"
+      ? "bg-yellow-300 text-black"
+      : tone === "purple"
+      ? "bg-purple-500 text-white"
+      : "bg-gray-300 text-black";
+  return (
+    <span
+      className={
+        "rounded-full border-[3px] border-black px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0_#000] " +
+        toneClasses
+      }
+    >
+      {children}
+    </span>
+  );
+};
+
+/* --- One merch-style card with Enter Draw modal --- */
 const DealCard = ({ deal }) => {
   const now = new Date();
   const exp = deal.expires ? new Date(deal.expires) : null;
@@ -9,8 +33,8 @@ const DealCard = ({ deal }) => {
 
   return (
     <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000]">
-      {/* Media zone (same as before) */}
-      <div className="rounded-lg border-[3px] border-black bg-gray-50 p-2 mb-4">
+      {/* Media zone (framed box) */}
+      <div className="mb-4 rounded-lg border-[3px] border-black bg-gray-50 p-2">
         <div className="w-full overflow-hidden rounded-md">
           {deal.platform === "instagram" && deal.postUrl ? (
             <InstagramEmbed url={deal.postUrl} width={"100%"} />
@@ -47,7 +71,10 @@ const DealCard = ({ deal }) => {
             </a>
           )}
           <button
-            onClick={() => { setOpen(true); setDone(false); }}
+            onClick={() => {
+              setOpen(true);
+              setDone(false);
+            }}
             className="rounded-xl border-[4px] border-black bg-purple-500 px-4 py-2 font-black uppercase text-white shadow-[4px_4px_0_#000]"
           >
             Enter Draw
@@ -55,13 +82,13 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal (Netlify form) */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="w-full max-w-md rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
             {!done ? (
               <>
-                <h3 className="text-xl font-black mb-4">{deal.title}</h3>
+                <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
                 <form
                   name="deal-entry"
                   method="POST"
@@ -69,17 +96,21 @@ const DealCard = ({ deal }) => {
                   netlify-honeypot="bot-field"
                   className="grid gap-3"
                   onSubmit={(e) => {
+                    // Let Netlify capture the form POST; show local success UI after a short delay.
                     setSubmitting(true);
-                    // Let native POST submit; the page won’t navigate because SPA, but Netlify captures it.
-                    // After a short delay, show local success.
-                    setTimeout(() => { setSubmitting(false); setDone(true); }, 700);
+                    setTimeout(() => {
+                      setSubmitting(false);
+                      setDone(true);
+                    }, 700);
                   }}
                 >
                   {/* Netlify requirements */}
                   <input type="hidden" name="form-name" value="deal-entry" />
                   <input type="hidden" name="deal" value={deal.title} />
                   <p className="hidden">
-                    <label>Don’t fill this out: <input name="bot-field" /></label>
+                    <label>
+                      Don’t fill this out: <input name="bot-field" />
+                    </label>
                   </p>
 
                   <label className="font-black">
@@ -138,3 +169,62 @@ const DealCard = ({ deal }) => {
     </div>
   );
 };
+
+/* --- Coming soon card, same visual language --- */
+const ComingSoonCard = ({ title = "Coming Soon" }) => (
+  <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-yellow-200 p-6 text-center shadow-[6px_6px_0_#000]">
+    <div className="flex flex-1 items-center justify-center">
+      <span className="text-2xl font-black uppercase">{title}</span>
+    </div>
+    <div className="mt-4 text-sm text-black/70">New deal drops soon</div>
+  </div>
+);
+
+/* --- Page: loads deals.json, renders 3 deals + 3 coming soon --- */
+function Deals() {
+  const [deals, setDeals] = useState([]);
+  const [coming, setComing] = useState([]);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    fetch("/deals.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.statusText)))
+      .then((data) => {
+        const live = data.filter((d) => !d.comingSoon).slice(0, 3);
+        const soon = data.filter((d) => d.comingSoon).slice(0, 3);
+        setDeals(live);
+        setComing(soon);
+      })
+      .catch(() => setErr("Could not load deals.json"));
+  }, []);
+
+  return (
+    <section className="px-8 py-12 space-y-8">
+      <h2 className="text-4xl font-black uppercase drop-shadow-[3px_3px_0_#000] text-yellow-400">
+        Daily Deals
+      </h2>
+      {err && (
+        <div className="rounded-lg border-[3px] border-black bg-red-100 p-3 text-sm">
+          {err}
+        </div>
+      )}
+
+      {/* Top: 3 deal cards */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {deals.map((d) => (
+          <DealCard key={d.id} deal={d} />
+        ))}
+      </div>
+
+      {/* Bottom: 3 Coming Soon cards */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {coming.map((c) => (
+          <ComingSoonCard key={c.id} title={c.title} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default Deals; // <-- the missing default export
+

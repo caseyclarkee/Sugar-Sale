@@ -37,8 +37,9 @@ const Marquee = ({ text, speed = 48 }) => (
 
 
 
+
 const Header = () => (
-  <header className="mb-4 sticky top-0 z-50 overflow-visible grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+  <header className="mb-4 sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <h1 className="relative text-4xl sm:text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
         <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow-300 select-none">X</span>
@@ -51,55 +52,47 @@ const Header = () => (
       </div>
     </div>
 
-    {/* OUTER: holds z-index + spacing */}
-    
+    {/* Responsive, no-scroll nav: grid on small, flex-wrap on desktop */}
+    <nav className="w-full">
+      <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3">
+          {[
+            { to: "/", label: "Home", tone: "bg-yellow-300" },
+            { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+            { to: "/about", label: "About X", tone: "bg-yellow-300" },
+            { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
+            { to: "/events", label: "Events", tone: "bg-yellow-300" },
+            { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
+          ].map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                [
+                  "rounded-2xl border-[4px] border-black px-5 py-2 text-center",
+                  "text-base font-black uppercase leading-none",
+                  "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                  "active:translate-y-[1px]",
+                  item.tone,
+                  isActive ? "ring-2 ring-black ring-offset-2 ring-offset-white" : ""
+                ].join(" ")
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+    </nav>
 
-
-<nav className="relative z-50 w-full pb-6 bg-white/95">
-  <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-center gap-3 px-4 sm:px-6">
-    {[
-      { to: "/", label: "Home", tone: "bg-yellow-300" },
-      { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-      { to: "/about", label: "About X", tone: "bg-yellow-300" },
-      { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
-      { to: "/events", label: "Events", tone: "bg-yellow-300" },
-      { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
-    ].map((item) => (
-      <NavLink
-        key={item.to}
-        to={item.to}
-        end={item.to === "/"}
-        className={({ isActive }) =>
-          [
-            "rounded-2xl border-[4px] border-black px-5 py-2",
-            "text-base font-black uppercase leading-none",
-            "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-            "active:translate-y-[1px]",
-            item.tone,
-            isActive ? "ring-2 ring-black ring-offset-2 ring-offset-white" : ""
-          ].join(" ")
-        }
-      >
-        {item.label}
-      </NavLink>
-    ))}
-  </div>
-</nav>
-
-
-
-
-    {/* Marquee stays underneath and a touch lower */}
-    <div className="relative z-0 mt-6">
+    {/* Marquee with generous gap so nothing overlaps */}
+    <div className="mt-4">
       <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
     </div>
-
-    <style>{`
-      .scrollbar-none::-webkit-scrollbar { display: none; }
-      .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-    `}</style>
   </header>
 );
+
 
 
 const LeftRail = () => (
@@ -194,7 +187,7 @@ const Events = () => (
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden overflow-x-hidden">
+      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden overflow-x-hidden overflow-x-hidden">
         <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />

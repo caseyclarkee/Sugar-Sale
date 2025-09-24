@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { InstagramEmbed, TikTokEmbed } from "react-social-media-embed";
 
-/* Badge (chunky) */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -22,7 +21,6 @@ const Badge = ({ children, tone = "yellow" }) => {
   );
 };
 
-/* Deal card with Netlify modal form + inline success */
 const DealCard = ({ deal }) => {
   const now = new Date();
   const exp = deal.expires ? new Date(deal.expires) : null;
@@ -32,7 +30,6 @@ const DealCard = ({ deal }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
 
-  // Prevent background scroll when modal is open
   React.useEffect(() => {
     if (open) document.body.classList.add("overflow-hidden");
     return () => document.body.classList.remove("overflow-hidden");
@@ -40,7 +37,6 @@ const DealCard = ({ deal }) => {
 
   return (
     <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000]">
-      {/* media */}
       <div className="mb-4 rounded-lg border-[3px] border-black bg-gray-50 p-2">
         <div className="w-full overflow-hidden rounded-md">
           {deal.platform === "instagram" && deal.postUrl ? (
@@ -55,7 +51,6 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
-      {/* text + actions */}
       <div className="flex flex-1 flex-col">
         <h3 className="text-xl font-black">{deal.title}</h3>
         <div className="mt-2 flex items-center gap-2">
@@ -86,7 +81,6 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
-      {/* modal */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="w-full max-w-md max-h-[90vh] overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
@@ -171,7 +165,6 @@ const DealCard = ({ deal }) => {
   );
 };
 
-/* Coming Soon card */
 const ComingSoonCard = ({ title = "Coming Soon" }) => (
   <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-yellow-200 p-6 text-center shadow-[6px_6px_0_#000]">
     <div className="flex flex-1 items-center justify-center">
@@ -181,7 +174,6 @@ const ComingSoonCard = ({ title = "Coming Soon" }) => (
   </div>
 );
 
-/* Page */
 function Deals() {
   const [deals, setDeals] = useState([]);
   const [coming, setComing] = useState([]);

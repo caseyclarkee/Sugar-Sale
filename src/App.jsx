@@ -34,7 +34,7 @@ const Header = () => (
         That’s UnXpected
       </div>
     </div>
-    <nav className="relative z-10 mx-auto flex items-center gap-3 px-4 pb-6 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible">
+    <nav className="relative z-10 w-full -mx-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-8 flex items-center gap-3 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible snap-x snap-mandatory touch-pan-x">
       {[
         { to: "/", label: "Home", tone: "bg-yellow-300" },
         { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
@@ -49,8 +49,8 @@ const Header = () => (
           end={item.to === "/"}
           className={({ isActive }) =>
             [
-              "shrink-0 rounded-2xl border-[4px] border-black px-6 py-2",
-              "text-base font-black uppercase",
+              "shrink-0 snap-start rounded-2xl border-[4px] border-black px-4 py-2 sm:px-6",
+              "text-sm sm:text-base font-black uppercase",
               "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
               "active:translate-y-[1px]",
               item.tone,
@@ -66,7 +66,7 @@ const Header = () => (
       .scrollbar-none::-webkit-scrollbar { display: none; }
       .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     `}</style>
-    <div className="relative z-0 mt-1">
+    <div className="relative z-0 mt-2">
     <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
   </div>
   </header>

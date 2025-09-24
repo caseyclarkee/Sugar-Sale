@@ -2,8 +2,7 @@ import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
 
-/** Y2K layout with sticky header, marquee, fixed side rails (Tailwind via CDN) */
-/** Mobile tweaks: scrollable nav, lg-only side margins, responsive embeds */
+/** Full Y2K site + mobile tweaks; nav spacers so shadows aren't clipped */
 
 const Burst = ({ children, className = "" }) => (
   <div className={"grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] " + className}>
@@ -23,7 +22,7 @@ const Marquee = ({ text }) => (
 );
 
 const Header = () => (
-  <header className="sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full">
+  <header className="mb-4 sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <h1 className="relative text-4xl sm:text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
         <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow-300 select-none">X</span>
@@ -35,7 +34,7 @@ const Header = () => (
         That’s UnXpected
       </div>
     </div>
-    <nav className="mx-auto flex items-center gap-3 px-4 overflow-x-auto whitespace-nowrap scrollbar-none">
+    <nav className="mx-auto flex items-center gap-3 px-4 pb-4 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible">
       {[
         { to: "/", label: "Home", tone: "bg-yellow-300" },
         { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
@@ -49,8 +48,14 @@ const Header = () => (
           to={item.to}
           end={item.to === "/"}
           className={({ isActive }) =>
-            `shrink-0 rounded-xl border-[4px] border-black px-5 py-2 text-base font-black uppercase shadow-[4px_4px_0_#000] ${item.tone} ` +
-            (isActive ? "outline outline-4 outline-black" : "")
+            [
+              "shrink-0 rounded-2xl border-[4px] border-black px-6 py-2",
+              "text-base font-black uppercase",
+              "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+              "active:translate-y-[1px]",
+              item.tone,
+              isActive ? "ring-2 ring-black" : ""
+            ].join(" ")
           }
         >
           {item.label}

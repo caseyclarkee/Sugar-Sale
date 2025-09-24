@@ -34,7 +34,7 @@ const Header = () => (
         That’s UnXpected
       </div>
     </div>
-    <nav className="mx-auto flex items-center gap-3 px-4 pb-4 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible">
+    <nav className="relative z-10 mx-auto flex items-center gap-3 px-4 pb-6 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible">
       {[
         { to: "/", label: "Home", tone: "bg-yellow-300" },
         { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
@@ -66,7 +66,9 @@ const Header = () => (
       .scrollbar-none::-webkit-scrollbar { display: none; }
       .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     `}</style>
+    <div className="relative z-0 mt-1">
     <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
+  </div>
   </header>
 );
 

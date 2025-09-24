@@ -1,3 +1,4 @@
+// src/pages/Deals.jsx
 import React, { useEffect, useState } from "react";
 import { InstagramEmbed, TikTokEmbed } from "react-social-media-embed";
 
@@ -55,9 +56,6 @@ const DealCard = ({ deal }) => {
           {isExpired ? <Badge tone="gray">Expired</Badge> : <Badge>Today’s Deal</Badge>}
           {deal.platform && <Badge tone="purple">{deal.platform}</Badge>}
         </div>
-        {deal.price != null && (
-          <div className="mt-3 text-lg font-bold">${Number(deal.price).toFixed(2)}</div>
-        )}
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.postUrl && (
@@ -96,13 +94,14 @@ const DealCard = ({ deal }) => {
                   netlify-honeypot="bot-field"
                   className="grid gap-3"
                   onSubmit={(e) => {
-                    e.preventDefault();           // no page nav
+                    e.preventDefault();
                     setSubmitting(true);
-                    // Let Netlify pick up via hidden form in index.html; show local success UI
-                    setTimeout(() => { setSubmitting(false); setDone(true); }, 800);
+                    setTimeout(() => {
+                      setSubmitting(false);
+                      setDone(true);
+                    }, 800);
                   }}
                 >
-                  {/* Netlify required fields */}
                   <input type="hidden" name="form-name" value="deal-entry" />
                   <input type="hidden" name="deal" value={deal.title} />
                   <p className="hidden">
@@ -111,12 +110,22 @@ const DealCard = ({ deal }) => {
 
                   <label className="font-black">
                     Name
-                    <input type="text" name="name" required className="mt-1 w-full border-[3px] border-black p-2" />
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
                   </label>
 
                   <label className="font-black">
                     Email
-                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
                   </label>
 
                   <div className="mt-4 flex justify-end gap-2">
@@ -210,4 +219,4 @@ function Deals() {
   );
 }
 
-export default Deals; // <- critical for App.jsx import
+export default Deals;

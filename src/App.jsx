@@ -10,36 +10,19 @@ const Burst = ({ children, className = "" }) => (
   </div>
 );
 
-
-const Marquee = ({ text, speed = 48 }) => (
+const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">
-    <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
-      <div className="marquee__track flex shrink-0" style={{ animationDuration: `${speed}s` }}>
-        {Array.from({ length: 20 }).map((_, i) => (
-          <span key={`a-${i}`} className="mx-6">✦ {text} ✦</span>
-        ))}
-      </div>
-      <div className="marquee__track flex shrink-0" aria-hidden style={{ animationDuration: `${speed}s` }}>
-        {Array.from({ length: 20 }).map((_, i) => (
-          <span key={`b-${i}`} className="mx-6">✦ {text} ✦</span>
-        ))}
-      </div>
+    <div className="whitespace-nowrap py-2 text-center text-sm font-black uppercase tracking-widest animate-[marquee_14s_linear_infinite]">
+      {Array.from({ length: 30 }).map((_, i) => (
+        <span key={i} className="mx-6">✦ {text} ✦</span>
+      ))}
     </div>
-    <style>{`
-      .marquee__track { will-change: transform; animation-name: marquee; animation-timing-function: linear; animation-iteration-count: infinite; }
-      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      @media (prefers-reduced-motion: reduce) {
-        .marquee__track { animation-duration: 0s !important; animation-play-state: paused !important; transform: translateX(0) !important; }
-      }
-    `}</style>
+    <style>{`@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
   </div>
 );
 
-
-
-
 const Header = () => (
-  <header className="mb-4 sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+  <header className="mb-4 sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <h1 className="relative text-4xl sm:text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
         <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow-300 select-none">X</span>
@@ -51,49 +34,43 @@ const Header = () => (
         That’s UnXpected
       </div>
     </div>
-
-    {/* Responsive, no-scroll nav: grid on small, flex-wrap on desktop */}
-    <nav className="w-full">
-      <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3">
-          {[
-            { to: "/", label: "Home", tone: "bg-yellow-300" },
-            { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-            { to: "/about", label: "About X", tone: "bg-yellow-300" },
-            { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
-            { to: "/events", label: "Events", tone: "bg-yellow-300" },
-            { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
-          ].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                [
-                  "rounded-2xl border-[4px] border-black px-5 py-2 text-center",
-                  "text-base font-black uppercase leading-none",
-                  "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-                  "active:translate-y-[1px]",
-                  item.tone,
-                  isActive ? "ring-2 ring-black ring-offset-2 ring-offset-white" : ""
-                ].join(" ")
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-      </div>
+    <nav className="relative z-10 mx-auto flex items-center gap-3 px-4 pb-6 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible">
+      {[
+        { to: "/", label: "Home", tone: "bg-yellow-300" },
+        { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+        { to: "/about", label: "About X", tone: "bg-yellow-300" },
+        { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
+        { to: "/events", label: "Events", tone: "bg-yellow-300" },
+        { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
+      ].map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.to === "/"}
+          className={({ isActive }) =>
+            [
+              "shrink-0 rounded-2xl border-[4px] border-black px-6 py-2",
+              "text-base font-black uppercase",
+              "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+              "active:translate-y-[1px]",
+              item.tone,
+              isActive ? "ring-2 ring-black" : ""
+            ].join(" ")
+          }
+        >
+          {item.label}
+        </NavLink>
+      ))}
     </nav>
-
-    {/* Marquee with generous gap so nothing overlaps */}
-    <div className="mt-4">
-      <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
-    </div>
+    <style>{`
+      .scrollbar-none::-webkit-scrollbar { display: none; }
+      .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    `}</style>
+    <div className="relative z-0 mt-1">
+    <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
+  </div>
   </header>
 );
-
-
 
 const LeftRail = () => (
   <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-black bg-yellow-300 p-4 text-center z-40">
@@ -187,7 +164,7 @@ const Events = () => (
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden overflow-x-hidden overflow-x-hidden">
+      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth">
         <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />

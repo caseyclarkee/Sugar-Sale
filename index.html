@@ -6,8 +6,16 @@
   <title>Sugar Sale</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="min-h-screen">
   <div id="root"></div>
+
+  <!-- Hidden form template so Netlify detects it -->
+  <form name="deal-entry" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="deal" />
+  </form>
+
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

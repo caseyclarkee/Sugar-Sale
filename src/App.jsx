@@ -10,16 +10,31 @@ const Burst = ({ children, className = "" }) => (
   </div>
 );
 
-const Marquee = ({ text }) => (
+
+const Marquee = ({ text, speed = 48 }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">
-    <div className="whitespace-nowrap py-2 text-center text-sm font-black uppercase tracking-widest animate-[marquee_14s_linear_infinite] will-change-transform">
-      {Array.from({ length: 30 }).map((_, i) => (
-        <span key={i} className="mx-6">✦ {text} ✦</span>
-      ))}
+    <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
+      <div className="marquee__track flex shrink-0" style={{ animationDuration: `${speed}s` }}>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <span key={`a-${i}`} className="mx-6">✦ {text} ✦</span>
+        ))}
+      </div>
+      <div className="marquee__track flex shrink-0" aria-hidden style={{ animationDuration: `${speed}s` }}>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <span key={`b-${i}`} className="mx-6">✦ {text} ✦</span>
+        ))}
+      </div>
     </div>
-    <style>{`@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+    <style>{`
+      .marquee__track { will-change: transform; animation-name: marquee; animation-timing-function: linear; animation-iteration-count: infinite; }
+      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee__track { animation-duration: 0s !important; animation-play-state: paused !important; transform: translateX(0) !important; }
+      }
+    `}</style>
   </div>
 );
+
 
 
 const Header = () => (
@@ -79,7 +94,7 @@ const Header = () => (
     </nav>
 
     {/* Marquee stays underneath and a touch lower */}
-    <div className="relative z-0 mt-3">
+    <div className="relative z-0 mt-4">
       <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
     </div>
 

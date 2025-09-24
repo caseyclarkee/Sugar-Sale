@@ -38,7 +38,7 @@ const Marquee = ({ text, speed = 48 }) => (
 
 
 const Header = () => (
-  <header className="mb-4 sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+  <header className="mb-4 sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <h1 className="relative text-4xl sm:text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
         <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow-300 select-none">X</span>
@@ -53,52 +53,45 @@ const Header = () => (
 
     {/* OUTER: holds z-index + spacing */}
     
-<nav className="relative z-20 w-full pb-8">
-  {/* wrapper keeps vertical overflow visible so shadows/rings are never clipped */}
-  <div className="relative overflow-visible">
-    {/* scroller: only handles horizontal overflow */}
-    <div
-      className="
-        flex items-center gap-3
-        overflow-x-auto overflow-y-visible whitespace-nowrap scrollbar-none
-        -mx-4 px-4
-        pl-[max(1rem,env(safe-area-inset-left))]
-        pr-[max(1rem,env(safe-area-inset-right))]
-        snap-x snap-mandatory touch-pan-x
-        sm:mx-0 sm:px-6
-        lg:overflow-x-visible lg:whitespace-normal
-        lg:max-w-[1100px] lg:mx-auto lg:justify-center lg:flex-wrap
-      "
-    >
-      {[
-        { to: "/", label: "Home", tone: "bg-yellow-300" },
-        { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-        { to: "/about", label: "About X", tone: "bg-yellow-300" },
-        { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
-        { to: "/events", label: "Events", tone: "bg-yellow-300" },
-        { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
-      ].map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          end={item.to === "/"}
-          className={({ isActive }) =>
-            [
-              "shrink-0 snap-start rounded-2xl border-[4px] border-black px-3 py-2 sm:px-5",
-              "text-sm md:text-base font-black uppercase leading-none",
-              "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-              "active:translate-y-[1px]",
-              item.tone,
-              isActive ? "ring-2 ring-black ring-offset-2 ring-offset-white" : ""
-            ].join(" ")
-          }
-        >
-          {item.label}
-        </NavLink>
-      ))}
-    </div>
+
+<nav className="relative z-30 w-full pb-6">
+  <div
+    className="flex items-center gap-3
+               px-4 sm:px-6
+               overflow-x-auto lg:overflow-x-visible
+               whitespace-nowrap lg:whitespace-normal
+               -mx-4 sm:mx-0
+               snap-x snap-mandatory touch-pan-x
+               lg:max-w-[1100px] lg:mx-auto lg:justify-center lg:flex-wrap">
+    {[
+      { to: "/", label: "Home", tone: "bg-yellow-300" },
+      { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+      { to: "/about", label: "About X", tone: "bg-yellow-300" },
+      { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
+      { to: "/events", label: "Events", tone: "bg-yellow-300" },
+      { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
+    ].map((item) => (
+      <NavLink
+        key={item.to}
+        to={item.to}
+        end={item.to === "/"}
+        className={({ isActive }) =>
+          [
+            "shrink-0 snap-start rounded-2xl border-[4px] border-black px-3 py-2 sm:px-5",
+            "text-sm md:text-base font-black uppercase leading-none",
+            "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+            "active:translate-y-[1px]",
+            item.tone,
+            isActive ? "ring-2 ring-black ring-offset-2 ring-offset-white" : ""
+          ].join(" ")
+        }
+      >
+        {item.label}
+      </NavLink>
+    ))}
   </div>
 </nav>
+
 
 
     {/* Marquee stays underneath and a touch lower */}

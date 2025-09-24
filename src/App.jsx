@@ -12,7 +12,7 @@ const Burst = ({ children, className = "" }) => (
 
 const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">
-    <div className="whitespace-nowrap py-2 text-center text-sm font-black uppercase tracking-widest animate-[marquee_14s_linear_infinite]">
+    <div className="whitespace-nowrap py-2 text-center text-sm font-black uppercase tracking-widest animate-[marquee_14s_linear_infinite] will-change-transform">
       {Array.from({ length: 30 }).map((_, i) => (
         <span key={i} className="mx-6">✦ {text} ✦</span>
       ))}
@@ -20,6 +20,7 @@ const Marquee = ({ text }) => (
     <style>{`@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
   </div>
 );
+
 
 const Header = () => (
   <header className="mb-4 sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
@@ -34,43 +35,61 @@ const Header = () => (
         That’s UnXpected
       </div>
     </div>
-    <nav className="relative z-10 w-full -mx-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-8 flex items-center gap-3 overflow-x-auto whitespace-nowrap scrollbar-none overflow-visible snap-x snap-mandatory touch-pan-x">
-      {[
-        { to: "/", label: "Home", tone: "bg-yellow-300" },
-        { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-        { to: "/about", label: "About X", tone: "bg-yellow-300" },
-        { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
-        { to: "/events", label: "Events", tone: "bg-yellow-300" },
-        { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
-      ].map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          end={item.to === "/"}
-          className={({ isActive }) =>
-            [
-              "shrink-0 snap-start rounded-2xl border-[4px] border-black px-4 py-2 sm:px-6",
-              "text-sm sm:text-base font-black uppercase",
-              "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-              "active:translate-y-[1px]",
-              item.tone,
-              isActive ? "ring-2 ring-black" : ""
-            ].join(" ")
-          }
-        >
-          {item.label}
-        </NavLink>
-      ))}
+
+    {/* OUTER: holds z-index + spacing */}
+    <nav className="relative z-20 w-full pb-8">
+      {/* INNER: the only thing that scrolls horizontally */}
+      <div
+        className="
+          flex items-center gap-3
+          overflow-x-auto whitespace-nowrap scrollbar-none
+          px-4
+          pl-[max(1rem,env(safe-area-inset-left))]
+          pr-[max(1rem,env(safe-area-inset-right))]
+          snap-x snap-mandatory touch-pan-x
+        "
+      >
+        {[
+          { to: "/", label: "Home", tone: "bg-yellow-300" },
+          { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+          { to: "/about", label: "About X", tone: "bg-yellow-300" },
+          { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
+          { to: "/events", label: "Events", tone: "bg-yellow-300" },
+          { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
+        ].map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              [
+                "shrink-0 snap-start rounded-2xl border-[4px] border-black px-4 py-2 sm:px-6",
+                "text-sm sm:text-base font-black uppercase",
+                "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                "active:translate-y-[1px]",
+                item.tone,
+                isActive ? "ring-2 ring-black" : ""
+              ].join(" ")
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </div>
     </nav>
+
+    {/* Marquee stays underneath and a touch lower */}
+    <div className="relative z-0 mt-3">
+      <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
+    </div>
+
     <style>{`
       .scrollbar-none::-webkit-scrollbar { display: none; }
       .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     `}</style>
-    <div className="relative z-0 mt-2">
-    <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
-  </div>
   </header>
 );
+
 
 const LeftRail = () => (
   <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-black bg-yellow-300 p-4 text-center z-40">
@@ -164,7 +183,7 @@ const Events = () => (
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth">
+      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
         <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />

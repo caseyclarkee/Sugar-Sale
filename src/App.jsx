@@ -28,7 +28,7 @@ const Burst = ({ children, className = "" }) => (
 const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-black bg-pink-300 text-black overflow-hidden w-full">
     <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
-      <div className="marquee__track flex shrink-0" style={{ animationDuration: "48s" }}>
+      <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
         {Array.from({ length: 24 }).map((_, i) => (
           <span key={`a-${i}`} className="mx-6">
             ✦ {text} ✦
@@ -38,7 +38,7 @@ const Marquee = ({ text }) => (
       <div
         className="marquee__track flex shrink-0"
         aria-hidden
-        style={{ animationDuration: "48s" }}
+        style={{ animationDuration: "80s" }}
       >
         {Array.from({ length: 24 }).map((_, i) => (
           <span key={`b-${i}`} className="mx-6">

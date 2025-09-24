@@ -1,21 +1,21 @@
 [
   {
     "id": 1,
-    "title": "Deal 1 — Free Sugar Bag",
+    "title": "Deal 1 \u2014 Free Sugar Bag",
     "platform": "instagram",
     "postUrl": "https://www.instagram.com/p/DH7IDe5SwuD/",
     "expires": "2025-09-30"
   },
   {
     "id": 2,
-    "title": "Deal 2 — Sweet Discount",
+    "title": "Deal 2 \u2014 Sweet Discount",
     "platform": "tiktok",
     "postUrl": "https://www.tiktok.com/@scout2015/video/6718335390845095173",
     "expires": "2025-10-01"
   },
   {
     "id": 3,
-    "title": "Deal 3 — Mystery Prize",
+    "title": "Deal 3 \u2014 Mystery Prize",
     "image": "https://placehold.co/400x400/png?text=Mystery",
     "expires": "2025-10-05"
   },

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { InstagramEmbed, TikTokEmbed } from "react-social-media-embed";
 
-/* Badge (chunky) */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -22,7 +21,6 @@ const Badge = ({ children, tone = "yellow" }) => {
   );
 };
 
-/* Deal card with Netlify modal form + inline success */
 const DealCard = ({ deal }) => {
   const now = new Date();
   const exp = deal.expires ? new Date(deal.expires) : null;
@@ -32,15 +30,19 @@ const DealCard = ({ deal }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
 
+  React.useEffect(() => {
+    if (open) document.body.classList.add("overflow-hidden");
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [open]);
+
   return (
     <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000]">
-      {/* media */}
       <div className="mb-4 rounded-lg border-[3px] border-black bg-gray-50 p-2">
         <div className="w-full overflow-hidden rounded-md">
           {deal.platform === "instagram" && deal.postUrl ? (
             <InstagramEmbed url={deal.postUrl} width={"100%"} />
           ) : deal.platform === "tiktok" && deal.postUrl ? (
-            <TikTokEmbed url={deal.postUrl} width={325} />
+            <TikTokEmbed url={deal.postUrl} width={"100%"} />
           ) : deal.image ? (
             <img src={deal.image} alt={deal.title} className="w-full rounded-md" />
           ) : (
@@ -49,7 +51,6 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
-      {/* text + actions */}
       <div className="flex flex-1 flex-col">
         <h3 className="text-xl font-black">{deal.title}</h3>
         <div className="mt-2 flex items-center gap-2">
@@ -80,10 +81,9 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
-      {/* modal */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="w-full max-w-md rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md max-h-[90vh] overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
             {!done ? (
               <>
                 <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
@@ -165,7 +165,6 @@ const DealCard = ({ deal }) => {
   );
 };
 
-/* Coming Soon card */
 const ComingSoonCard = ({ title = "Coming Soon" }) => (
   <div className="flex h-full flex-col rounded-xl border-[4px] border-black bg-yellow-200 p-6 text-center shadow-[6px_6px_0_#000]">
     <div className="flex flex-1 items-center justify-center">
@@ -175,7 +174,6 @@ const ComingSoonCard = ({ title = "Coming Soon" }) => (
   </div>
 );
 
-/* Page */
 function Deals() {
   const [deals, setDeals] = useState([]);
   const [coming, setComing] = useState([]);
@@ -194,7 +192,7 @@ function Deals() {
   }, []);
 
   return (
-    <section className="px-8 py-12 space-y-8">
+    <section className="px-4 sm:px-8 py-12 space-y-8">
       <h2 className="text-4xl font-black uppercase drop-shadow-[3px_3px_0_#000] text-yellow-400">
         Daily Deals
       </h2>

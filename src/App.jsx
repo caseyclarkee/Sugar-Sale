@@ -2,7 +2,8 @@ import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
 
-// Y2K layout with sticky header, marquee, fixed side rails
+/** Y2K layout with sticky header, marquee, fixed side rails (Tailwind via CDN) */
+/** Mobile tweaks: scrollable nav, lg-only side margins, responsive embeds */
 
 const Burst = ({ children, className = "" }) => (
   <div className={"grid place-items-center rounded-full bg-yellow-300 text-black border-[4px] border-black shadow-[4px_4px_0_#000] " + className}>
@@ -22,19 +23,19 @@ const Marquee = ({ text }) => (
 );
 
 const Header = () => (
-  <header className="sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-6 w-full">
-    <div className="flex items-center justify-between w-full px-8">
-      <h1 className="relative text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
-        <span className="absolute -left-10 -top-12 -z-10 rotate-12 text-[140px] leading-none text-yellow-300 select-none">X</span>
+  <header className="sticky top-0 z-30 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full">
+    <div className="flex items-center justify-between w-full px-4 sm:px-8">
+      <h1 className="relative text-4xl sm:text-6xl font-black leading-[0.9] text-purple-700 drop-shadow-[3px_3px_0_#000]">
+        <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow-300 select-none">X</span>
         <span className="block">Sugar</span>
         <span className="italic">Liquidation</span>
         <span className="block">Sale</span>
       </h1>
-      <div className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-4 py-2 text-white font-black uppercase shadow-[4px_4px_0_#000]">
+      <div className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[4px_4px_0_#000]">
         That’s UnXpected
       </div>
     </div>
-    <nav className="mx-auto flex flex-wrap items-center justify-center gap-4 px-8">
+    <nav className="mx-auto flex items-center gap-3 px-4 overflow-x-auto whitespace-nowrap scrollbar-none">
       {[
         { to: "/", label: "Home", tone: "bg-yellow-300" },
         { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
@@ -48,7 +49,7 @@ const Header = () => (
           to={item.to}
           end={item.to === "/"}
           className={({ isActive }) =>
-            `rounded-xl border-[4px] border-black px-6 py-2 text-lg font-black uppercase shadow-[4px_4px_0_#000] ${item.tone} ` +
+            `shrink-0 rounded-xl border-[4px] border-black px-5 py-2 text-base font-black uppercase shadow-[4px_4px_0_#000] ${item.tone} ` +
             (isActive ? "outline outline-4 outline-black" : "")
           }
         >
@@ -56,6 +57,10 @@ const Header = () => (
         </NavLink>
       ))}
     </nav>
+    <style>{`
+      .scrollbar-none::-webkit-scrollbar { display: none; }
+      .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    `}</style>
     <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
   </header>
 );
@@ -85,28 +90,29 @@ const RightRail = () => (
 );
 
 const Home = () => (
-  <section className="py-10 px-8">
-    <div className="relative w-full rounded-2xl border-[4px] border-black bg-purple-300 shadow-[6px_6px_0_#000] p-8 text-center text-yellow-300">
-      <h2 className="text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">Sugar Liquidation! Sale!</h2>
-      <div className="absolute right-6 top-6">
-        <Burst className="h-28 w-28"><span className="text-xl font-black">ON NOW!</span></Burst>
+  <section className="py-10 px-4 sm:px-8">
+    <div className="relative w-full rounded-2xl border-[4px] border-black bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow-300">
+      <h2 className="text-4xl sm:text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">Sugar Liquidation! Sale!</h2>
+      <div className="absolute right-3 top-3 sm:right-6 sm:top-6">
+        <Burst className="h-24 w-24 sm:h-28 sm:w-28"><span className="text-lg sm:text-xl font-black">ON NOW!</span></Burst>
       </div>
-     <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]">
-  <iframe
-    src="https://player.vimeo.com/video/843809307?h=6a8b6a8a9a&title=0&byline=0&portrait=0"
-    width="100%"
-    height="100%"
-    frameBorder="0"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowFullScreen
-  ></iframe>
-</div>
+      <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]">
+        <iframe
+          src="https://player.vimeo.com/video/843809307?h=6a8b6a8a9a&title=0&byline=0&portrait=0"
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          title="Hero Video"
+        ></iframe>
+      </div>
     </div>
   </section>
 );
 
 const Merch = () => (
-  <section className="px-8 py-12">
+  <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-6">Merch</h3>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {[1,2,3,4,5,6].map((i) => (
@@ -122,14 +128,14 @@ const Merch = () => (
 );
 
 const About = () => (
-  <section className="px-8 py-12">
+  <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">X Zero Sugar brings you bold flavor with no sugar. This site is a playful homage to early-2000s web design with thick borders, bright colors, and chunky buttons.</p>
   </section>
 );
 
 const SugarSale = () => (
-  <section className="px-8 py-12">
+  <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">Sugar Sale</h3>
     <div className="rounded-2xl border-[4px] border-black bg-yellow-200 p-6 shadow-[4px_4px_0_#000]">
       <p className="text-black">Buy a 10-pack and get the sugar free—limited time only.</p>
@@ -138,7 +144,7 @@ const SugarSale = () => (
 );
 
 const Events = () => (
-  <section className="px-8 py-12">
+  <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">Events</h3>
     <ul className="space-y-3">
       {["Pop-up tasting — Sat 2pm","Demo day — Sun 12pm","Warehouse tour — Next Fri"].map((t,i) => (
@@ -155,7 +161,7 @@ export default function SugarSaleSite() {
         <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />
-          <div className="min-h-screen ml-[200px] mr-[200px] flex flex-col w-auto">
+          <div className="min-h-screen flex flex-col w-auto lg:ml-[200px] lg:mr-[200px]">
             <Header />
             <main className="flex flex-col w-full">
               <Routes>
@@ -168,7 +174,7 @@ export default function SugarSaleSite() {
                 <Route path="*" element={<Home />} />
               </Routes>
             </main>
-            <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-8">
+            <footer className="border-t-[4px] border-black bg-gray-100 py-8 w-full px-4 sm:px-8">
               <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
                 <p className="text-center text-sm font-medium md:text-left">© {new Date().getFullYear()} Long White — X Zero Sugar.</p>
                 <div className="flex items-center gap-3">

@@ -78,8 +78,8 @@ const Header = () => (
             end={item.to === "/"}
             className={({ isActive }) =>
               [
-                "shrink-0 snap-start rounded-2xl border-[4px] border-black px-4 py-2 sm:px-6",
-                "text-sm sm:text-base font-black uppercase",
+                "shrink-0 snap-start rounded-2xl border-[4px] border-black px-3 py-2 sm:px-5",
+              "text-sm md:text-base font-black uppercase leading-none",
                 "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
                 "active:translate-y-[1px]",
                 item.tone,

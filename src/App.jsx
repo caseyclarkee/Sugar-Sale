@@ -84,6 +84,7 @@ const Header = () => (
 >
   THAT’S UNXPECTED
 </button>
+    </div>
 
     {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
     <nav className="w-full relative z-[60] py-2">

@@ -1,6 +1,7 @@
 import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
+import AgeGate from "./components/AgeGate.jsx"; 
 
 /**
  * App shell:
@@ -242,9 +243,6 @@ const Events = () => (
   </section>
 );
 
-export default function SugarSaleSite() {
-  return (
-    import AgeGate from "./components/AgeGate.jsx";
 
 // inside SugarSaleSite() return:
 <HashRouter>

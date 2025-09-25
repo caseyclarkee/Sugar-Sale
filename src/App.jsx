@@ -187,7 +187,7 @@ const Merch = () => (
             <span className="text-gray-500">Item {i}</span>
           </div>
           <button className="mt-4 w-full rounded-lg border-[3px] border-black bg-yellow-300 px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">
-            Add to cart
+            Register interest
           </button>
         </div>
       ))}
@@ -199,8 +199,7 @@ const About = () => (
   <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
-      X Zero Sugar brings you bold flavor with no sugar. This site is a playful homage to
-      early-2000s web design with thick borders, bright colors, and chunky buttons.
+      X Zero Sugar brings you bold flavor with no sugar. 
     </p>
   </section>
 );

@@ -244,10 +244,16 @@ const Events = () => (
 
 export default function SugarSaleSite() {
   return (
-    <HashRouter>
-      {/* OUTER WRAPPER: prevent sideways scroll */}
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
-        <div className="min-h-screen bg-white/90">
+    import AgeGate from "./components/AgeGate.jsx";
+
+// inside SugarSaleSite() return:
+<HashRouter>
+  <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
+    {/* 🔒 Age gate overlay */}
+    <AgeGate minAge={18} rememberDays={30} requireDob={true} brand="X Zero Sugar" />
+
+    <div className="min-h-screen bg-white/90">
+      {/* ...rest of your layout (rails, Header, Marquee, Routes, footer) */}
           <LeftRail />
           <RightRail />
 

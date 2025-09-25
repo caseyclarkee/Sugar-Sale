@@ -70,10 +70,20 @@ const Header = () => (
         <span className="italic">Liquidation</span>
         <span className="block">Sale</span>
       </h1>
-      <div className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[4px_4px_0_#000]">
-        That’s UnXpected
-      </div>
-    </div>
+      <button
+  onClick={() => {
+    const urls = [
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3E5NjJ4ZnZreHV0N3NzNzd0MGxpdGdnMXl5bXhka2U3NDN2YjF3OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VFZDuY0nePXry/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjMzcDZmOXA4d241aXdhbGs3ZjBlaXN4N2k0YTNuaWduOGI2Y21qdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gjgWQA5QBuBmUZahOP/giphy.gif",
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3RrYTNjcjhnMXFoamFyaDV4cmxlbm1ucnV1ODRyNnhtdXFkbHpzaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8cEFp9dQCcE8M/giphy.gif",
+    ];
+    const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+    window.open(randomUrl, "_blank"); // opens in new tab
+  }}
+  className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform"
+>
+  THAT’S UNXPECTED
+</button>
 
     {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
     <nav className="w-full relative z-[60] py-2">

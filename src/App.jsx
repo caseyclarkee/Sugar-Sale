@@ -246,7 +246,7 @@ export default function SugarSaleSite() {
 
             {/* Marquee below the sticky header so it can’t overlap nav */}
             <div className="mt-2">
-              <Marquee text="All Sugar Must Go — Liquidate Responsibly — 2000s Style" />
+              <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
             </div>
 
             <main className="flex flex-col w-full">

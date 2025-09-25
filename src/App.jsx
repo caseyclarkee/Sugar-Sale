@@ -81,11 +81,10 @@ const Header = () => (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
           {[
             { to: "/", label: "Home", tone: "bg-yellow-300" },
-            { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-            { to: "/about", label: "About X", tone: "bg-yellow-300" },
-            { to: "/sugar-sale", label: "Sugar Sale", tone: "bg-purple-500 text-white" },
-            { to: "/events", label: "Events", tone: "bg-yellow-300" },
             { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
+            { to: "/about", label: "About X", tone: "bg-yellow-300" },
+            { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
+            
           ].map((item) => (
             <NavLink
               key={item.to}

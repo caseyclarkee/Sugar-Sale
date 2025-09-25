@@ -10,7 +10,7 @@ export default function Merch() {
             <div className="aspect-square rounded-lg border-[3px] border-black bg-gray-100 grid place-items-center">
               <span className="text-gray-500">Item {i}</span>
             </div>
-            <button className="mt-4 w-full rounded-lg border-[3px] border-black bg-yellow-300 px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">Add to cart</button>
+            <button className="mt-4 w-full rounded-lg border-[3px] border-black bg-yellow-300 px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">Register Interest</button>
           </div>
         ))}
       </div>

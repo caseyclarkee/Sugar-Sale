@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import AgeGate from "./components/AgeGate.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
 
 export default function AppComingSoon() {
+  const [isVerified, setIsVerified] = useState(false);
+
+  if (!isVerified) {
+    return <AgeGate onVerified={() => setIsVerified(true)} />;
+  }
+
   return (
     <div className="min-h-screen bg-yellow-300 flex flex-col items-center justify-center text-center px-6 py-12">
       <div className="max-w-2xl">

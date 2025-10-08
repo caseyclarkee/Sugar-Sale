@@ -71,4 +71,25 @@
       </div>
     </footer>
   </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sugar Liquidation Sale — Coming Soon</title>
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Hidden form: lets Netlify detect the form at build time -->
+  <form name="interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+  </form>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React (CDN) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- App -->
+  <script src="./app.js"></script>
+</body>
 </html>

@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sugar Sale</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen">
-  <div id="root"></div>
-
-  <!-- Hidden form template so Netlify detects form at build time -->
-  <form name="interest" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
-    <input type="hidden" name="form-name" value="interest" />
-    <p hidden>
-      <label>Don’t fill this out if you’re human:<input name="bot-field" /></label>
-    </p>
+  <title>Sugar Liquidation Sale — Coming Soon</title>
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Hidden form: lets Netlify detect the form at build time -->
+  <form name="interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
     <input type="text" name="name" />
     <input type="email" name="email" />
   </form>
+</head>
+<body>
+  <div id="root"></div>
 
-  <script type="module" src="/src/main.jsx"></script>
+  <!-- React (CDN) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- App -->
+  <script src="./app.js"></script>
 </body>
 </html>

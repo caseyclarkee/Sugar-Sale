@@ -1,3 +1,5 @@
+<input type="hidden" name="form-name" value="interest" />
+  
 import React, { useState } from "react";
 
 export default function RegisterForm() {

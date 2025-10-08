@@ -5,13 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sugar Liquidation Sale — Coming Soon</title>
   <link rel="stylesheet" href="./style.css" />
-  <!-- Hidden form: lets Netlify detect the form at build time -->
+  <style>
+    /* Make sure the React app doesn’t hide the footer */
+    html, body { margin: 0; }
+    #root { min-height: calc(100vh - 120px); /* leave room for footer */ }
+    footer { padding: 24px 16px 40px; }
+  </style>
+</head>
+<body>
+  <!-- Hidden form MUST be inside <body> so Netlify can see it -->
   <form name="interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
     <input type="text" name="name" />
     <input type="email" name="email" />
   </form>
-</head>
-<body>
+
+  <!-- Your React mount point -->
   <div id="root"></div>
 
   <!-- React (CDN) -->
@@ -20,43 +28,40 @@
 
   <!-- App -->
   <script src="./app.js"></script>
-<!-- Footer Links -->
-<footer style="text-align: center; margin-top: 60px;">
-  <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; font-family: 'Arial Black', sans-serif;">
-    <a
-      href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
-      onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
-      onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
-    >
-      Terms of Use
-    </a>
 
-    <a
-      href="https://www.asahibeverages.com/privacy-collection-notice"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
-      onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
-      onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
-    >
-      Privacy Collection Notice
-    </a>
+  <!-- Footer Links -->
+  <footer style="text-align: center; margin-top: 60px;">
+    <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; font-family: 'Arial Black', sans-serif;">
+      <a
+        href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Terms of Use
+      </a>
 
-    <a
-      href="https://www.asahibeverages.com/privacy-policy"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
-      onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
-      onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
-    >
-      Privacy Policy
-    </a>
-  </div>
-</footer>
+      <a
+        href="https://www.asahibeverages.com/privacy-collection-notice"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Privacy Collection Notice
+      </a>
 
+      <a
+        href="https://www.asahibeverages.com/privacy-policy"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Privacy Policy
+      </a>
+    </div>
+  </footer>
 </body>
 </html>

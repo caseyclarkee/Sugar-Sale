@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- AGE GATE: pre-hydration lock -->
+<script>
+  // Hide the entire app immediately so nothing shows behind the gate
+  (function(){ try { document.documentElement.classList.add('agegate-active'); } catch(e){} })();
+</script>
+<style>
+  /* Hide everything except our gate; also stop scroll */
+  .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+  .agegate-active body { overflow: hidden !important; }
+</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sugar Liquidation Sale — Coming Soon</title>

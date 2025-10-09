@@ -272,3 +272,14 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 #age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
 
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+/* Ensure footer links are always clickable */
+.site-footer {
+  position: relative;
+  z-index: 10;   /* higher than .bg-x (z-index:0) */
+  pointer-events: auto;
+}
+
+.bg-x {
+  pointer-events: none; /* make the X ignore clicks entirely */
+}

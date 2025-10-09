@@ -42,7 +42,7 @@ body {
 
 .bg-x img {
   width: auto;
-  max-width: 90vw;
+  max-width: 100vw;
   height: auto;
   max-height: clamp(280px, 95vh, 620px);
   opacity: .95;
@@ -58,7 +58,7 @@ body {
 .content {
   z-index: 1;
   display: grid;
-  gap: 1.25rem;
+  gap: 0.5rem;
   justify-items: center;
 }
 
@@ -125,7 +125,7 @@ button.cta {
 
 button.cta:hover { transform: translateY(-2px); background: #a420a4; }
 
-.success { color:#065f46; margin-top:.5rem; }
+.success { color:#bb29bb; margin-top:.5rem; }
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 
 .hidden-field { display:none !important; }
@@ -190,7 +190,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin: 3rem 0 2rem;
+  margin: 0.5rem 0 0.5rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;

@@ -22,7 +22,7 @@
   <!-- Age Gate Overlay -->
   <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
     <div class="age-card">
-      <h2 id="age-title">Enter your birth year</h2>
+      <h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
       <form id="age-gate-form">
         <div class="row">
           <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
@@ -46,11 +46,11 @@
         <div class="form-grid">
           <input class="input" type="text" name="name" placeholder="Name" required />
           <input class="input" type="email" name="email" placeholder="Email" required />
-          <button type="submit" class="cta">Notify Me</button>
+          <button type="submit" class="cta">Submit</button>
         </div>
       </form>
       <p class="success" id="modal-success" style="display:none;">Thanks! You’re on the list.</p>
-      <small class="muted">We’ll only email you about launch details.</small>
+      <small class="muted"></small>
     </div>
   </div>
 
@@ -64,76 +64,107 @@
 
   
   <script>
-  
-  (function(){
-    if (window.__modalInit) return; window.__modalInit = true;
-    function qs(s){ return document.querySelector(s); }
-    function qa(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+(function(){
+  if (window.__modalInit) return; window.__modalInit = true;
 
-    function openModal(e){
-      const ov = qs('#modal-overlay'); if(!ov) return;
-      ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
-      document.body.style.overflow='hidden';
-      const first = ov.querySelector('input[name="name"]') || ov.querySelector('input,button');
-      if(first) try{ first.focus(); }catch(e){}
-      const form = ov.querySelector('form[name="interest"]');
-      const ok   = qs('#modal-success');
-      if(form){ form.style.display='block'; }
-      if(ok){ ok.style.display='none'; }
-      if(e && e.type==='touchstart') e.preventDefault();
+  function qs(s){ return document.querySelector(s); }
+  function isTrigger(el){
+    return !!el && el.matches('#openFormBtn, .openFormBtn, button[data-open="interest"], a[data-open="interest"]');
+  }
+  function findTrigger(t){
+    while(t && t !== document.body){
+      if(isTrigger(t)) return t;
+      t = t.parentElement;
     }
-    function closeModal(){
-      const ov = qs('#modal-overlay'); if(!ov) return;
-      ov.style.display='none'; ov.setAttribute('aria-hidden','true');
-      document.body.style.overflow='';
-    }
-    function handleSubmit(ev){
-      const form = ev.target;
-      if(!(form && form.getAttribute('name')==='interest')) return;
-      ev.preventDefault();
-      const submitBtn = form.querySelector('button[type="submit"], .cta');
-      const originalText = submitBtn ? submitBtn.textContent : '';
-      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
-      const data = new FormData(form);
-      if(!data.get('form-name')) data.append('form-name','interest'); // required for Netlify
-      const body = new URLSearchParams(data);
+    return null;
+  }
 
-      fetch('/', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
-        body: body.toString(),
-        credentials: 'same-origin'
-      }).then(function(){
-        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
-        form.reset();
-        const ok = document.getElementById('modal-success');
-        if(ok){ ok.style.display='block'; }
-        form.style.display='none';
-        const done = document.getElementById('modal-done');
-        if(done){ done.addEventListener('click', closeModal, { once:true }); }
-      }).catch(function(){
-        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
-        // Fall back to standard POST (full-page) if fetch fails on mobile
-        try { form.submit(); } catch(_) {}
-      });
-    }
-    function init(){
-      qa('#openFormBtn, .openFormBtn').forEach(function(btn){
-        btn.addEventListener('click', openModal, { passive: true });
-        btn.addEventListener('touchstart', openModal, { passive: false });
-      });
-      const close = qs('#modal-close');
-      const overlay = qs('#modal-overlay');
-      if(close) close.addEventListener('click', closeModal);
-      if(overlay) overlay.addEventListener('click', function(ev){
-        if(ev.target === overlay) closeModal();
-      });
-      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
-      document.addEventListener('submit', handleSubmit, true);
-    }
-    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
-  })();
-  </script>
+  function openModal(ev){
+    const ov = qs('#modal-overlay'); if(!ov) return;
+    ov.style.display='flex';
+    ov.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+
+    const first = ov.querySelector('input[name="name"], input, button');
+    if(first){ try{ first.focus(); }catch(_){} }
+
+    const form = ov.querySelector('form[name="interest"]');
+    const ok   = qs('#modal-success');
+    if(form) form.style.display='block';
+    if(ok) ok.style.display='none';
+
+    // Important for iOS: prevent ghost click cancellation
+    if(ev && (ev.type==='touchend' || ev.type==='touchstart')) ev.preventDefault();
+  }
+
+  function closeModal(){
+    const ov = qs('#modal-overlay'); if(!ov) return;
+    ov.style.display='none';
+    ov.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  function handleSubmit(ev){
+    const form = ev.target;
+    if(!(form && form.getAttribute('name')==='interest')) return;
+    ev.preventDefault();
+
+    const btn = form.querySelector('button[type="submit"], .cta');
+    const txt = btn ? btn.textContent : '';
+    if(btn){ btn.disabled = true; btn.textContent = 'Sending…'; }
+
+    const data = new FormData(form);
+    if(!data.get('form-name')) data.append('form-name','interest'); // Netlify requires this
+    const body = new URLSearchParams(data);
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString(),
+      credentials: 'same-origin'
+    }).then(function(){
+      if(btn){ btn.disabled = false; btn.textContent = txt; }
+      form.reset();
+      const ok = document.getElementById('modal-success');
+      if(ok) ok.style.display='block';
+      form.style.display='none';
+      const done = document.getElementById('modal-done');
+      if(done){ done.addEventListener('click', closeModal, { once:true }); }
+    }).catch(function(){
+      if(btn){ btn.disabled = false; btn.textContent = txt; }
+      try { form.submit(); } catch(_) {}
+    });
+  }
+
+  // Delegated handlers so React re-renders don't drop listeners
+  function delegatedOpen(ev){
+    const t = findTrigger(ev.target);
+    if(t) openModal(ev);
+  }
+
+  function init(){
+    document.addEventListener('click', delegatedOpen, false);
+    document.addEventListener('touchend', delegatedOpen, { passive: false }); // iOS tap support
+
+    const close = qs('#modal-close');
+    const overlay = qs('#modal-overlay');
+
+    if(close) close.addEventListener('click', closeModal);
+    if(overlay) overlay.addEventListener('click', function(ev){
+      if(ev.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', function(ev){
+      if(ev.key === 'Escape') closeModal();
+    });
+
+    document.addEventListener('submit', handleSubmit, true);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 
 
 <footer class="site-footer">

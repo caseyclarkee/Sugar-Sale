@@ -191,7 +191,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   justify-content: center;
   gap: 1rem;          /* smaller gap between links */
   margin-top: -1rem;  /* moves it closer to the bottom of the X */
-  margin-bottom: 0.25rem;
+  margin-bottom: 2rem;
 }
 
 .site-footer a {

@@ -27,7 +27,7 @@ body {
   display: grid;
   place-items: center;
   position: relative;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   text-align: center;
 }
 
@@ -44,13 +44,13 @@ body {
   width: auto;
   max-width: 90vw;
   height: auto;
-  max-height: clamp(280px, 65vh, 620px);
+  max-height: clamp(280px, 95vh, 620px);
   opacity: .95;
 }
 
 .logo {
   width: auto;
-  max-width: clamp(220px, 55vw, 580px);
+  max-width: clamp(220px, 20vw, 580px);
   height: auto;
   max-height: clamp(120px, 20vh, 180px);
 }
@@ -58,7 +58,7 @@ body {
 .content {
   z-index: 1;
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
   justify-items: center;
 }
 
@@ -72,7 +72,7 @@ h1 {
   text-transform: uppercase;
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   transform: scaleX(0.92);
   display: inline-block;
 }
@@ -125,7 +125,7 @@ button.cta {
 
 button.cta:hover { transform: translateY(-2px); background: #a420a4; }
 
-.success { color:#065f46; margin-top:.5rem; }
+.success { color:#bb29bb; margin-top:.5rem; }
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 
 .hidden-field { display:none !important; }
@@ -185,7 +185,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin: 3rem 0 2rem;
+  margin: 1rem 0 2rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;

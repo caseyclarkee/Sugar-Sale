@@ -189,14 +189,24 @@
 
   <script>
   
+  
   (function(){
+    if (window.__modalInit) return; 
+    window.__modalInit = true;
+
     function qs(sel){ return document.querySelector(sel); }
+    function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+    // Remove duplicate overlays if any slipped in
+    qa('#modal-overlay').forEach(function(node, idx){
+      if (idx > 0) node.parentNode && node.parentNode.removeChild(node);
+    });
+
     function openModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
       ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
       const first = ov.querySelector('input[name="name"]'); if(first) first.focus();
-      // reset success/form visibility each open
       const form = ov.querySelector('form[name="interest"]');
       const ok   = qs('#modal-success');
       if(form){ form.style.display='block'; }
@@ -215,7 +225,6 @@
       const originalText = submitBtn ? submitBtn.textContent : '';
       if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       const data = new FormData(form);
-      // Netlify requires urlencoded
       fetch('/', { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
       }).then(()=>{
@@ -227,16 +236,17 @@
         const done = document.getElementById('modal-done');
         if(done){ done.addEventListener('click', closeModal, { once:true }); }
       }).catch(()=>{
-        // fallback to normal submit if fetch fails
         if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
         form.submit();
       });
     }
     function init(){
-      const btn = document.getElementById('openFormBtn');
-      const close = document.getElementById('modal-close');
-      const overlay = document.getElementById('modal-overlay');
-      if(btn) btn.addEventListener('click', openModal);
+      // Attach to all possible triggers (in case multiple exist)
+      qa('#openFormBtn, .openFormBtn').forEach(function(btn){
+        btn.addEventListener('click', openModal);
+      });
+      const close = qs('#modal-close');
+      const overlay = qs('#modal-overlay');
       if(close) close.addEventListener('click', closeModal);
       if(overlay) overlay.addEventListener('click', function(ev){ if(ev.target===overlay) closeModal(); });
       document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });

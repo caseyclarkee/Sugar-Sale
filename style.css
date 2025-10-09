@@ -32,8 +32,12 @@ body {
   z-index: 0;
   pointer-events: none;
 }
+/* Responsive X with vertical cap */
 .bg-x img {
-  width: min(90vw, 1000px);
+  width: auto;
+  max-width: 90vw;          /* keeps it from overflowing horizontally */
+  height: auto;
+  max-height: clamp(280px, 65vh, 620px); /* caps vertical size but stays responsive */
   opacity: .95;
 }
 .content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }

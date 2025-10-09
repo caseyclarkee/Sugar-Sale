@@ -27,7 +27,7 @@ body {
   display: grid;
   place-items: center;
   position: relative;
-  padding: 0rem 0rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
@@ -42,15 +42,15 @@ body {
 
 .bg-x img {
   width: auto;
-  max-width: 100vw;
+  max-width: 90vw;
   height: auto;
-  max-height: 95vh;
+  max-height: clamp(280px, 65vh, 620px);
   opacity: .95;
 }
 
 .logo {
   width: auto;
-  max-width: clamp(220px, 20vw, 580px);
+  max-width: clamp(220px, 55vw, 580px);
   height: auto;
   max-height: clamp(120px, 20vh, 180px);
 }
@@ -58,7 +58,7 @@ body {
 .content {
   z-index: 1;
   display: grid;
-  gap: 0.5rem;
+  gap: 1.25rem;
   justify-items: center;
 }
 
@@ -72,7 +72,7 @@ h1 {
   text-transform: uppercase;
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   transform: scaleX(0.92);
   display: inline-block;
 }
@@ -125,7 +125,7 @@ button.cta {
 
 button.cta:hover { transform: translateY(-2px); background: #a420a4; }
 
-.success { color:#bb29bb; margin-top:.5rem; }
+.success { color:#065f46; margin-top:.5rem; }
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 
 .hidden-field { display:none !important; }
@@ -133,7 +133,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 /* =============================
    Popup Modal
    ============================= */
-.modal-overlay {
+.modal-overlay { z-index: 3000;
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -185,7 +185,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin: 0.5rem 0 0.5rem;
+  margin: 3rem 0 2rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;
@@ -201,3 +201,71 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 .site-footer a:hover {
   border-bottom-color: #333;
 }
+
+
+/* === Age Gate (hard lock before pass) === */
+.agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+.agegate-active body { overflow: hidden !important; }
+
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;
+}
+
+.age-card {
+  width: min(92vw, 560px);
+  background: #fff;
+  color: #333333;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 #333333;
+  padding: 28px;
+  text-align: center;
+}
+
+.age-card h2 {
+  margin: 0 0 12px;
+  font-family: "futura-pt-condensed","futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+#birth-year {
+  border: 3px solid #333333;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+#age-gate-form .cta {
+  border: 3px solid #333333;
+  background: #bb29bb;
+  color: #fff;
+  padding: .75rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 #333333;
+  cursor: pointer;
+  transition: transform .12s ease, background .2s ease;
+}
+#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+.error { color: #b00020; font-weight: 700; margin: 6px 0 0; }

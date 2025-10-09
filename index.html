@@ -3,15 +3,13 @@
 <head>
   <!-- AGE GATE: pre-hydration lock -->
   <script>
-    // Hide entire app immediately so nothing shows behind the gate
     (function(){ try { document.documentElement.classList.add('agegate-active'); } catch(e){} })();
   </script>
   <style>
-    /* Hide everything except our gate */
     .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
     .agegate-active body { overflow: hidden !important; }
 
-    /* Overlay + Card (brand look + colours) */
+    /* Age gate (brand look + colours) */
     #age-gate-overlay {
       position: fixed; inset: 0; z-index: 2147483647;
       display: flex; align-items: center; justify-content: center;
@@ -22,26 +20,20 @@
       background: #fff; color: #333333;
       border: 3px solid #333333; border-radius: 12px;
       box-shadow: 6px 6px 0 #333333; padding: 28px;
-      font-family: "futura-pt", "Futura", sans-serif;
+      font-family: "futura-pt","Futura",sans-serif;
     }
     #age-gate-overlay .brand { display:flex; align-items:center; gap:12px; margin:0 0 10px; }
     #age-gate-overlay .brand img { height: 56px; display:block; }
-    #age-gate-overlay h1 {
-      margin: 4px 0 6px; font-size: 28px; line-height: 1.2;
-      font-weight: 900; text-transform: uppercase;
-    }
+    #age-gate-overlay h1 { margin: 4px 0 6px; font-size: 28px; line-height: 1.2; font-weight: 900; text-transform: uppercase; }
     #age-gate-overlay .row { display:flex; gap:12px; margin-bottom: 12px; }
     #age-gate-overlay input {
       flex:1; min-width: 84px; padding: 12px 10px; text-align:center;
-      border-radius: 10px; border: 3px solid #333333;
-      background: #fff; color:#333333; font-weight: 800;
+      border-radius: 10px; border: 3px solid #333333; background: #fff; color:#333333; font-weight: 800;
     }
     #age-gate-overlay .cta {
       width: 100%; margin-top: 10px;
-      border: 3px solid #333333;
-      background: #FFDD00; color: #333333;
-      font-weight: 900; text-transform: uppercase;
-      border-radius: 10px; box-shadow: 5px 5px 0 #333333;
+      border: 3px solid #333333; background: #FFDD00; color: #333333;
+      font-weight: 900; text-transform: uppercase; border-radius: 10px; box-shadow: 5px 5px 0 #333333;
     }
     #age-gate-overlay .error { color:#b91c1c; font-weight: 700; min-height: 18px; margin-top: 8px; }
     #age-gate-overlay .fineprint { margin: 14px 0 0; font-size: 12px; color:#444; }
@@ -56,7 +48,7 @@
   <link rel="stylesheet" href="https://use.typekit.net/sdg5fiu.css">
 
   <!-- Site styles -->
-  <link rel="stylesheet" crossorigin href="/assets/index-BaOw0J7Q.css">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body style="font-family:'futura-pt','Futura',sans-serif;">
@@ -82,20 +74,15 @@
     </div>
   </div>
 
-  <!-- Netlify hidden form -->
-  <form name="interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input type="text" name="name" />
-    <input type="email" name="email" />
-  </form>
-
-  <!-- React Mount -->
+  <!-- React mount -->
   <div id="root"></div>
 
   <!-- Modal for Register Interest -->
   <div id="interestModal" class="modal">
     <div class="modal-card">
-      <span id="closeModal" class="close">&times;</span>
+      <span id="closeModal" class="close" aria-label="Close">&times;</span>
       <h2>Register your interest</h2>
+      <!-- Netlify form lives here (only one form named "interest") -->
       <form name="interest" data-netlify="true" netlify-honeypot="bot-field">
         <input type="text" name="name" placeholder="Name" required>
         <input type="email" name="email" placeholder="Email" required>
@@ -105,27 +92,27 @@
   </div>
 
   <!-- Footer -->
-  <footer style="text-align: center; margin-top: 40px;">
+  <footer style="text-align: center; margin-top: 20px;">
     <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
       <a href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-        target="_blank" rel="noopener noreferrer"
-        style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
-        onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
-        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
+         target="_blank" rel="noopener noreferrer"
+         style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
+         onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
+         onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
         Terms of Use
       </a>
       <a href="https://www.asahibeverages.com/privacy-collection-notice"
-        target="_blank" rel="noopener noreferrer"
-        style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
-        onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
-        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
+         target="_blank" rel="noopener noreferrer"
+         style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
+         onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
+         onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
         Privacy Collection Notice
       </a>
       <a href="https://www.asahibeverages.com/privacy-policy"
-        target="_blank" rel="noopener noreferrer"
-        style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
-        onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
-        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
+         target="_blank" rel="noopener noreferrer"
+         style="text-decoration: none; border: 3px solid #333333; background: white; color: #333333; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 #333333; font-weight: 700;"
+         onmouseover="this.style.background='#FFDD00'; this.style.boxShadow='2px 2px 0 #333333'"
+         onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 #333333'">
         Privacy Policy
       </a>
     </div>
@@ -135,18 +122,22 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-  <!-- App -->
-  <script src="./app.js"></script>
+  <!-- App (cache-busted so the new app.js loads) -->
+  <script src="./app.js?v=2"></script>
 
-  <!-- Modal Logic -->
+  <!-- Modal Logic (delegated; works even if React renders button later) -->
   <script>
   document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById("interestModal");
-    const openBtn = document.getElementById("openFormBtn");
     const closeBtn = document.getElementById("closeModal");
-    if (openBtn) openBtn.addEventListener("click", () => modal.style.display = "flex");
+
+    document.addEventListener("click", function(e) {
+      if (e.target && e.target.id === "openFormBtn") {
+        modal.style.display = "flex";
+      }
+    });
     if (closeBtn) closeBtn.addEventListener("click", () => modal.style.display = "none");
-    if (modal) modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+    if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
   });
   </script>
 
@@ -156,42 +147,23 @@
     const KEY = 'age_verified_until';
     const ONE_HOUR_MS = 60 * 60 * 1000;
     function now(){ return Date.now(); }
-    function hasPass(){
-      try { const v = localStorage.getItem(KEY); return v && parseInt(v,10) > now(); }
-      catch(_) { return false; }
-    }
+    function hasPass(){ try { const v = localStorage.getItem(KEY); return v && parseInt(v,10) > now(); } catch(_) { return false; } }
     function givePass(){ try { localStorage.setItem(KEY, String(now() + ONE_HOUR_MS)); } catch(_){} }
-    function validDate(y,m,d){
-      y=+y; m=+m; d=+d;
-      if(!y||!m||!d||y<1900||m<1||m>12) return false;
-      return d>=1 && d<=new Date(y,m,0).getDate();
-    }
-    function is18(y,m,d){
-      const t=new Date(), cutoff=new Date(t.getFullYear()-18, t.getMonth(), t.getDate());
-      return new Date(+y,+m-1,+d) <= cutoff;
-    }
-    function unlock(){
-      const o=document.getElementById('age-gate-overlay');
-      if(o&&o.parentNode) o.parentNode.removeChild(o);
-      document.documentElement.classList.remove('agegate-active');
-    }
+    function validDate(y,m,d){ y=+y; m=+m; d=+d; if(!y||!m||!d||y<1900||m<1||m>12) return false; return d>=1 && d<=new Date(y,m,0).getDate(); }
+    function is18(y,m,d){ const t=new Date(), cutoff=new Date(t.getFullYear()-18, t.getMonth(), t.getDate()); return new Date(+y,+m-1,+d) <= cutoff; }
+    function unlock(){ const o=document.getElementById('age-gate-overlay'); if(o&&o.parentNode) o.parentNode.removeChild(o); document.documentElement.classList.remove('agegate-active'); }
     function init(){
       if (hasPass()) return unlock();
-      const f=document.getElementById('age-gate-form');
-      const e=document.getElementById('age-gate-error');
-      if(!f) return;
+      const f=document.getElementById('age-gate-form'); const e=document.getElementById('age-gate-error'); if(!f) return;
       f.addEventListener('submit', ev=>{
         ev.preventDefault(); e.textContent='';
-        const dd=document.getElementById('dob-day').value;
-        const mm=document.getElementById('dob-month').value;
-        const yy=document.getElementById('dob-year').value;
+        const dd=document.getElementById('dob-day').value, mm=document.getElementById('dob-month').value, yy=document.getElementById('dob-year').value;
         if(!validDate(yy,mm,dd)) return e.textContent='Please enter a valid date (DD / MM / YYYY).';
         if(!is18(yy,mm,dd)) return e.textContent='Sorry, you must be 18 or older to enter.';
         givePass(); unlock();
       });
     }
-    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
   })();
   </script>
 </body>

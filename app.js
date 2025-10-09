@@ -9,7 +9,7 @@
       e('div', { className:'content' },
         e('img', { className:'logo', src:'./images/sugar-lockup.png', alt:'Sugar Liquidation Sale' }),
         e('h1', null, 'Coming soon!'),
-        // ↓ New: modal trigger button (no inline form here)
+        // Modal trigger button (no inline form)
         e('div', { className:'form-card', style:{ textAlign:'center' } },
           e('button', { id:'openFormBtn', className:'cta', type:'button' }, 'Register Interest')
         )

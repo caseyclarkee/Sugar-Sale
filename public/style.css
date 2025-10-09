@@ -133,15 +133,20 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 /* =============================
    Popup Modal
    ============================= */
-.modal-overlay { z-index: 3000;
+.modal-overlay {
   position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.5);
-  padding: 20px;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;             /* existing */
+  align-items: center;       /* existing */
+  justify-content: center;   /* existing */
+  background: rgba(0,0,0,.5);/* existing */
+  padding: 20px;             /* existing */
+
+  /* Mobile fixes */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  z-index: 3000;             /* keep above page UI; age gate still higher */
 }
 
 .modal-card {

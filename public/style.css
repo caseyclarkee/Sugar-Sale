@@ -25,14 +25,15 @@ body { padding-top: 0 !important; }
    Layout
    ============================= */
 .container {
-  position: relative;            /* anchor for .bg-x absolute */
-  min-height: 100dvh;            /* fill visible viewport */
+  position: relative;
+  min-height: 100dvh;
   display: grid;
-  align-content: center;         /* center without big top offset */
+  align-content: center;
   justify-items: center;
-  padding: 0;
+  padding: 0;         /* no top padding */
   margin: 0;
 }
+h1 { margin-top: 0; } /* remove the default top margin just in case */
 
 .bg-x {
   position: absolute;            /* not fixed (per your request) */

@@ -21,7 +21,7 @@ body {
   display: grid;
   place-items: center;
   position: relative;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   text-align: center;
 }
 .bg-x {

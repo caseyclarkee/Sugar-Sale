@@ -1,1 +1,11 @@
-body{font-family:Arial,Helvetica,sans-serif} *{box-sizing:border-box}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-yellow-300 text-black font-sans;
+}
+
+button, input {
+  outline: none;
+}

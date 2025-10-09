@@ -86,4 +86,81 @@ button.cta {
 button.cta:hover { transform: translateY(-2px); }
 .success { color:#065f46; }
 small.muted { color:#444; opacity:.8; }
+/* === MODAL === */
+.modal {
+  display: none;               /* hidden by default */
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.55);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+/* Match your form-card aesthetic */
+.modal-card {
+  position: relative;
+  background: #fff;
+  border: 4px solid #333333;
+  border-radius: 16px;
+  padding: 2rem 1.5rem 2.5rem;
+  box-shadow: 8px 8px 0 #333333;
+  width: min(92vw, 500px);
+  font-family: var(--brand-font);
+  color: #333333;
+  text-align: center;
+  animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.95) translateY(10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);        opacity: 1; }
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: 900;
+  color: #333333;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.close:hover { transform: scale(1.2); }
+
+.modal-card h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 900;
+  color: #BB29BB;
+  text-transform: uppercase;
+}
+
+.modal-card input {
+  display: block;
+  width: 100%;
+  border: 3px solid #333333;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #333333;
+}
+
+.modal-card .cta {
+  background: #FFDD00;
+  border: 3px solid #333333;
+  box-shadow: 5px 5px 0 #333333;
+  border-radius: 10px;
+  color: #333333;
+  font-weight: 900;
+  text-transform: uppercase;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  transition: transform 0.15s ease;
+}
+.modal-card .cta:hover { transform: translateY(-2px); }
+
 

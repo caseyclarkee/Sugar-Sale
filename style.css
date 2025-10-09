@@ -1,8 +1,17 @@
+/* === Global font: Futura PT (Adobe kit) === */
+:root {
+  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+}
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
+}
+
+/* existing styles */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: var(--brand-font);
   background: #fff;
   color: #000;
   overflow-x: hidden;
@@ -67,3 +76,4 @@ button.cta {
 button.cta:hover { transform: translateY(-2px); }
 .success { color:#065f46; }
 small.muted { color:#444; opacity:.8; }
+

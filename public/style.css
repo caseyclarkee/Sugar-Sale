@@ -185,7 +185,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin: 1rem 0 2rem;
+  margin: 0.5rem 0 0.5rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;

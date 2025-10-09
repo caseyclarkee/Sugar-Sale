@@ -57,9 +57,9 @@ h1 { margin-top: 0; } /* remove the default top margin just in case */
 
 .logo {
   width: auto;
-  max-width: clamp(220px, 30vw, 580px);
+  max-width: clamp(220px, 20vw, 580px);
   height: auto;
-  max-height: clamp(120px, 30vh, 300px);
+  max-height: clamp(120px, 20vh, 300px);
 }
 
 .logo {

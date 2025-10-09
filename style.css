@@ -41,7 +41,13 @@ body {
   opacity: .95;
 }
 .content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }
-.logo { width: min(60vw, 900px); height: auto; }
+/* Responsive logo with width + height caps */
+.logo {
+  width: auto;                     /* maintain aspect ratio naturally */
+  max-width: clamp(220px, 55vw, 580px); /* responsive width: min 220px, scales up, caps at 580px */
+  height: auto;
+  max-height: clamp(120px, 20vh, 180px); /* responsive height cap */
+}
 h1 {
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;

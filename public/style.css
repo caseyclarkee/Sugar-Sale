@@ -1,27 +1,27 @@
+/* =============================
+   Global Reset & Font Setup
+   ============================= */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+
+:root {
+  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+}
+
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
+}
+
 body {
   margin: 0;
-:root { --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif; }
-html, body, button, input, select, textarea { font-family: var(--brand-font); }
-/* Responsive BIG X and Logo */
-.bg-x img {
-  width: auto;
-  max-width: 90vw;
-  height: auto;
-  max-height: clamp(280px, 65vh, 620px); /* vertical cap */
-  opacity: .95;
-}
-.logo {
-  width: auto;
-  max-width: clamp(220px, 55vw, 580px);
-  height: auto;
-  max-height: clamp(120px, 20vh, 180px);
-}
   background: #fff;
   color: #000;
   overflow-x: hidden;
 }
+
+/* =============================
+   Layout
+   ============================= */
 .container {
   min-height: 100vh;
   display: grid;
@@ -30,6 +30,7 @@ html, body, button, input, select, textarea { font-family: var(--brand-font); }
   padding: 2rem 1rem;
   text-align: center;
 }
+
 .bg-x {
   position: absolute;
   inset: 0;
@@ -38,28 +39,47 @@ html, body, button, input, select, textarea { font-family: var(--brand-font); }
   z-index: 0;
   pointer-events: none;
 }
-/* Responsive BIG X and Logo */
+
 .bg-x img {
   width: auto;
   max-width: 90vw;
   height: auto;
-  max-height: clamp(280px, 65vh, 620px); /* vertical cap */
+  max-height: clamp(280px, 65vh, 620px);
   opacity: .95;
 }
+
 .logo {
   width: auto;
   max-width: clamp(220px, 55vw, 580px);
   height: auto;
   max-height: clamp(120px, 20vh, 180px);
 }
-.content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }
+
+.content {
+  z-index: 1;
+  display: grid;
+  gap: 1.25rem;
+  justify-items: center;
+}
+
+/* =============================
+   Headline ("Coming soon!")
+   ============================= */
 h1 {
+  font-family: "futura-pt-condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: .5px;
+  letter-spacing: 1px;
+  transform: scaleX(0.92);
+  display: inline-block;
 }
+
+/* =============================
+   Form Card
+   ============================= */
 .form-card {
   width: min(92vw, 520px);
   background: #fff;
@@ -68,18 +88,31 @@ h1 {
   padding: 1.25rem;
   box-shadow: 8px 8px 0 #000;
 }
-.form-title { margin: 0 0 .5rem; font-size: 1.35rem; font-weight: 900; color: #6b21a8; }
+
+.form-title {
+  margin: 0 0 .5rem;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #6b21a8;
+}
+
 .form-grid { display: grid; gap: .6rem; }
+
 .input {
   border: 3px solid #000;
   border-radius: 10px;
   padding: .7rem .9rem;
   font-size: 1rem;
   width: 100%;
+  font-weight: 600;
 }
+
+/* =============================
+   Buttons
+   ============================= */
 button.cta {
   border: 3px solid #000;
-  background: #fde047; /* yellow-300 */
+  background: #fde047;
   padding: .75rem 1.1rem;
   border-radius: 10px;
   font-weight: 900;
@@ -88,18 +121,30 @@ button.cta {
   cursor: pointer;
   transition: transform .12s ease;
 }
-button.cta:hover { transform: translateY(-2px); }
-.success { color:#065f46; }
-small.muted { color:#444; opacity:.8; }
 
+button.cta:hover {
+  transform: translateY(-2px);
+}
 
-/* === Popup modal styles === */
+.success { color:#065f46; margin-top:.5rem; }
+small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
+
+.hidden-field { display:none !important; }
+
+/* =============================
+   Popup Modal
+   ============================= */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  display: none; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
   background: rgba(0,0,0,.5);
   padding: 20px;
 }
+
 .modal-card {
   position: relative;
   background: #fff;
@@ -110,34 +155,33 @@ small.muted { color:#444; opacity:.8; }
   width: min(92vw, 520px);
   text-align: center;
 }
+
 .modal-title {
-  margin: 0 0 .75rem; font-weight: 900; text-transform: uppercase; font-size: 1.4rem;
-}
-.close {
-  position: absolute; top: 10px; right: 12px;
-  border: 3px solid #000; background:#fff; border-radius: 8px;
-  width: 36px; height: 36px; font-size: 22px; line-height: 28px; font-weight: 900; cursor:pointer;
-  box-shadow: 4px 4px 0 #000;
-}
-.form-grid { display: grid; gap: .6rem; }
-.input { border: 3px solid #000; border-radius: 10px; padding: .6rem .75rem; font-weight: 600; }
-button.cta {
-  border: 3px solid #000;
-  background: #fde047;
-  padding: .75rem 1.1rem;
-  border-radius: 10px;
+  margin: 0 0 .75rem;
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 5px 5px 0 #000;
-  cursor: pointer;
+  font-size: 1.4rem;
 }
-.success { color:#065f46; margin-top:.5rem; }
-small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 
-.hidden-field{display:none !important;}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 3px solid #000;
+  background: #fff;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #000;
+}
 
-
-/* === Footer === */
+/* =============================
+   Footer
+   ============================= */
 .site-footer {
   display: flex;
   justify-content: center;
@@ -147,12 +191,14 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   font-weight: 600;
   color: #333;
 }
+
 .site-footer a {
   color: #333;
   text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s ease;
 }
+
 .site-footer a:hover {
   border-bottom-color: #333;
 }

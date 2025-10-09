@@ -77,6 +77,28 @@
   <!-- React mount -->
   <div id="root"></div>
 
+  <!-- Modal: Register Interest -->
+  <div id="modal-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" style="display:none;">
+    <div class="modal-card" role="document">
+      <button class="close" id="modal-close" aria-label="Close">×</button>
+      <h2 class="modal-title">Register your interest</h2>
+      <form name="interest" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="interest" />
+        <p class="hidden-field">
+          <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+        </p>
+        <div class="form-grid">
+          <input class="input" type="text" name="name" placeholder="Name" required />
+          <input class="input" type="email" name="email" placeholder="Email" required />
+          <button type="submit" class="cta">Notify Me</button>
+        </div>
+      </form>
+      <p class="success" id="modal-success" style="display:none;">Thanks! You’re on the list.</p>
+      <small class="muted">We’ll only email you about launch details.</small>
+    </div>
+  </div>
+
+
   <!-- Modal for Register Interest -->
   <div id="interestModal" class="modal">
     <div class="modal-card">
@@ -166,5 +188,50 @@
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
   })();
   </script>
+
+  <script>
+  (function(){
+    function qs(sel){ return document.querySelector(sel); }
+    function openModal(){
+      const ov = qs('#modal-overlay'); if(!ov) return;
+      ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      const first = ov.querySelector('input,button'); if(first) first.focus();
+    }
+    function closeModal(){
+      const ov = qs('#modal-overlay'); if(!ov) return;
+      ov.style.display='none'; ov.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+    }
+    function handleSubmit(ev){
+      const form = ev.target;
+      if(!(form && form.getAttribute('name')==='interest')) return;
+      ev.preventDefault();
+      const data = new FormData(form);
+      fetch('/', { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      }).then(()=>{
+        form.reset();
+        const ok = document.getElementById('modal-success'); if(ok){ ok.style.display='block'; }
+        setTimeout(closeModal, 1400);
+      }).catch(()=>{
+        // fall back to normal submit
+        form.submit();
+      });
+    }
+    function init(){
+      const btn = document.getElementById('openFormBtn');
+      const close = document.getElementById('modal-close');
+      const overlay = document.getElementById('modal-overlay');
+      if(btn) btn.addEventListener('click', openModal);
+      if(close) close.addEventListener('click', closeModal);
+      if(overlay) overlay.addEventListener('click', function(ev){ if(ev.target===overlay) closeModal(); });
+      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
+      document.addEventListener('submit', handleSubmit, true);
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+  </script>
+
 </body>
 </html>

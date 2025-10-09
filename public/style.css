@@ -85,7 +85,7 @@ h1 {
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;
   letter-spacing: 1px;
-  transform: translateY(-10rem) scaleX(0.92);
+  transform: translateY(-5rem) scaleX(0.92);
   display: inline-block;
 }
 

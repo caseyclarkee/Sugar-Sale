@@ -17,7 +17,8 @@ body {
   background: #fff;
   color: #333333;
   overflow-x: hidden;
-  padding-top: env(safe-area-inset-top, 0);
+/* kill the white band */
+body { padding-top: 0 !important; }
 }
 
 /* =============================

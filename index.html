@@ -94,5 +94,48 @@
       </a>
     </div>
   </footer>
+  <!-- AGE GATE LOGIC (remembers for 1 hour) -->
+<script>
+(function () {
+  var KEY = 'age_verified_until';
+  var ONE_HOUR_MS = 60 * 60 * 1000;
+  function now(){ return Date.now(); }
+  function hasPass(){
+    try { var v = localStorage.getItem(KEY); return v && parseInt(v,10) > now(); }
+    catch(_) { return false; }
+  }
+  function givePass(){ try { localStorage.setItem(KEY, String(now() + ONE_HOUR_MS)); } catch(_){} }
+  function validDate(y,m,d){
+    y=+y; m=+m; d=+d;
+    if(!y||!m||!d||y<1900||m<1||m>12) return false;
+    return d>=1 && d<=new Date(y,m,0).getDate();
+  }
+  function is18(y,m,d){
+    var t=new Date(), cutoff=new Date(t.getFullYear()-18, t.getMonth(), t.getDate());
+    return new Date(+y, +m-1, +d) <= cutoff;
+  }
+  function unlock(){
+    var o=document.getElementById('age-gate-overlay');
+    if(o&&o.parentNode) o.parentNode.removeChild(o);
+    document.documentElement.classList.remove('agegate-active');
+  }
+  function init(){
+    if (hasPass()) return unlock();
+    var f=document.getElementById('age-gate-form');
+    var e=document.getElementById('age-gate-error');
+    if(!f) return;
+    f.addEventListener('submit', function(ev){
+      ev.preventDefault(); e.textContent='';
+      var dd=(document.getElementById('dob-day')||{}).value||'';
+      var mm=(document.getElementById('dob-month')||{}).value||'';
+      var yy=(document.getElementById('dob-year')||{}).value||'';
+      if(!validDate(yy,mm,dd)) { e.textContent='Please enter a valid date (DD / MM / YYYY).'; return; }
+      if(!is18(yy,mm,dd)) { e.textContent='Sorry, you must be 18 or older to enter.'; return; }
+      givePass(); unlock();
+    });
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
 </body>
 </html>

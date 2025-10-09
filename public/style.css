@@ -205,6 +205,11 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   border-bottom-color: #333;
 }
 
+.site-footer {
+  font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+}
+
+
 
 /* === Age Gate (hard lock before pass) === */
 .agegate-active body > :not(#age-gate-overlay) { display: none !important; }

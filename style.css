@@ -41,7 +41,7 @@ body {
   opacity: .95;
 }
 .content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }
-.logo { width: min(92vw, 900px); height: auto; }
+.logo { width: min(60vw, 900px); height: auto; }
 h1 {
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;

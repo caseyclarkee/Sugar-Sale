@@ -32,8 +32,9 @@ body {
   z-index: 0;
   pointer-events: none;
 }
+/* Responsive X size */
 .bg-x img {
-  width: min(90vw, 1000px);
+  width: clamp(240px, 60vw, 520px); /* scales smoothly: never smaller than 240px, never larger than 520px */
   opacity: .95;
 }
 .content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }

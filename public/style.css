@@ -2,7 +2,12 @@
    Global Reset & Font Setup
    ============================= */
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body {
+  height: 100dvh;        /* dynamic viewport height (fixes iOS bar shrink/expand) */
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;

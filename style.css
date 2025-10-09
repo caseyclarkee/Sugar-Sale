@@ -32,27 +32,12 @@ body {
   z-index: 0;
   pointer-events: none;
 }
-/* Responsive BIG X */
 .bg-x img {
-  /* never smaller than 420px, scales with viewport, caps at 1100px */
-  width: clamp(420px, 85vw, 1100px);
+  width: min(90vw, 1000px);
   opacity: .95;
 }
-
-/* Responsive URL/Logo image (make it smaller but fluid) */
-.logo {
-  /* smaller cap than before; scales nicely on mobile */
-  width: clamp(220px, 55vw, 560px);
-  height: auto;
-}
-
-/* Safety: any images in content/links shrink to container */
-.content img,
-a img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+.content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }
+.logo { width: min(92vw, 900px); height: auto; }
 h1 {
   font-size: clamp(2.75rem, 8vw, 6rem);
   margin: .25rem 0 0;

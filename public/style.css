@@ -44,11 +44,12 @@ body { padding-top: 0 !important; }
 }
 .bg-x img {
   width: auto;
-  max-width: 100vw;
-  height: auto;
-  max-height: 95vh;
+  height: 100dvh;     /* fill the visible viewport height */
+  max-height: none;   /* don’t cap at 95vh */
+  max-width: 100vw;   /* keep it within width */
   opacity: .95;
 }
+
 
 .logo {
   width: auto;

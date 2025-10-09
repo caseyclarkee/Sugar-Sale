@@ -41,21 +41,13 @@
   <!-- App -->
   <script src="./app.js"></script>
 
+  
   <script>
-  
-  
   (function(){
-    if (window.__modalInit) return; 
+    if (window.__modalInit) return;
     window.__modalInit = true;
-
     function qs(sel){ return document.querySelector(sel); }
     function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
-
-    // Remove duplicate overlays if any slipped in
-    qa('#modal-overlay').forEach(function(node, idx){
-      if (idx > 0) node.parentNode && node.parentNode.removeChild(node);
-    });
-
     function openModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
       ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
@@ -95,20 +87,23 @@
       });
     }
     function init(){
-      // Attach to all possible triggers (in case multiple exist)
-      qa('#openFormBtn, .openFormBtn').forEach(function(btn){
-        btn.addEventListener('click', openModal);
-      });
+      qa('#openFormBtn, .openFormBtn').forEach(btn=>btn.addEventListener('click', openModal));
       const close = qs('#modal-close');
       const overlay = qs('#modal-overlay');
       if(close) close.addEventListener('click', closeModal);
-      if(overlay) overlay.addEventListener('click', function(ev){ if(ev.target===overlay) closeModal(); });
-      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
+      if(overlay) overlay.addEventListener('click', ev=>{ if(ev.target===overlay) closeModal(); });
+      document.addEventListener('keydown', ev=>{ if(ev.key==='Escape') closeModal(); });
       document.addEventListener('submit', handleSubmit, true);
     }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
   })();
   </script>
 
+<footer class="site-footer">
+  <a href="https://www.asahibeverages.com/website-terms-of-use-new-zealand" target="_blank" rel="noopener">Website Terms of Use</a>
+  <a href="https://www.asahibeverages.com/privacy-collection-notice" target="_blank" rel="noopener">Privacy Collection Notice</a>
+  <a href="https://www.asahibeverages.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+</footer>
 </body>
+
 </html>

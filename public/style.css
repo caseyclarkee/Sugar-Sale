@@ -111,3 +111,24 @@ button.cta {
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 
 .hidden-field{display:none !important;}
+
+
+/* === Footer === */
+.site-footer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 3rem 0 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+.site-footer a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.site-footer a:hover {
+  border-bottom-color: #333;
+}

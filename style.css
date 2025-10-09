@@ -37,7 +37,7 @@ body {
   width: auto;
   max-width: 90vw;          /* keeps it from overflowing horizontally */
   height: auto;
-  max-height: clamp(280px, 65vh, 620px); /* caps vertical size but stays responsive */
+  max-height: clamp(280px, 80vh, 800px); /* caps vertical size but stays responsive */
   opacity: .95;
 }
 .content { z-index: 1; display: grid; gap: 1.25rem; justify-items: center; }

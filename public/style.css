@@ -44,7 +44,7 @@ body {
   width: auto;
   max-width: 100vw;
   height: auto;
-  max-height: clamp(280px, 95vh, 620px);
+  max-height: 95vh;
   opacity: .95;
 }
 

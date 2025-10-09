@@ -2,97 +2,174 @@
 <html lang="en">
 <head>
   <!-- AGE GATE: pre-hydration lock + brand styles -->
-<script>
-  (function(){ try { document.documentElement.classList.add('agegate-active'); } catch(e){} })();
-</script>
-<style>
-  /* Hide everything except our gate; stop scroll */
-  .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
-  .agegate-active body { overflow: hidden !important; }
+  <script>
+    // Hide the entire app immediately so nothing shows behind the gate
+    (function(){ try { document.documentElement.classList.add('agegate-active'); } catch(e){} })();
+  </script>
+  <style>
+    /* Hide everything except our gate; also stop scroll */
+    .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+    .agegate-active body { overflow: hidden !important; }
 
-  /* Overlay + Card (brand look) */
-  #age-gate-overlay {
-    position: fixed; inset: 0; z-index: 2147483647;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px; background: #fff; /* solid white so nothing shows behind */
-  }
-  #age-gate-overlay .card {
-    width: min(92vw, 560px);
-    background: #fff; color: #000;
-    border: 3px solid #000; border-radius: 12px;
-    box-shadow: 6px 6px 0 #000; padding: 28px;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-  }
-  #age-gate-overlay .brand {
-    display:flex; align-items:center; gap:12px; margin:0 0 10px;
-  }
-  #age-gate-overlay .brand img { height: 56px; display:block; }
-  #age-gate-overlay h1 {
-    margin: 4px 0 6px; font-size: 28px; line-height: 1.2;
-    font-weight: 900; text-transform: uppercase;
-  }
-  #age-gate-overlay p.helper { margin: 0 0 16px; color: #444; }
-  #age-gate-overlay .row { display:flex; gap:12px; margin-bottom: 12px; }
-  #age-gate-overlay input {
-    flex:1; min-width: 84px; padding: 12px 10px; text-align:center;
-    border-radius: 10px; border: 3px solid #000; background: #fff; color:#000; font-weight: 800;
-  }
-  #age-gate-overlay input::placeholder { color: #9ca3af; opacity: 1; }
-  #age-gate-overlay .cta { width: 100%; margin-top: 10px; } /* uses your existing .cta style */
-  #age-gate-overlay .error { color:#b91c1c; font-weight: 700; min-height: 18px; margin-top: 8px; }
-  #age-gate-overlay .fineprint { margin: 14px 0 0; font-size: 12px; color:#444; }
-</style>
+    /* Overlay + Card (brand look) */
+    #age-gate-overlay {
+      position: fixed; inset: 0; z-index: 2147483647;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; background: #fff; /* solid white so nothing shows behind */
+    }
+    #age-gate-overlay .card {
+      width: min(92vw, 560px);
+      background: #fff; color: #000;
+      border: 3px solid #000; border-radius: 12px;
+      box-shadow: 6px 6px 0 #000; padding: 28px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    }
+    #age-gate-overlay .brand { display:flex; align-items:center; gap:12px; margin:0 0 10px; }
+    #age-gate-overlay .brand img { height: 56px; display:block; }
+    #age-gate-overlay h1 {
+      margin: 4px 0 6px; font-size: 28px; line-height: 1.2;
+      font-weight: 900; text-transform: uppercase;
+    }
+    #age-gate-overlay p.helper { margin: 0 0 16px; color: #444; }
+    #age-gate-overlay .row { display:flex; gap:12px; margin-bottom: 12px; }
+    #age-gate-overlay input {
+      flex:1; min-width: 84px; padding: 12px 10px; text-align:center;
+      border-radius: 10px; border: 3px solid #000; background: #fff; color:#000; font-weight: 800;
+    }
+    #age-gate-overlay input::placeholder { color: #9ca3af; opacity: 1; }
+    #age-gate-overlay .cta { width: 100%; margin-top: 10px; } /* uses your existing .cta style */
+    #age-gate-overlay .error { color:#b91c1c; font-weight: 700; min-height: 18px; margin-top: 8px; }
+    #age-gate-overlay .fineprint { margin: 14px 0 0; font-size: 12px; color:#444; }
+  </style>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sugar Liquidation Sale — Coming Soon</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* Make sure the React app doesn’t hide the footer */
+    html, body { margin: 0; }
+    #root { min-height: calc(100vh - 120px); /* leave room for footer */ }
+    footer { padding: 24px 16px 40px; }
+  </style>
 </head>
 <body>
-<!-- AGE GATE OVERLAY -->
-<div id="age-gate-overlay" aria-modal="true" role="dialog">
-  <div class="card">
-    <div class="brand">
-      <img src="/images/sugar-lockup.png" alt="Sugar Liquidation Sale" onerror="this.style.display='none'">
-    </div>
-    <h1>Are you 18 or older?</h1>
-    <p class="helper">Enter your date of birth to continue. We only use this to verify you’re 18+ and store a temporary pass for 1 hour.</p>
-
-    <form id="age-gate-form" novalidate>
-      <div class="row">
-        <input id="dob-day"   type="text" inputmode="numeric" pattern="[0-9]*" placeholder="DD"    aria-label="Day"   maxlength="2">
-        <input id="dob-month" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="MM"    aria-label="Month" maxlength="2">
-        <input id="dob-year"  type="text" inputmode="numeric" pattern="[0-9]*" placeholder="YYYY"  aria-label="Year"  maxlength="4">
+  <!-- AGE GATE OVERLAY (brand look) -->
+  <div id="age-gate-overlay" aria-modal="true" role="dialog">
+    <div class="card">
+      <div class="brand">
+        <img src="/images/sugar-lockup.png" alt="Sugar Liquidation Sale" onerror="this.style.display='none'">
       </div>
+      <h1>Are you 18 or older?</h1>
+      <p class="helper">Enter your date of birth to continue.</p>
 
-      <button type="submit" class="cta">Enter</button>
-      <p id="age-gate-error" class="error"></p>
-      <p class="fineprint">If you are under 18, please leave this site.</p>
-    </form>
+      <form id="age-gate-form" novalidate>
+        <div class="row">
+          <input id="dob-day"   type="text" inputmode="numeric" pattern="[0-9]*" placeholder="DD"    aria-label="Day"   maxlength="2">
+          <input id="dob-month" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="MM"    aria-label="Month" maxlength="2">
+          <input id="dob-year"  type="text" inputmode="numeric" pattern="[0-9]*" placeholder="YYYY"  aria-label="Year"  maxlength="4">
+        </div>
+
+        <button type="submit" class="cta">Enter</button>
+        <p id="age-gate-error" class="error"></p>
+        <p class="fineprint">If you are under 18, please leave this site.</p>
+      </form>
+    </div>
   </div>
-</div>
+
+  <!-- Hidden form MUST be inside <body> so Netlify can see it -->
+  <form name="interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+  </form>
+
+  <!-- Your React mount point -->
+  <div id="root"></div>
+
+  <!-- React (CDN) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- App -->
+  <script src="./app.js"></script>
+
+  <!-- Footer Links -->
+  <footer style="text-align: center; margin-top: 60px;">
+    <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; font-family: 'Arial Black', sans-serif;">
+      <a
+        href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Terms of Use
+      </a>
+
+      <a
+        href="https://www.asahibeverages.com/privacy-collection-notice"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Privacy Collection Notice
+      </a>
+
+      <a
+        href="https://www.asahibeverages.com/privacy-policy"
+        target="_blank" rel="noopener noreferrer"
+        style="text-decoration: none; border: 3px solid black; background: white; color: black; padding: 10px 16px; border-radius: 8px; box-shadow: 4px 4px 0 black; font-weight: 700;"
+        onmouseover="this.style.background='yellow'; this.style.boxShadow='2px 2px 0 black'"
+        onmouseout="this.style.background='white'; this.style.boxShadow='4px 4px 0 black'"
+      >
+        Privacy Policy
+      </a>
+    </div>
+  </footer>
+
   <!-- AGE GATE LOGIC (remembers for 1 hour) -->
-<script>
-(function () {
-  var KEY = 'age_verified_until';
-  var ONE_HOUR_MS = 60 * 60 * 1000;
-  function now(){ return Date.now(); }
-  function hasPass(){ try{ var v=localStorage.getItem(KEY); return v && parseInt(v,10) > now(); }catch(_){ return false; } }
-  function givePass(){ try{ localStorage.setItem(KEY, String(now() + ONE_HOUR_MS)); }catch(_){} }
-  function validDate(y,m,d){ y=+y; m=+m; d=+d; if(!y||!m||!d||y<1900||m<1||m>12) return false; return d>=1 && d<=new Date(y,m,0).getDate(); }
-  function is18(y,m,d){ var t=new Date(), cutoff=new Date(t.getFullYear()-18, t.getMonth(), t.getDate()); return new Date(+y,+m-1,+d) <= cutoff; }
-  function unlock(){ var o=document.getElementById('age-gate-overlay'); if(o&&o.parentNode) o.parentNode.removeChild(o); document.documentElement.classList.remove('agegate-active'); }
-  function init(){
-    if (hasPass()) return unlock();
-    var f=document.getElementById('age-gate-form'), e=document.getElementById('age-gate-error');
-    if(!f) return;
-    f.addEventListener('submit', function(ev){
-      ev.preventDefault(); e.textContent='';
-      var dd=(document.getElementById('dob-day')||{}).value||'';
-      var mm=(document.getElementById('dob-month')||{}).value||'';
-      var yy=(document.getElementById('dob-year')||{}).value||'';
-      if(!validDate(yy,mm,dd)) { e.textContent='Please enter a valid date (DD / MM / YYYY).'; return; }
-      if(!is18(yy,mm,dd))     { e.textContent='Sorry, you must be 18 or older to enter.'; return; }
-      givePass(); unlock();
-    });
-  }
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
-})();
-</script>
+  <script>
+  (function () {
+    var KEY = 'age_verified_until';
+    var ONE_HOUR_MS = 60 * 60 * 1000;
+    function now(){ return Date.now(); }
+    function hasPass(){
+      try { var v = localStorage.getItem(KEY); return v && parseInt(v,10) > now(); }
+      catch(_) { return false; }
+    }
+    function givePass(){ try { localStorage.setItem(KEY, String(now() + ONE_HOUR_MS)); } catch(_){} }
+    function validDate(y,m,d){
+      y=+y; m=+m; d=+d;
+      if(!y||!m||!d||y<1900||m<1||m>12) return false;
+      return d>=1 && d<=new Date(y,m,0).getDate();
+    }
+    function is18(y,m,d){
+      var t=new Date(), cutoff=new Date(t.getFullYear()-18, t.getMonth(), t.getDate());
+      return new Date(+y, +m-1, +d) <= cutoff;
+    }
+    function unlock(){
+      var o=document.getElementById('age-gate-overlay');
+      if(o&&o.parentNode) o.parentNode.removeChild(o);
+      document.documentElement.classList.remove('agegate-active');
+    }
+    function init(){
+      if (hasPass()) return unlock();
+      var f=document.getElementById('age-gate-form');
+      var e=document.getElementById('age-gate-error');
+      if(!f) return;
+      f.addEventListener('submit', function(ev){
+        ev.preventDefault(); e.textContent='';
+        var dd=(document.getElementById('dob-day')||{}).value||'';
+        var mm=(document.getElementById('dob-month')||{}).value||'';
+        var yy=(document.getElementById('dob-year')||{}).value||'';
+        if(!validDate(yy,mm,dd)) { e.textContent='Please enter a valid date (DD / MM / YYYY).'; return; }
+        if(!is18(yy,mm,dd)) { e.textContent='Sorry, you must be 18 or older to enter.'; return; }
+        givePass(); unlock();
+      });
+    }
+    if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+  })();
+  </script>
 </body>
 </html>

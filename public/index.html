@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- AGE GATE: pre-hydration lock -->
+  <script>(function(){try{document.documentElement.classList.add('agegate-active');}catch(e){}})();</script>
+
   <link rel="preconnect" href="https://use.typekit.net" crossorigin>
   <link rel="stylesheet" href="https://use.typekit.net/sdg5fiu.css">
   <meta charset="UTF-8" />
@@ -15,6 +18,22 @@
 </head>
 <body>
   <div id="root"></div>
+
+  <!-- Age Gate Overlay -->
+  <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+    <div class="age-card">
+      <h2 id="age-title">Enter your birth year</h2>
+      <form id="age-gate-form">
+        <div class="row">
+          <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
+          <button type="submit" class="cta">Continue</button>
+        </div>
+        <p id="age-error" class="error" aria-live="polite"></p>
+        <small class="muted">We’ll remember for 1 hour on this device.</small>
+      </form>
+    </div>
+  </div>
+
 
   <!-- Modal: Register Interest -->
   <div id="modal-overlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" style="display:none;">
@@ -106,6 +125,74 @@
   <a href="https://www.asahibeverages.com/privacy-collection-notice" target="_blank" rel="noopener">Privacy Collection Notice</a>
   <a href="https://www.asahibeverages.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
 </footer>
+
+  <script>
+  (function(){
+    // Guard against double init
+    if (window.__ageGateInit) return; window.__ageGateInit = true;
+
+    function unlock(){
+      try{ document.documentElement.classList.remove('agegate-active'); }catch(e){}
+      var ov = document.getElementById('age-gate-overlay');
+      if(ov){ ov.style.display='none'; }
+      document.body.style.overflow = '';
+    }
+
+    function validYear(y){
+      if(!y) return false;
+      var n = parseInt(y,10);
+      var now = new Date();
+      var currentYear = now.getFullYear();
+      if(isNaN(n)) return false;
+      if(n < 1900 || n > currentYear) return false;
+      return true;
+    }
+
+    function is18ByYear(y){
+      var now = new Date();
+      var currentYear = now.getFullYear();
+      return (currentYear - parseInt(y,10)) >= 18;
+    }
+
+    function getPass(){
+      try{ return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); }catch(e){ return null; }
+    }
+    function setPass(){
+      try{ localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); }catch(e){}
+    }
+    function isPassValid(pass){
+      if(!pass || !pass.ts) return false;
+      var ONE_HOUR = 60 * 60 * 1000;
+      return (Date.now() - pass.ts) < ONE_HOUR;
+    }
+
+    function init(){
+      var pass = getPass();
+      if(pass && isPassValid(pass)){ return unlock(); }
+
+      var form = document.getElementById('age-gate-form');
+      var err  = document.getElementById('age-error');
+      var input = document.getElementById('birth-year');
+      if(!form || !input) return;
+
+      form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        err.textContent = '';
+        var y = (input.value || '').trim();
+        if(!validYear(y)){ err.textContent = 'Please enter a valid 4-digit year.'; return; }
+        if(!is18ByYear(y)){ err.textContent = 'Sorry, you must be 18 or older.'; return; }
+        setPass();
+        unlock();
+      });
+
+      // Autofocus field
+      try{ input.focus(); }catch(e){}
+    }
+
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+  </script>
+
 </body>
 
 </html>

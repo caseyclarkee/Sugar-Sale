@@ -23,59 +23,18 @@ body {
   color: #333333;
   overflow-x: hidden;
 }
-body {
-  padding-top: env(safe-area-inset-top, 0);
-  background-color: #fff; /* so if there is an inset, it blends */
-}
 
 /* =============================
    Layout
    ============================= */
 .container {
-  min-height: 100vh;
+  position: relative;         /* important: anchor for .bg-x absolute */
+  min-height: 100dvh;         /* full visible viewport */
   display: grid;
-  place-items: center;
-  position: relative;
-  padding: 0rem 1rem;
-  text-align: center;
-}
-
-/* =============================
-   Global Reset & Font Setup
-   ============================= */
-* { box-sizing: border-box; }
-html, body {
-  height: 100dvh;        /* dynamic viewport height (fixes iOS bar shrink/expand) */
-  min-height: 100dvh;
-  margin: 0;
+  align-content: center;      /* vertical centering without extra offset */
+  justify-items: center;
   padding: 0;
-}
-
-:root {
-  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
-}
-
-html, body, button, input, select, textarea {
-  font-family: var(--brand-font);
-}
-
-body {
   margin: 0;
-  background: #fff;
-  color: #333333;
-  overflow-x: hidden;
-}
-
-/* =============================
-   Layout
-   ============================= */
-.container {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  position: relative;
-  padding: 0rem 1rem;
-  text-align: center;
 }
 
 .bg-x {

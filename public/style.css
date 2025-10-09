@@ -201,3 +201,79 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 .site-footer a:hover {
   border-bottom-color: #333;
 }
+
+/* =============================
+   Age Gate (append)
+   ============================= */
+/* Hard lock: hide everything until age gate passes */
+.agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+.agegate-active body { overflow: hidden !important; }
+
+/* Full-screen overlay (solid white so background is not visible) */
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;
+}
+
+/* Card styling to match your palette */
+.age-card {
+  width: min(92vw, 560px);
+  background: #fff;
+  color: #333333;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 #333333;
+  padding: 28px;
+  text-align: center;
+}
+
+.age-card h2 {
+  margin: 0 0 12px;
+  font-family: "futura-pt-condensed","futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* Layout for input + button */
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+/* Year input */
+#birth-year {
+  border: 3px solid #333333;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Button in the age gate uses same purple + grey accents */
+#age-gate-form .cta {
+  border: 3px solid #333333;
+  background: #bb29bb;
+  color: #fff;
+  padding: .75rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 #333333;
+  cursor: pointer;
+  transition: transform .12s ease, background .2s ease;
+}
+#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+/* Error text */
+.error { color: #b00020; font-weight: 700; margin: 6px 0 0; }

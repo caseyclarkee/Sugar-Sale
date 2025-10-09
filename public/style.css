@@ -189,11 +189,9 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 .site-footer {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin: 0.5rem 0 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #333;
+  gap: 1rem;          /* smaller gap between links */
+  margin-top: -1rem;  /* moves it closer to the bottom of the X */
+  margin-bottom: 0.25rem;
 }
 
 .site-footer a {

@@ -22,7 +22,7 @@
       background: #fff; color: #000;
       border: 3px solid #000; border-radius: 12px;
       box-shadow: 6px 6px 0 #000; padding: 28px;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      font-family: inherit; /* <- use site font (Futura) */
     }
     #age-gate-overlay .brand { display:flex; align-items:center; gap:12px; margin:0 0 10px; }
     #age-gate-overlay .brand img { height: 56px; display:block; }
@@ -44,8 +44,16 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sugar Liquidation Sale — Coming Soon</title>
+
+  <!-- Adobe Fonts (keep ONE copy, above your CSS) -->
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/sdg5fiu.css">
+
+  <!-- Your site CSS -->
   <link rel="stylesheet" href="./style.css" />
+
+  <title>Sugar Liquidation Sale — Coming Soon</title>
+
   <style>
     /* Make sure the React app doesn’t hide the footer */
     html, body { margin: 0; }

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/sdg5fiu.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sugar Liquidation Sale — Coming Soon</title>
@@ -21,9 +23,7 @@
       <h2 class="modal-title">Register your interest</h2>
       <form name="interest" method="POST" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="interest" />
-        <p class="hidden-field">
-          <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-        </p>
+        <input type="hidden" name="bot-field" />
         <div class="form-grid">
           <input class="input" type="text" name="name" placeholder="Name" required />
           <input class="input" type="email" name="email" placeholder="Email" required />
@@ -43,14 +43,22 @@
   <!-- App -->
   <script src="./app.js"></script>
 
+  
   <script>
   (function(){
+    if (window.__modalInit) return;
+    window.__modalInit = true;
     function qs(sel){ return document.querySelector(sel); }
+    function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
     function openModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
       ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
-      const first = ov.querySelector('input,button'); if(first) first.focus();
+      const first = ov.querySelector('input[name="name"]'); if(first) first.focus();
+      const form = ov.querySelector('form[name="interest"]');
+      const ok   = qs('#modal-success');
+      if(form){ form.style.display='block'; }
+      if(ok){ ok.style.display='none'; }
     }
     function closeModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
@@ -61,31 +69,43 @@
       const form = ev.target;
       if(!(form && form.getAttribute('name')==='interest')) return;
       ev.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       const data = new FormData(form);
       fetch('/', { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
       }).then(()=>{
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
         form.reset();
-        const ok = document.getElementById('modal-success'); if(ok){ ok.style.display='block'; }
-        setTimeout(closeModal, 1400);
+        const ok = document.getElementById('modal-success');
+        if(ok){ ok.style.display='block'; }
+        form.style.display='none';
+        const done = document.getElementById('modal-done');
+        if(done){ done.addEventListener('click', closeModal, { once:true }); }
       }).catch(()=>{
-        // fall back to normal submit
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
         form.submit();
       });
     }
     function init(){
-      const btn = document.getElementById('openFormBtn');
-      const close = document.getElementById('modal-close');
-      const overlay = document.getElementById('modal-overlay');
-      if(btn) btn.addEventListener('click', openModal);
+      qa('#openFormBtn, .openFormBtn').forEach(btn=>btn.addEventListener('click', openModal));
+      const close = qs('#modal-close');
+      const overlay = qs('#modal-overlay');
       if(close) close.addEventListener('click', closeModal);
-      if(overlay) overlay.addEventListener('click', function(ev){ if(ev.target===overlay) closeModal(); });
-      document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
+      if(overlay) overlay.addEventListener('click', ev=>{ if(ev.target===overlay) closeModal(); });
+      document.addEventListener('keydown', ev=>{ if(ev.key==='Escape') closeModal(); });
       document.addEventListener('submit', handleSubmit, true);
     }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
   })();
   </script>
 
+<footer class="site-footer">
+  <a href="https://www.asahibeverages.com/website-terms-of-use-new-zealand" target="_blank" rel="noopener">Website Terms of Use</a>
+  <a href="https://www.asahibeverages.com/privacy-collection-notice" target="_blank" rel="noopener">Privacy Collection Notice</a>
+  <a href="https://www.asahibeverages.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+</footer>
 </body>
+
 </html>

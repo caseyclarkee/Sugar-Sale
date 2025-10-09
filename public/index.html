@@ -42,13 +42,19 @@
   <script src="./app.js"></script>
 
   <script>
+  
   (function(){
     function qs(sel){ return document.querySelector(sel); }
     function openModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
       ov.style.display='flex'; ov.setAttribute('aria-hidden','false');
       document.body.style.overflow='hidden';
-      const first = ov.querySelector('input,button'); if(first) first.focus();
+      const first = ov.querySelector('input[name="name"]'); if(first) first.focus();
+      // reset success/form visibility each open
+      const form = ov.querySelector('form[name="interest"]');
+      const ok   = qs('#modal-success');
+      if(form){ form.style.display='block'; }
+      if(ok){ ok.style.display='none'; }
     }
     function closeModal(){
       const ov = qs('#modal-overlay'); if(!ov) return;
@@ -59,15 +65,24 @@
       const form = ev.target;
       if(!(form && form.getAttribute('name')==='interest')) return;
       ev.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       const data = new FormData(form);
+      // Netlify requires urlencoded
       fetch('/', { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
       }).then(()=>{
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
         form.reset();
-        const ok = document.getElementById('modal-success'); if(ok){ ok.style.display='block'; }
-        setTimeout(closeModal, 1400);
+        const ok = document.getElementById('modal-success');
+        if(ok){ ok.style.display='block'; }
+        form.style.display='none';
+        const done = document.getElementById('modal-done');
+        if(done){ done.addEventListener('click', closeModal, { once:true }); }
       }).catch(()=>{
-        // fall back to normal submit
+        // fallback to normal submit if fetch fails
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalText; }
         form.submit();
       });
     }

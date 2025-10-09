@@ -23,6 +23,10 @@ body {
   color: #333333;
   overflow-x: hidden;
 }
+body {
+  padding-top: env(safe-area-inset-top, 0);
+  background-color: #fff; /* so if there is an inset, it blends */
+}
 
 /* =============================
    Layout

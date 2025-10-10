@@ -216,15 +216,19 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    Footer
    ============================= */
 .site-footer {
-  position: relative;
-  z-index: 10;
+  position: fixed;                        /* pin to viewport */
+  bottom: max(12px, env(safe-area-inset-bottom)); /* a bit of breathing room */
+  left: 0;
+  width: 100%;
+  
+  z-index: 10;                            /* above yellow X */
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: clamp(6px, 2 * var(--s), 18px);
-   margin-bottom: clamp(20px, 0.8 * var(--s), 10px); /* less gap at bottom */
 
+  padding-bottom: clamp(8px, 1.5vmin, 16px); /* extra visual padding */
   font-size: clamp(11px, 1.8 * var(--s), 14px);
+  background: transparent;                /* stays seamless */
 }
 
 .site-footer a {

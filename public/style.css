@@ -45,7 +45,7 @@ img, svg { display: block; }
 
 .bg-x img {
   width: 100%;
-  height: 100%;
+  height: 95%;
   object-fit: contain;
   object-position: center;
   opacity: .95;
@@ -222,7 +222,8 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   justify-content: center;
   gap: 1rem;
   margin-top: clamp(8px, 2 * var(--s), 18px);
-  margin-bottom: clamp(12px, 2 * var(--s), 24px);
+   margin-bottom: clamp(4px, 0.8 * var(--s), 10px); /* less gap at bottom */
+
   font-size: clamp(11px, 1.8 * var(--s), 14px);
 }
 

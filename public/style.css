@@ -2,6 +2,7 @@
    Global Reset & Font Setup
    ============================= */
 * { box-sizing: border-box; }
+
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   --s: 1vmin; /* master scale = smaller viewport side */
@@ -14,7 +15,10 @@ html, body {
   padding: 0;
   width: 100%;
 }
-html, body, button, input, select, textarea { font-family: var(--brand-font); }
+
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
+}
 
 body {
   background: #fff;
@@ -28,9 +32,8 @@ img, svg { display: block; }
 /* =============================
    Background X
    ============================= */
-/* BG X: fill the viewport always, don’t cap size */
 .bg-x {
-  position: fixed;      /* keep composition steady as height changes */
+  position: fixed; /* stays centered regardless of scroll */
   top: 0; left: 0;
   width: 100dvw;
   height: 100dvh;
@@ -40,18 +43,18 @@ img, svg { display: block; }
   align-items: center;
   justify-content: center;
 }
+
 .bg-x img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
   opacity: .95;
-  /* REMOVE the max-* caps that caused height weirdness */
-  /* max-width: 96vmin;  */
-  /* max-height: 96vmin; */
 }
 
-/* Container: keep simple centering, don’t over-offset on short heights */
+/* =============================
+   Layout (content above X)
+   ============================= */
 .container {
   position: relative;
   z-index: 1;
@@ -60,11 +63,10 @@ img, svg { display: block; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 4vmin), 10vmin); /* a touch less */
-  padding-bottom: 6vmin;  /* leave space so footer never crowds CTA */
+  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 4vmin), 10vmin);
+  padding-bottom: max(6vmin, calc(env(safe-area-inset-bottom) + 16px));
   gap: clamp(6px, 2vmin, 16px);
 }
-
 
 .content {
   display: flex;
@@ -87,14 +89,13 @@ img, svg { display: block; }
   transform: none;
 }
 
-h1 { margin-top: 0; }
-
 h1 {
+  margin-top: 0;
   font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
-  font-size: clamp(28px, 9 * var(--s), 96px); /* vmin-based */
+  font-size: clamp(28px, 9 * var(--s), 96px);
   letter-spacing: 1px;
   transform-origin: center;
   transform: scaleX(0.92);
@@ -116,8 +117,15 @@ h1 {
   padding: 0;
   box-shadow: none;
 }
-.form-title { margin: 0 0 .5rem; font-size: 1.35rem; font-weight: 900; color: #6b21a8; }
-.form-grid  { display: grid; gap: .6rem; }
+
+.form-title {
+  margin: 0 0 .5rem;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #6b21a8;
+}
+
+.form-grid { display: grid; gap: .6rem; }
 
 .input {
   border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
@@ -144,7 +152,11 @@ button.cta {
   transition: transform .12s ease, background .2s ease;
   font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
-button.cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+button.cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
 
 .success { color:#bb29bb; margin-top:.5rem; }
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
@@ -177,27 +189,42 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   width: min(92vw, 520px);
   text-align: center;
 }
-.modal-title { margin: 0 0 .75rem; font-weight: 900; text-transform: uppercase; font-size: 1.4rem; }
+
+.modal-title {
+  margin: 0 0 .75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+
 .close {
-  position: absolute; top: 10px; right: 12px;
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333; background: #fff; border-radius: 8px;
-  width: 36px; height: 36px; font-size: 22px; line-height: 28px; font-weight: 900; cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  background: #fff;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 900;
+  cursor: pointer;
   box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
 }
 
 /* =============================
    Footer
    ============================= */
-/* Footer: no negative pull-up (that’s what was colliding at short heights) */
 .site-footer {
   position: relative;
   z-index: 10;
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: clamp(8px, 2vmin, 18px);   /* was negative */
-  margin-bottom: clamp(12px, 2vmin, 24px);
-  font-size: clamp(11px, 1.8vmin, 14px);
+  margin-top: clamp(8px, 2 * var(--s), 18px);
+  margin-bottom: clamp(12px, 2 * var(--s), 24px);
+  font-size: clamp(11px, 1.8 * var(--s), 14px);
 }
 
 .site-footer a {
@@ -206,7 +233,10 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s ease;
 }
-.site-footer a:hover { border-bottom-color: #333; }
+
+.site-footer a:hover {
+  border-bottom-color: #333;
+}
 
 /* =============================
    Age Gate
@@ -224,6 +254,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   padding: 24px;
   background: #ffffff;
 }
+
 .age-card {
   width: min(92vw, 560px);
   background: #fff;
@@ -234,6 +265,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   padding: clamp(22px, 2.4 * var(--s), 28px);
   text-align: center;
 }
+
 .age-card h2 {
   margin: 0 0 12px;
   font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
@@ -242,7 +274,14 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   text-transform: uppercase;
   letter-spacing: .5px;
 }
-.age-card .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 8px; }
+
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 #birth-year {
   border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   border-radius: clamp(8px, 1.6 * var(--s), 10px);
@@ -251,6 +290,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   font-weight: 700;
   text-align: center;
 }
+
 #age-gate-form .cta {
   border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
@@ -264,7 +304,12 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   transition: transform .12s ease, background .2s ease;
   font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
-#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+#age-gate-form .cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
+
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
 /* =============================
@@ -272,25 +317,23 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    ============================= */
 @media (max-height: 720px) {
   html, body { min-height: 100svh; overflow-y: auto; }
-  .container{
+  .container {
     justify-content: flex-start;
     min-height: auto;
     padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh);
     padding-bottom: 2vh;
   }
-  .bg-x { width: 100svw; height: 100svh; }
-  .bg-x img { max-height: 70svh; }
   .logo { max-height: clamp(110px, 16 * var(--s), 140px); }
   h1 { font-size: clamp(24px, 6 * var(--s), 58px); transform: scaleX(0.92); margin-top: 0.25rem; }
 }
 
 @media (max-height: 600px) {
-  .bg-x img { max-height: 65svh; }
-  .logo     { max-height: clamp(100px, 14 * var(--s), 120px); }
+  .logo { max-height: clamp(100px, 14 * var(--s), 120px); }
 }
 
 /* Tiny phones width tweak */
 @media (max-width: 400px) {
   .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
-  .logo      { max-height: clamp(120px, 20 * var(--s), 160px); }
+  .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
 }
+

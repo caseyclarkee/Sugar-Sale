@@ -23,4 +23,287 @@ body {
   background: #fff;
   color: #333333;
   overflow-x: hidden;
-  p
+  padding-top: 0 !important;   /* kill any white band */
+}
+
+/* Remove inline gaps that can look like cropping */
+img, svg { display: block; }
+
+/* =============================
+   Background X (full viewport, always centered)
+   ============================= */
+.bg-x {
+  position: absolute;          /* scrolls with page (not fixed) */
+  top: 0; left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: 0;
+  pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-x img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;         /* preserve aspect, no warp */
+  object-position: center;
+  opacity: .95;
+}
+
+/* =============================
+   Layout (content above X)
+   ============================= */
+.container {
+  position: relative;
+  z-index: 1;                  /* above the X */
+  min-height: 100dvh;
+
+  /* Use flex for reliable centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center;         /* horizontal center */
+  justify-content: center;     /* vertical center by default */
+
+  /* Keep stack comfortably below notch/status bar but still centered */
+  padding-top: clamp(16px, env(safe-area-inset-top) + 6vh, 14vh);
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+/* =============================
+   Logo & Headline
+   ============================= */
+.logo {
+  width: auto;
+  height: auto;
+  max-width: clamp(220px, 20vw, 580px);
+  max-height: min(22vh, 180px);  /* cap on mobile so it can’t hit the top */
+  margin-bottom: .5rem;
+  transform: none;               /* remove negative translate */
+}
+
+h1 { margin-top: 0; }            /* remove default heading top margin */
+
+h1 {
+  font-family: "futura-pt-condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 8vw, 6rem);  /* was huge at 75/80vw */
+  letter-spacing: 1px;
+
+  /* Keep the condensed vibe, centered on its own axis */
+  transform-origin: center;
+  transform: scaleX(0.92);       /* no translateY (that caused drift) */
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* =============================
+   Form Card
+   ============================= */
+.form-card {
+  width: min(92vw, 520px);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.form-title { margin: 0 0 .5rem; font-size: 1.35rem; font-weight: 900; color: #6b21a8; }
+.form-grid  { display: grid; gap: .6rem; }
+
+.input {
+  border: 3px solid #333333;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  font-size: 1rem;
+  width: 100%;
+  font-weight: 600;
+}
+
+/* =============================
+   Buttons
+   ============================= */
+button.cta {
+  border: 3px solid #333333;
+  background: #bb29bb;
+  padding: .75rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 #333333;
+  cursor: pointer;
+  color: #ffffff;
+  transition: transform .12s ease, background .2s ease;
+}
+button.cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+.success { color:#bb29bb; margin-top:.5rem; }
+small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
+.hidden-field { display:none !important; }
+
+/* =============================
+   Popup Modal
+   ============================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.5);
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  z-index: 3000;
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  border: 4px solid #333333;
+  border-radius: 16px;
+  padding: 2rem 1.5rem 2.5rem;
+  box-shadow: 8px 8px 0 #333333;
+  width: min(92vw, 520px);
+  text-align: center;
+}
+.modal-title { margin: 0 0 .75rem; font-weight: 900; text-transform: uppercase; font-size: 1.4rem; }
+.close {
+  position: absolute; top: 10px; right: 12px;
+  border: 3px solid #333333; background: #fff; border-radius: 8px;
+  width: 36px; height: 36px; font-size: 22px; line-height: 28px; font-weight: 900; cursor: pointer;
+  box-shadow: 4px 4px 0 #333333;
+}
+
+/* =============================
+   Footer
+   ============================= */
+.site-footer {
+  position: relative;
+  z-index: 10;                 /* above bg-x */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;                   /* tighter link spacing */
+  margin-top: -1rem;           /* nudge closer to the X */
+  margin-bottom: 2rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+}
+.site-footer a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.site-footer a:hover { border-bottom-color: #333; }
+
+/* =============================
+   Age Gate
+   ============================= */
+.agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+.agegate-active body { overflow: hidden !important; }
+
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;
+}
+.age-card {
+  width: min(92vw, 560px);
+  background: #fff;
+  color: #333333;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 #333333;
+  padding: 28px;
+  text-align: center;
+}
+.age-card h2 {
+  margin: 0 0 12px;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.age-card .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 8px; }
+#birth-year {
+  border: 3px solid #333333;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+#age-gate-form .cta {
+  border: 3px solid #333333;
+  background: #bb29bb;
+  color: #fff;
+  padding: .75rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 #333333;
+  cursor: pointer;
+  transition: transform .12s ease, background .2s ease;
+}
+#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
+.error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+/* =============================
+   Short viewport safeguard
+   (tiny screens, landscape, keyboard-up)
+   ============================= */
+@media (max-height: 720px) {
+  html, body { min-height: 100svh; overflow-y: auto; }
+
+  .container{
+    justify-content: flex-start;                       /* stop vertical centering */
+    min-height: auto;                                  /* allow scroll */
+    padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh);
+    padding-bottom: 2vh;
+  }
+
+  .bg-x { width: 100svw; height: 100svh; }
+  .bg-x img { max-height: 70svh; }                     /* leave room for logo/text */
+
+  .logo { max-height: min(16vh, 140px); }
+  h1 {
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    transform: scaleX(0.92);                           /* no translate */
+    margin-top: 0.25rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .bg-x img { max-height: 65svh; }
+  .logo     { max-height: min(14vh, 120px); }
+}
+
+/* Tiny phones width tweak */
+@media (max-width: 400px) {
+  .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
+  .logo      { max-height: min(20vh, 160px); }
+}

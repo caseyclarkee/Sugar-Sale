@@ -2,69 +2,69 @@
    Global Reset & Font Setup
    ============================= */
 * { box-sizing: border-box; }
-html, body {
-  height: 100dvh;        /* dynamic viewport height (iOS safe) */
-  min-height: 100dvh;
-  margin: 0;
-  padding: 0;
-}
+
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  --s: 1vmin; /* master scale = smaller viewport side */
 }
-html, body, button, input, select, textarea { font-family: var(--brand-font); }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
+}
 
 body {
   background: #fff;
   color: #333333;
   overflow-x: hidden;
-/* kill the white band */
-body { padding-top: 0 !important; }
+  padding-top: 0 !important;
 }
+
+img, svg { display: block; }
 
 /* =============================
-   Layout
+   Background X (scrolls with content)
    ============================= */
-.container {
-  position: relative;
-  min-height: 100dvh;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  padding: 0;         /* no top padding */
-  margin: 0;
-}
-h1 { margin-top: 0; } /* remove the default top margin just in case */
-
-/* Container anchors the image */
 .bg-x {
-  position: absolute; /* as you wanted */
-  inset: 0;
-  display: grid;
-  place-items: center;
+  position: absolute; /* scrolls naturally with the page */
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Never force both dimensions — just cap them */
 .bg-x img {
-  width: auto;         /* keep intrinsic proportion */
-  height: auto;        /* keep intrinsic proportion */
-  max-width: 100vw;    /* fill width if possible */
-  max-height: 100dvh;  /* fill height if possible */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
   opacity: .95;
 }
 
-
-.logo {
-  width: auto;
-  max-width: clamp(220px, 20vw, 580px);
-  height: auto;
-  max-height: clamp(120px, 20vh, 300px);
-}
-
-.logo {
-  margin-bottom: 0.5rem;
-  transform: translateY(-20vh);
+/* =============================
+   Layout (content above X)
+   ============================= */
+.container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 4vmin), 10vmin);
+  padding-bottom: max(6vmin, calc(env(safe-area-inset-bottom) + 16px));
+  gap: clamp(6px, 2vmin, 16px);
 }
 
 .content {
@@ -73,25 +73,37 @@ h1 { margin-top: 0; } /* remove the default top margin just in case */
   align-items: center;
   text-align: center;
   gap: 0.5rem;
-  z-index: 2; /* sits above background X */
+  z-index: 2;
 }
 
 /* =============================
-   Headline ("Coming soon!")
+   Logo & Headline
    ============================= */
+.logo {
+  width: auto;
+  height: auto;
+  max-width: clamp(220px, 40 * var(--s), 580px);
+  max-height: clamp(120px, 22 * var(--s), 180px);
+  margin-bottom: .5rem;
+  transform: none;
+}
+
 h1 {
-  font-family: "futura-pt-condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  margin-top: 0;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
-transform-origin: center;  
-  font-size: clamp(2.75rem, 75vw, 6rem);
-  margin: .25rem 0 0;
+  font-size: clamp(28px, 9 * var(--s), 96px);
   letter-spacing: 1px;
-  transform: translateY(-5rem) scaleX(0.92);
-  display: inline-block;
+  transform-origin: center;
+  transform: scaleX(0.92);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: clamp(2px, 1 * var(--s), 8px);
 }
-
 
 /* =============================
    Form Card
@@ -104,14 +116,21 @@ transform-origin: center;
   padding: 0;
   box-shadow: none;
 }
-.form-title { margin: 0 0 .5rem; font-size: 1.35rem; font-weight: 900; color: #6b21a8; }
+
+.form-title {
+  margin: 0 0 .5rem;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #6b21a8;
+}
+
 .form-grid { display: grid; gap: .6rem; }
 
 .input {
-  border: 3px solid #333333;
-  border-radius: 10px;
-  padding: .7rem .9rem;
-  font-size: 1rem;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
   width: 100%;
   font-weight: 600;
 }
@@ -120,18 +139,23 @@ transform-origin: center;
    Buttons
    ============================= */
 button.cta {
-  border: 3px solid #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
-  padding: .75rem 1.1rem;
-  border-radius: 10px;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(8px, 1.6 * var(--s), 12px);
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 5px 5px 0 #333333;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
   cursor: pointer;
   color: #ffffff;
   transition: transform .12s ease, background .2s ease;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
-button.cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+button.cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
 
 .success { color:#bb29bb; margin-top:.5rem; }
 small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
@@ -142,36 +166,50 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    ============================= */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,.5);
   padding: 20px;
-
-  /* Mobile fixes */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  z-index: 3000;               /* age gate still higher */
+  z-index: 3000;
 }
 
 .modal-card {
   position: relative;
   background: #fff;
-  border: 4px solid #333333;
-  border-radius: 16px;
-  padding: 2rem 1.5rem 2.5rem;
-  box-shadow: 8px 8px 0 #333333;
+  border: clamp(2px, 0.35 * var(--s), 4px) solid #333333;
+  border-radius: clamp(10px, 1.8 * var(--s), 16px);
+  padding: clamp(18px, 2.8 * var(--s), 32px);
+  box-shadow: clamp(6px, 1 * var(--s), 8px) clamp(6px, 1 * var(--s), 8px) 0 #333333;
   width: min(92vw, 520px);
   text-align: center;
 }
-.modal-title { margin: 0 0 .75rem; font-weight: 900; text-transform: uppercase; font-size: 1.4rem; }
+
+.modal-title {
+  margin: 0 0 .75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+
 .close {
-  position: absolute; top: 10px; right: 12px;
-  border: 3px solid #333333; background: #fff; border-radius: 8px;
-  width: 36px; height: 36px; font-size: 22px; line-height: 28px; font-weight: 900; cursor: pointer;
-  box-shadow: 4px 4px 0 #333333;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  background: #fff;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
 }
 
 /* =============================
@@ -179,21 +217,25 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    ============================= */
 .site-footer {
   position: relative;
-  z-index: 10;                 /* above bg-x */
+  z-index: 10;
   display: flex;
   justify-content: center;
-  gap: 1rem;                   /* tighter link spacing */
-  margin-top: -1rem;           /* nudge closer to the X */
-  margin-bottom: 2rem;
-  font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+  gap: 1rem;
+  margin-top: clamp(8px, 2 * var(--s), 18px);
+  margin-bottom: clamp(12px, 2 * var(--s), 24px);
+  font-size: clamp(11px, 1.8 * var(--s), 14px);
 }
+
 .site-footer a {
   color: #333;
   text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s ease;
 }
-.site-footer a:hover { border-bottom-color: #333; }
+
+.site-footer a:hover {
+  border-bottom-color: #333;
+}
 
 /* =============================
    Age Gate
@@ -211,45 +253,68 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   padding: 24px;
   background: #ffffff;
 }
+
 .age-card {
   width: min(92vw, 560px);
   background: #fff;
   color: #333333;
-  border: 3px solid #333333;
-  border-radius: 12px;
-  box-shadow: 6px 6px 0 #333333;
-  padding: 28px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(10px, 1.6 * var(--s), 12px);
+  box-shadow: clamp(5px, 0.9 * var(--s), 6px) clamp(5px, 0.9 * var(--s), 6px) 0 #333333;
+  padding: clamp(22px, 2.4 * var(--s), 28px);
   text-align: center;
 }
+
 .age-card h2 {
   margin: 0 0 12px;
-  font-family: "futura-pt-condensed","futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
   letter-spacing: .5px;
 }
-.age-card .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 8px; }
+
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 #birth-year {
-  border: 3px solid #333333;
-  border-radius: 10px;
-  padding: .7rem .9rem;
-  font-size: 1rem;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
   font-weight: 700;
   text-align: center;
 }
+
 #age-gate-form .cta {
-  border: 3px solid #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
   color: #fff;
-  padding: .75rem 1.1rem;
-  border-radius: 10px;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(8px, 1.6 * var(--s), 12px);
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 5px 5px 0 #333333;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
   cursor: pointer;
   transition: transform .12s ease, background .2s ease;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
-#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+#age-gate-form .cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
+
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
+/* =============================
+   Responsive tweaks
+   ============================= */
+@media (max-width: 400px) {
+  .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
+  .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
+}

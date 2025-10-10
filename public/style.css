@@ -21,24 +21,10 @@ body {
 }
 
 /* =============================
-   Layout
+   Background X (independent of container)
    ============================= */
-.container {
-  position: relative;
-  min-height: 100dvh;
-  display: grid;
-  align-content: start;
-  justify-items: center;
-  padding-top: 8vh;          /* control how high the hero stack sits */
-  padding-bottom: 0;
-  margin: 0;
-}
-
-h1 { margin-top: 0; }
-
-/* Background X */
 .bg-x {
-  position: absolute;
+  position: fixed; /* not affected by container */
   inset: 0;
   display: grid;
   place-items: center;
@@ -56,6 +42,23 @@ h1 { margin-top: 0; }
 }
 
 /* =============================
+   Layout
+   ============================= */
+.container {
+  position: relative;
+  z-index: 1; /* sits above X */
+  min-height: 100dvh;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  padding-top: 12vh;      /* controls how high the content stack sits */
+  padding-bottom: 0;
+  margin: 0;
+}
+
+h1 { margin-top: 0; }
+
+/* =============================
    Logo & Headline
    ============================= */
 .logo {
@@ -64,11 +67,9 @@ h1 { margin-top: 0; }
   height: auto;
   max-height: clamp(120px, 20vh, 300px);
   margin-bottom: 0.5rem;
-  transform: none; /* stop lifting */
 }
 
 .content {
-  z-index: 1;
   display: grid;
   gap: 0.5rem;
   justify-items: center;
@@ -247,7 +248,8 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    Responsive Tweaks
    ============================= */
 @media (max-width: 600px) {
-  .container { padding-top: 6vh; }
+  .container { padding-top: 9vh; }
   .bg-x img { max-height: 80vh; }
   .site-footer { font-size: 0.7rem; }
 }
+

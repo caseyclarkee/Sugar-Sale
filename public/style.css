@@ -6,6 +6,15 @@
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   --s: 1vmin; /* master scale = smaller viewport side */
+   --k: min(1, calc(100dvh / 700px)); /* scale factor for short heights */
+}
+
+/* scale the whole stack together while keeping it centered */
+.content { 
+  transform: scale(var(--k));
+  transform-origin: center;
+}
+
 }
 
 html, body {
@@ -315,21 +324,6 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 /* =============================
    Short viewport safeguards
    ============================= */
-@media (max-height: 720px) {
-  html, body { min-height: 100svh; overflow-y: auto; }
-  .container {
-    justify-content: flex-start;
-    min-height: auto;
-    padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh);
-    padding-bottom: 2vh;
-  }
-  .logo { max-height: clamp(110px, 16 * var(--s), 140px); }
-  h1 { font-size: clamp(24px, 6 * var(--s), 58px); transform: scaleX(0.92); margin-top: 0.25rem; }
-}
-
-@media (max-height: 600px) {
-  .logo { max-height: clamp(100px, 14 * var(--s), 120px); }
-}
 
 /* Tiny phones width tweak */
 @media (max-width: 400px) {

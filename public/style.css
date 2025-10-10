@@ -1,160 +1,98 @@
-/* =============================
-   Global Reset & Font Setup
-   ============================= */
-* { box-sizing: border-box; }
-
-:root {
-  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
-  --s: 1vmin; /* master scale = smaller viewport side */
+/* ===== 0) Rhythm & scale tokens ===== */
+:root{
+  --s: 1vmin;
+  --stack: clamp(10px, 2.2vmin, 24px);       /* default vertical rhythm */
+  --stack-sm: clamp(6px, 1.2vmin, 14px);     /* compact rhythm */
+  --cta-shadow: 0 6px 0 #333333, 0 0 0 0 rgba(0,0,0,0);
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-html, body, button, input, select, textarea {
-  font-family: var(--brand-font);
-}
-
-body {
-  background: #fff;
-  color: #333333;
-  overflow-x: hidden;
-  padding-top: 0 !important;
-}
-
-img, svg { display: block; }
-
-/* =============================
-   Background X (scrolls with content)
-   ============================= */
-.bg-x {
-  position: absolute; /* scrolls naturally with the page */
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+/* ===== 1) Composition & balance ===== */
+/* keep the yellow X centered + let content sit perfectly centered in viewport */
+.container{
+  min-height: 100svh;                         /* better on mobile than 100vh */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center;                    /* true vertical centering */
+  padding-top: max(6vmin, calc(env(safe-area-inset-top) + 16px));
+  padding-bottom: max(8vmin, calc(env(safe-area-inset-bottom) + 24px));
+  gap: var(--stack);
 }
 
-.bg-x img {
+/* use consistent vertical rhythm between items */
+.content > * { margin: 0; }
+.content > * + * { margin-top: var(--stack-sm); }
+
+/* keep background X nicely framed inside viewport */
+.bg-x img{
   width: 100%;
-  height: 95%;
+  height: 100%;
+  max-height: 100svh;                          /* avoids overspill on short viewports */
   object-fit: contain;
   object-position: center;
   opacity: .95;
 }
 
-/* =============================
-   Layout (content above X)
-   ============================= */
-.container {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 4vmin), 10vmin);
-  padding-bottom: max(6vmin, calc(env(safe-area-inset-bottom) + 16px));
-  gap: clamp(6px, 2vmin, 16px);
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.5rem;
-  z-index: 2;
-}
-
-/* =============================
-   Logo & Headline
-   ============================= */
-.logo {
-  width: auto;
-  height: auto;
+/* ===== 2) Logo & headline interaction ===== */
+/* Add a subtle white "halo" so the mark reads on the yellow X */
+.logo{
   max-width: clamp(220px, 40 * var(--s), 580px);
   max-height: clamp(120px, 22 * var(--s), 180px);
-  margin-bottom: .5rem;
-  transform: none;
+  margin-bottom: var(--stack-sm);
+  /* faux outline + soft lift (works with PNG/SVG) */
+  filter:
+    drop-shadow(0 0 0 rgba(0,0,0,0))
+    drop-shadow(0 0 6px rgba(255,255,255,.85))
+    drop-shadow(0 0 18px rgba(255,255,255,.6));
+  /* slight overlap reads as one composed unit with the X */
+  transform: translateY(-0.3vmin);
 }
 
-h1 {
-  margin-top: 0;
+/* tighter, punchier headline with better tracking and width control */
+h1{
   font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
   font-size: clamp(28px, 9 * var(--s), 96px);
-  letter-spacing: 1px;
-  transform-origin: center;
-  transform: scaleX(0.92);
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  letter-spacing: .5px;               /* a touch tighter */
+  transform: scaleX(0.94);            /* narrower, more retail-impact */
   text-align: center;
-  margin-top: clamp(2px, 1 * var(--s), 8px);
+  margin-top: var(--stack-sm);
 }
 
-/* =============================
-   Form Card
-   ============================= */
-.form-card {
-  width: min(92vw, 520px);
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-}
-
-.form-title {
-  margin: 0 0 .5rem;
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: #6b21a8;
-}
-
-.form-grid { display: grid; gap: .6rem; }
-
-.input {
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
-  border-radius: clamp(8px, 1.6 * var(--s), 10px);
-  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
-  font-size: clamp(14px, 2 * var(--s), 18px);
-  width: 100%;
-  font-weight: 600;
-}
-
-/* =============================
-   Buttons
-   ============================= */
-button.cta {
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+/* ===== 4) Button treatment (softer, more tactile) ===== */
+button.cta{
+  border: clamp(2px, .35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
+  color: #fff;
   padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
-  border-radius: clamp(8px, 1.6 * var(--s), 12px);
+  border-radius: clamp(10px, 2 * var(--s), 14px); /* a hair rounder */
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
-  cursor: pointer;
-  color: #ffffff;
-  transition: transform .12s ease, background .2s ease;
   font-size: clamp(14px, 2.2 * var(--s), 18px);
+
+  /* softer, realistic elevation */
+  box-shadow: var(--cta-shadow);
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease,
+    background .2s ease,
+    filter .2s ease;
 }
 
-button.cta:hover {
+/* micro-interaction: lift + soften shadow */
+button.cta:hover{
   transform: translateY(-2px);
+  box-shadow: 0 8px 0 #333333, 0 8px 18px rgba(0,0,0,.08);
   background: #a420a4;
+  filter: saturate(1.05);
+}
+
+/* active press state for nice “click” feel */
+button.cta:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 0 #333333, 0 4px 10px rgba(0,0,0,.06);
 }
 
 .success { color:#bb29bb; margin-top:.5rem; }

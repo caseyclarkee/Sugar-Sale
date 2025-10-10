@@ -3,7 +3,7 @@
    ============================= */
 * { box-sizing: border-box; }
 html, body {
-  height: 100dvh;        /* dynamic viewport height (iOS safe) */
+  height: 100dvh;
   min-height: 100dvh;
   margin: 0;
   padding: 0;
@@ -11,23 +11,25 @@ html, body {
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
 }
-html, body, button, input, select, textarea { font-family: var(--brand-font); }
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
+}
 
 body {
   background: #fff;
   color: #333333;
   overflow-x: hidden;
-  padding-top: 0 !important; /* kill any white band */
+  padding-top: 0 !important; /* eliminate white band */
 }
 
 /* =============================
-   Background X (independent of container)
+   Background X
    ============================= */
 .bg-x {
-  position: fixed; /* not affected by container */
-  inset: 0;
-  display: grid;
-  place-items: center;
+  position: absolute; /* scrolls naturally */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* perfectly centered */
   z-index: 0;
   pointer-events: none;
 }
@@ -51,8 +53,7 @@ body {
   display: grid;
   align-content: start;
   justify-items: center;
-  padding-top: 12vh;      /* controls how high the content stack sits */
-  padding-bottom: 0;
+  padding-top: 14vh; /* control how high content stack sits */
   margin: 0;
 }
 
@@ -248,7 +249,7 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    Responsive Tweaks
    ============================= */
 @media (max-width: 600px) {
-  .container { padding-top: 9vh; }
+  .container { padding-top: 10vh; }
   .bg-x img { max-height: 80vh; }
   .site-footer { font-size: 0.7rem; }
 }

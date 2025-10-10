@@ -2,16 +2,22 @@
    Global Reset & Font Setup
    ============================= */
 * { box-sizing: border-box; }
+
+:root {
+  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+}
+
 html, body {
   height: 100dvh;
   min-height: 100dvh;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
-:root {
-  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+
+html, body, button, input, select, textarea {
+  font-family: var(--brand-font);
 }
-html, body, button, input, select, textarea { font-family: var(--brand-font); }
 
 body {
   background: #fff;
@@ -20,69 +26,90 @@ body {
   padding-top: 0 !important;
 }
 
-/* =============================
-   Layout
-   ============================= */
 img, svg { display: block; }
 
-.container {
-  position: relative;
-  min-height: 100dvh;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  padding: clamp(16px, env(safe-area-inset-top) + 6vh, 14vh) 0 0 0;
-  margin: 0;
-}
-
+/* =============================
+   Background X
+   ============================= */
 .bg-x {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  top: 0; left: 0;
+  width: 100dvw;
+  height: 100dvh;
   z-index: 0;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .bg-x img {
-  width: auto;
-  height: auto;
-  max-width: 100vw;
-  max-height: 100dvh;
-  opacity: 0.95;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: .95;
 }
 
 /* =============================
-   Logo positioning
+   Layout Container
+   ============================= */
+.container {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(12px, env(safe-area-inset-top) + 3vh, 8vh);
+}
+
+/* =============================
+   Hero Stack (Logo, Headline, CTA)
+   ============================= */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .5rem;
+  transform: translateY(-6vh);
+}
+
+@media (max-width: 900px) {
+  .hero { transform: translateY(-4vh); }
+}
+
+@media (max-width: 600px), (max-height: 720px) {
+  .hero { transform: translateY(-2vh); }
+}
+
+/* =============================
+   Logo
    ============================= */
 .logo {
   width: auto;
   height: auto;
   max-width: clamp(220px, 20vw, 580px);
   max-height: min(22vh, 180px);
-  margin-bottom: 0.5rem;
-  transform: translateY(-25vh); /* 👈 raises logo higher on the X */
-}
-@media (max-width: 600px) {
-  .logo {
-    transform: translateY(-18vh); /* slightly lower on small screens */
-    max-height: min(20vh, 160px);
-  }
+  margin-bottom: .5rem;
 }
 
 /* =============================
-   Headline
+   Headline ("COMING SOON!")
    ============================= */
 h1 {
+  margin: 0.25rem 0 0;
+  text-align: center;
   font-family: "futura-pt-condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
-  font-size: clamp(2.75rem, 75vw, 6rem);
-  margin: 0.25rem 0 0;
+  font-size: clamp(2.5rem, 8vw, 6rem);
   letter-spacing: 1px;
-  transform: translateY(-4rem) scaleX(0.92);
-  display: inline-block;
-  text-align: center;
+  transform-origin: center;
+  transform: scaleX(0.92);
 }
 
 /* =============================
@@ -91,16 +118,72 @@ h1 {
 button.cta {
   border: 3px solid #333333;
   background: #bb29bb;
-  padding: 0.75rem 1.1rem;
+  color: #fff;
+  padding: .75rem 1.1rem;
   border-radius: 10px;
   font-weight: 900;
   text-transform: uppercase;
   box-shadow: 5px 5px 0 #333333;
   cursor: pointer;
-  color: #ffffff;
-  transition: transform 0.12s ease, background 0.2s ease;
+  transition: transform .12s ease, background .2s ease;
 }
-button.cta:hover { transform: translateY(-2px); background: #a420a4; }
+
+button.cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
+
+.success { color:#bb29bb; margin-top:.5rem; }
+small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
+
+/* =============================
+   Modal (Register Interest)
+   ============================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.5);
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  z-index: 3000;
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  border: 4px solid #333333;
+  border-radius: 16px;
+  padding: 2rem 1.5rem 2.5rem;
+  box-shadow: 8px 8px 0 #333333;
+  width: min(92vw, 520px);
+  text-align: center;
+}
+
+.modal-title {
+  margin: 0 0 .75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+
+.close {
+  position: absolute;
+  top: 10px; right: 12px;
+  border: 3px solid #333333;
+  background: #fff;
+  border-radius: 8px;
+  width: 36px; height: 36px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #333333;
+}
 
 /* =============================
    Footer
@@ -115,16 +198,20 @@ button.cta:hover { transform: translateY(-2px); background: #a420a4; }
   margin-bottom: 2rem;
   font-size: clamp(0.7rem, 1.8vw, 0.9rem);
 }
+
 .site-footer a {
   color: #333;
   text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s ease;
 }
-.site-footer a:hover { border-bottom-color: #333; }
+
+.site-footer a:hover {
+  border-bottom-color: #333;
+}
 
 /* =============================
-   Age Gate
+   Age Gate Overlay
    ============================= */
 .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
 .agegate-active body { overflow: hidden !important; }
@@ -139,6 +226,7 @@ button.cta:hover { transform: translateY(-2px); background: #a420a4; }
   padding: 24px;
   background: #ffffff;
 }
+
 .age-card {
   width: min(92vw, 560px);
   background: #fff;
@@ -149,15 +237,23 @@ button.cta:hover { transform: translateY(-2px); background: #a420a4; }
   padding: 28px;
   text-align: center;
 }
+
 .age-card h2 {
   margin: 0 0 12px;
-  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
+  font-family: "futura-pt-condensed","futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
   letter-spacing: .5px;
 }
-.age-card .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 8px; }
+
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 #birth-year {
   border: 3px solid #333333;
   border-radius: 10px;
@@ -166,6 +262,7 @@ button.cta:hover { transform: translateY(-2px); background: #a420a4; }
   font-weight: 700;
   text-align: center;
 }
+
 #age-gate-form .cta {
   border: 3px solid #333333;
   background: #bb29bb;
@@ -178,41 +275,32 @@ button.cta:hover { transform: translateY(-2px); background: #a420a4; }
   cursor: pointer;
   transition: transform .12s ease, background .2s ease;
 }
-#age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
-.error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+#age-gate-form .cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
+
+.error {
+  color: #b00020;
+  font-weight: 700;
+  margin: 6px 0 0;
+}
 
 /* =============================
-   Short viewport safeguard
-   (tiny screens, landscape, keyboard-up)
+   Short Viewport Safeguards
    ============================= */
 @media (max-height: 720px) {
   html, body { min-height: 100svh; overflow-y: auto; }
-
-  .container{
-    justify-content: flex-start;                       /* stop vertical centering */
-    min-height: auto;                                  /* allow scroll */
-    padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh);
-    padding-bottom: 2vh;
-  }
-
+  .container { justify-content: flex-start; padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh); }
   .bg-x { width: 100svw; height: 100svh; }
-  .bg-x img { max-height: 70svh; }                     /* leave room for logo/text */
-
+  .bg-x img { max-height: 70svh; }
   .logo { max-height: min(16vh, 140px); }
-  h1 {
-    font-size: clamp(2rem, 6vw, 3.6rem);
-    transform: scaleX(0.92);                           /* no translate */
-    margin-top: 0.25rem;
-  }
+  h1 { font-size: clamp(2rem, 6vw, 3.6rem); }
 }
 
 @media (max-height: 600px) {
   .bg-x img { max-height: 65svh; }
-  .logo     { max-height: min(14vh, 120px); }
+  .logo { max-height: min(14vh, 120px); }
 }
 
-/* Tiny phones width tweak */
-@media (max-width: 400px) {
-  .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
-  .logo      { max-height: min(20vh, 160px); }
-}

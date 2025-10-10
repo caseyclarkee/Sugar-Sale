@@ -24,6 +24,9 @@ body { padding-top: 0 !important; }
 /* =============================
    Layout
    ============================= */
+/* 1) Make sure images don't have inline gaps that can “fake” cropping */
+img, svg { display:block; }
+
 .container {
   position: relative;
   min-height: 100dvh;
@@ -33,6 +36,14 @@ body { padding-top: 0 !important; }
   padding: 0;         /* no top padding */
   margin: 0;
 }
+
+/* 3) Push the content down by the notch/safe-area + a bit of viewport padding */
+.container {
+  /* center or start, whichever you’re using now is fine */
+  padding-top: clamp(16px, env(safe-area-inset-top) + 6vh, 14vh);
+  /* ^ adds at least 16px, then safe-area, then ~6vh; never more than 14vh */
+}
+
 h1 { margin-top: 0; } /* remove the default top margin just in case */
 
 /* Container anchors the image */
@@ -55,11 +66,14 @@ h1 { margin-top: 0; } /* remove the default top margin just in case */
 }
 
 
+
+/* 4) Give the logo a viewport-aware cap so it can’t collide with the top bar */
 .logo {
   width: auto;
-  max-width: clamp(220px, 20vw, 580px);
   height: auto;
-  max-height: clamp(120px, 20vh, 300px);
+  max-width: clamp(220px, 20vw, 580px);
+  max-height: min(22vh, 180px); /* keep it comfortably below the notch on phones */
+  margin-bottom: .5rem;
 }
 
 .logo {

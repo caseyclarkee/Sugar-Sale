@@ -158,7 +158,7 @@ button.cta:hover {
 }
 
 .success { color:#bb29bb; margin-top:.5rem; }
-small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
+small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 .hidden-field { display:none !important; }
 
 /* =============================

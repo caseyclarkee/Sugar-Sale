@@ -66,7 +66,7 @@ h1 { margin-top: 0; }
   height: auto;
   max-height: clamp(120px, 20vh, 300px);
   margin-bottom: 0.5rem;
-  transform: translateY(-10vh); /* raise logo higher */
+  transform: translateY(-5vh); /* raise logo higher */
 }
 
 .content {

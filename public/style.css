@@ -221,8 +221,8 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: clamp(8px, 2 * var(--s), 18px);
-   margin-bottom: clamp(4px, 0.8 * var(--s), 10px); /* less gap at bottom */
+  margin-top: clamp(6px, 2 * var(--s), 18px);
+   margin-bottom: clamp(20px, 0.8 * var(--s), 10px); /* less gap at bottom */
 
   font-size: clamp(11px, 1.8 * var(--s), 14px);
 }

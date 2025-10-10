@@ -6,20 +6,10 @@
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   --s: 1vmin; /* master scale = smaller viewport side */
-   --k: min(1, calc(100dvh / 700px)); /* scale factor for short heights */
-}
-
-/* scale the whole stack together while keeping it centered */
-.content { 
-  transform: scale(var(--k));
-  transform-origin: center;
-}
-
 }
 
 html, body {
-  height: 100dvh;
-  min-height: 100dvh;
+  height: 100%;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -39,13 +29,13 @@ body {
 img, svg { display: block; }
 
 /* =============================
-   Background X
+   Background X (scrolls with content)
    ============================= */
 .bg-x {
-  position: fixed; /* stays centered regardless of scroll */
+  position: absolute; /* scrolls naturally with the page */
   top: 0; left: 0;
-  width: 100dvw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
   display: flex;
@@ -67,7 +57,7 @@ img, svg { display: block; }
 .container {
   position: relative;
   z-index: 1;
-  min-height: 100dvh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -322,12 +312,9 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
 /* =============================
-   Short viewport safeguards
+   Responsive tweaks
    ============================= */
-
-/* Tiny phones width tweak */
 @media (max-width: 400px) {
   .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
   .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
 }
-

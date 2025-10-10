@@ -2,55 +2,52 @@
    Global Reset & Font Setup
    ============================= */
 * { box-sizing: border-box; }
-
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  --s: 1vmin; /* master scale = smaller viewport side */
 }
 
 html, body {
-  height: 100dvh;              /* dynamic viewport height (iOS safe) */
+  height: 100dvh;
   min-height: 100dvh;
   margin: 0;
   padding: 0;
   width: 100%;
 }
-
-html, body, button, input, select, textarea {
-  font-family: var(--brand-font);
-}
+html, body, button, input, select, textarea { font-family: var(--brand-font); }
 
 body {
   background: #fff;
   color: #333333;
   overflow-x: hidden;
-  padding-top: 0 !important;   /* kill any white band */
+  padding-top: 0 !important;
 }
 
-/* Remove inline gaps that can look like cropping */
 img, svg { display: block; }
 
 /* =============================
-   Background X (full viewport, always centered)
+   Background X
    ============================= */
 .bg-x {
-  position: absolute;          /* scrolls with page (not fixed) */
+  position: absolute;
   top: 0; left: 0;
   width: 100dvw;
   height: 100dvh;
   z-index: 0;
   pointer-events: none;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .bg-x img {
   width: 100%;
   height: 100%;
-  object-fit: contain;         /* preserve aspect, no warp */
+  object-fit: contain;
   object-position: center;
   opacity: .95;
+  /* optional soft cap so it backs off on super-short screens */
+  max-width: 96vmin;
+  max-height: 96vmin;
 }
 
 /* =============================
@@ -58,19 +55,16 @@ img, svg { display: block; }
    ============================= */
 .container {
   position: relative;
-  z-index: 1;                  /* above the X */
+  z-index: 1;
   min-height: 100dvh;
-
-  /* Use flex for reliable centering */
   display: flex;
   flex-direction: column;
-  align-items: center;         /* horizontal center */
-  justify-content: center;     /* vertical center by default */
-
-  /* Keep stack comfortably below notch/status bar but still centered */
-  padding-top: clamp(16px, env(safe-area-inset-top) + 6vh, 14vh);
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 6 * var(--s)), 14 * var(--s));
   padding-bottom: 0;
   margin: 0;
+  gap: clamp(6px, 2 * var(--s), 16px);
 }
 
 .content {
@@ -88,30 +82,28 @@ img, svg { display: block; }
 .logo {
   width: auto;
   height: auto;
-  max-width: clamp(220px, 20vw, 580px);
-  max-height: min(22vh, 180px);  /* cap on mobile so it can’t hit the top */
+  max-width: clamp(220px, 40 * var(--s), 580px);
+  max-height: clamp(120px, 22 * var(--s), 180px);
   margin-bottom: .5rem;
-  transform: none;               /* remove negative translate */
+  transform: none;
 }
 
-h1 { margin-top: 0; }            /* remove default heading top margin */
+h1 { margin-top: 0; }
 
 h1 {
-  font-family: "futura-pt-condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
-  font-size: clamp(2.5rem, 8vw, 6rem);  /* was huge at 75/80vw */
+  font-size: clamp(28px, 9 * var(--s), 96px); /* vmin-based */
   letter-spacing: 1px;
-
-  /* Keep the condensed vibe, centered on its own axis */
   transform-origin: center;
-  transform: scaleX(0.92);       /* no translateY (that caused drift) */
-
+  transform: scaleX(0.92);
   display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  margin-top: clamp(2px, 1 * var(--s), 8px);
 }
 
 /* =============================
@@ -129,10 +121,10 @@ h1 {
 .form-grid  { display: grid; gap: .6rem; }
 
 .input {
-  border: 3px solid #333333;
-  border-radius: 10px;
-  padding: .7rem .9rem;
-  font-size: 1rem;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
   width: 100%;
   font-weight: 600;
 }
@@ -141,16 +133,17 @@ h1 {
    Buttons
    ============================= */
 button.cta {
-  border: 3px solid #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
-  padding: .75rem 1.1rem;
-  border-radius: 10px;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(8px, 1.6 * var(--s), 12px);
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 5px 5px 0 #333333;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
   cursor: pointer;
   color: #ffffff;
   transition: transform .12s ease, background .2s ease;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
 button.cta:hover { transform: translateY(-2px); background: #a420a4; }
 
@@ -178,19 +171,19 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 .modal-card {
   position: relative;
   background: #fff;
-  border: 4px solid #333333;
-  border-radius: 16px;
-  padding: 2rem 1.5rem 2.5rem;
-  box-shadow: 8px 8px 0 #333333;
+  border: clamp(2px, 0.35 * var(--s), 4px) solid #333333;
+  border-radius: clamp(10px, 1.8 * var(--s), 16px);
+  padding: clamp(18px, 2.8 * var(--s), 32px);
+  box-shadow: clamp(6px, 1 * var(--s), 8px) clamp(6px, 1 * var(--s), 8px) 0 #333333;
   width: min(92vw, 520px);
   text-align: center;
 }
 .modal-title { margin: 0 0 .75rem; font-weight: 900; text-transform: uppercase; font-size: 1.4rem; }
 .close {
   position: absolute; top: 10px; right: 12px;
-  border: 3px solid #333333; background: #fff; border-radius: 8px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333; background: #fff; border-radius: 8px;
   width: 36px; height: 36px; font-size: 22px; line-height: 28px; font-weight: 900; cursor: pointer;
-  box-shadow: 4px 4px 0 #333333;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
 }
 
 /* =============================
@@ -198,13 +191,13 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
    ============================= */
 .site-footer {
   position: relative;
-  z-index: 10;                 /* above bg-x */
+  z-index: 10;
   display: flex;
   justify-content: center;
-  gap: 1rem;                   /* tighter link spacing */
-  margin-top: -1rem;           /* nudge closer to the X */
-  margin-bottom: 2rem;
-  font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+  gap: 1rem;
+  margin-top: clamp(-12px, -1.6 * var(--s), -6px);
+  margin-bottom: clamp(12px, 2 * var(--s), 24px);
+  font-size: clamp(11px, 1.8 * var(--s), 14px);
 }
 .site-footer a {
   color: #333;
@@ -234,10 +227,10 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
   width: min(92vw, 560px);
   background: #fff;
   color: #333333;
-  border: 3px solid #333333;
-  border-radius: 12px;
-  box-shadow: 6px 6px 0 #333333;
-  padding: 28px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(10px, 1.6 * var(--s), 12px);
+  box-shadow: clamp(5px, 0.9 * var(--s), 6px) clamp(5px, 0.9 * var(--s), 6px) 0 #333333;
+  padding: clamp(22px, 2.4 * var(--s), 28px);
   text-align: center;
 }
 .age-card h2 {
@@ -250,133 +243,53 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:.25rem; }
 }
 .age-card .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 8px; }
 #birth-year {
-  border: 3px solid #333333;
-  border-radius: 10px;
-  padding: .7rem .9rem;
-  font-size: 1rem;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
   font-weight: 700;
   text-align: center;
 }
 #age-gate-form .cta {
-  border: 3px solid #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #bb29bb;
   color: #fff;
-  padding: .75rem 1.1rem;
-  border-radius: 10px;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(8px, 1.6 * var(--s), 12px);
   font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 5px 5px 0 #333333;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
   cursor: pointer;
   transition: transform .12s ease, background .2s ease;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
 }
 #age-gate-form .cta:hover { transform: translateY(-2px); background: #a420a4; }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
 /* =============================
-   Short viewport safeguard
-   (tiny screens, landscape, keyboard-up)
+   Short viewport safeguards
    ============================= */
 @media (max-height: 720px) {
   html, body { min-height: 100svh; overflow-y: auto; }
-
   .container{
-    justify-content: flex-start;                       /* stop vertical centering */
-    min-height: auto;                                  /* allow scroll */
+    justify-content: flex-start;
+    min-height: auto;
     padding-top: clamp(10px, env(safe-area-inset-top) + 2vh, 6vh);
     padding-bottom: 2vh;
   }
-
   .bg-x { width: 100svw; height: 100svh; }
-  .bg-x img { max-height: 70svh; }                     /* leave room for logo/text */
-
-  .logo { max-height: min(16vh, 140px); }
-  h1 {
-    font-size: clamp(2rem, 6vw, 3.6rem);
-    transform: scaleX(0.92);                           /* no translate */
-    margin-top: 0.25rem;
-  }
+  .bg-x img { max-height: 70svh; }
+  .logo { max-height: clamp(110px, 16 * var(--s), 140px); }
+  h1 { font-size: clamp(24px, 6 * var(--s), 58px); transform: scaleX(0.92); margin-top: 0.25rem; }
 }
 
 @media (max-height: 600px) {
   .bg-x img { max-height: 65svh; }
-  .logo     { max-height: min(14vh, 120px); }
+  .logo     { max-height: clamp(100px, 14 * var(--s), 120px); }
 }
 
 /* Tiny phones width tweak */
 @media (max-width: 400px) {
   .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
-  .logo      { max-height: min(20vh, 160px); }
-}
-/* ==== HEIGHT-AWARE SCALING OVERRIDES ==== */
-
-/* 1) A single scale variable driven by the smaller viewport side */
-:root {
-  --s: 1vmin; /* 1 unit = 1% of the smaller viewport side */
-}
-
-/* 2) Background X already uses object-fit: contain; keep as-is */
-
-/* 3) Container spacing: make the top padding follow vmin, not vh only */
-.container {
-  padding-top: clamp(12px, calc(env(safe-area-inset-top) + 6 * var(--s)), 14 * var(--s));
-  gap: clamp(6px, 2 * var(--s), 16px);
-}
-
-/* 4) Logo: scale by vmin so it responds to height changes too */
-.logo {
-  max-width: clamp(220px, 40 * var(--s), 580px);
-  max-height: clamp(120px, 22 * var(--s), 180px);
-}
-
-/* 5) Headline: switch from vw → vmin */
-h1 {
-  font-size: clamp(28px, 9 * var(--s), 96px);
-  /* keep your condensed look */
-  transform: scaleX(0.92);
-  margin-top: clamp(2px, 1 * var(--s), 8px);
-}
-
-/* 6) CTA button: size and padding tied to vmin so it stays proportional */
-button.cta,
-#age-gate-form .cta {
-  font-size: clamp(14px, 2.2 * var(--s), 18px);
-  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
-  border-width: clamp(2px, 0.35 * var(--s), 3px);
-  border-radius: clamp(8px, 1.6 * var(--s), 12px);
-  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
-}
-
-/* 7) Inputs: track the same scale */
-.input,
-#birth-year {
-  font-size: clamp(14px, 2 * var(--s), 18px);
-  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
-  border-width: clamp(2px, 0.35 * var(--s), 3px);
-  border-radius: clamp(8px, 1.6 * var(--s), 10px);
-}
-
-/* 8) Modal + card bits: proportional borders/spacing */
-.modal-card,
-.age-card {
-  width: min(92vw, 520px);
-  border-width: clamp(2px, 0.35 * var(--s), 4px);
-  border-radius: clamp(10px, 1.8 * var(--s), 16px);
-  box-shadow: clamp(6px, 1 * var(--s), 8px) clamp(6px, 1 * var(--s), 8px) 0 #333333;
-  padding: clamp(18px, 2.8 * var(--s), 32px);
-}
-
-/* 9) Footer text: track vmin so it doesn’t blow up on tall/skinny viewports */
-.site-footer {
-  font-size: clamp(11px, 1.8 * var(--s), 14px);
-  margin-top: clamp(-12px, -1.6 * var(--s), -6px);
-  margin-bottom: clamp(12px, 2 * var(--s), 24px);
-}
-
-/* 10) Short viewport tweaks still apply, but switch to svh/svw and vmin for consistency */
-@media (max-height: 720px) {
-  html, body { min-height: 100svh; }
-  .bg-x { width: 100svw; height: 100svh; }
-  .bg-x img { max-height: 70svh; }
-  .logo { max-height: clamp(110px, 16 * var(--s), 140px); }
-  h1 { font-size: clamp(24px, 6 * var(--s), 58px); }
+  .logo      { max-height: clamp(120px, 20 * var(--s), 160px); }
 }

@@ -71,6 +71,7 @@ h1 { margin-top: 0; } /* remove the default top margin just in case */
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 0.5rem;
   z-index: 2; /* sits above background X */
 }

@@ -1,0 +1,263 @@
+/* ===== 0) Rhythm & scale tokens ===== */
+:root{
+  --s: 1vmin;
+  --stack: clamp(10px, 2.2vmin, 24px);       /* default vertical rhythm */
+  --stack-sm: clamp(6px, 1.2vmin, 14px);     /* compact rhythm */
+  --cta-shadow: 0 6px 0 #333333, 0 0 0 0 rgba(0,0,0,0);
+}
+
+/* ===== 1) Composition & balance ===== */
+/* keep the yellow X centered + let content sit perfectly centered in viewport */
+.container{
+  min-height: 100svh;                         /* better on mobile than 100vh */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;                    /* true vertical centering */
+  padding-top: max(6vmin, calc(env(safe-area-inset-top) + 16px));
+  padding-bottom: max(8vmin, calc(env(safe-area-inset-bottom) + 24px));
+  gap: var(--stack);
+}
+
+/* use consistent vertical rhythm between items */
+.content > * { margin: 0; }
+.content > * + * { margin-top: var(--stack-sm); }
+
+/* keep background X nicely framed inside viewport */
+.bg-x img{
+  width: 100%;
+  height: 100%;
+  max-height: 100svh;                          /* avoids overspill on short viewports */
+  object-fit: contain;
+  object-position: center;
+  opacity: .95;
+}
+
+/* ===== 2) Logo & headline interaction ===== */
+/* Add a subtle white "halo" so the mark reads on the yellow X */
+.logo{
+  max-width: clamp(220px, 40 * var(--s), 580px);
+  max-height: clamp(120px, 22 * var(--s), 180px);
+  margin-bottom: var(--stack-sm);
+  /* faux outline + soft lift (works with PNG/SVG) */
+  filter:
+    drop-shadow(0 0 0 rgba(0,0,0,0))
+    drop-shadow(0 0 6px rgba(255,255,255,.85))
+    drop-shadow(0 0 18px rgba(255,255,255,.6));
+  /* slight overlap reads as one composed unit with the X */
+  transform: translateY(-0.3vmin);
+}
+
+/* tighter, punchier headline with better tracking and width control */
+h1{
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: clamp(28px, 9 * var(--s), 96px);
+  letter-spacing: .5px;               /* a touch tighter */
+  transform: scaleX(0.94);            /* narrower, more retail-impact */
+  text-align: center;
+  margin-top: var(--stack-sm);
+}
+
+/* ===== 4) Button treatment (softer, more tactile) ===== */
+button.cta{
+  border: clamp(2px, .35 * var(--s), 3px) solid #333333;
+  background: #bb29bb;
+  color: #fff;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(10px, 2 * var(--s), 14px); /* a hair rounder */
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
+
+  /* softer, realistic elevation */
+  box-shadow: var(--cta-shadow);
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease,
+    background .2s ease,
+    filter .2s ease;
+}
+
+/* micro-interaction: lift + soften shadow */
+button.cta:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #333333, 0 8px 18px rgba(0,0,0,.08);
+  background: #a420a4;
+  filter: saturate(1.05);
+}
+
+/* active press state for nice “click” feel */
+button.cta:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 0 #333333, 0 4px 10px rgba(0,0,0,.06);
+}
+
+.success { color:#bb29bb; margin-top:.5rem; }
+small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
+.hidden-field { display:none !important; }
+
+/* =============================
+   Popup Modal
+   ============================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.5);
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  z-index: 3000;
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  border: clamp(2px, 0.35 * var(--s), 4px) solid #333333;
+  border-radius: clamp(10px, 1.8 * var(--s), 16px);
+  padding: clamp(18px, 2.8 * var(--s), 32px);
+  box-shadow: clamp(6px, 1 * var(--s), 8px) clamp(6px, 1 * var(--s), 8px) 0 #333333;
+  width: min(92vw, 520px);
+  text-align: center;
+}
+
+.modal-title {
+  margin: 0 0 .75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  background: #fff;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
+}
+
+/* =============================
+   Footer
+   ============================= */
+.site-footer {
+  position: fixed;                        /* pin to viewport */
+  bottom: max(12px, env(safe-area-inset-bottom)); /* a bit of breathing room */
+  left: 0;
+  width: 100%;
+  
+  z-index: 10;                            /* above yellow X */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
+  padding-bottom: clamp(8px, 1.5vmin, 16px); /* extra visual padding */
+  font-size: clamp(11px, 1.8 * var(--s), 14px);
+  background: transparent;                /* stays seamless */
+}
+
+.site-footer a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.site-footer a:hover {
+  border-bottom-color: #333;
+}
+
+/* =============================
+   Age Gate
+   ============================= */
+.agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+.agegate-active body { overflow: hidden !important; }
+
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;
+}
+
+.age-card {
+  width: min(92vw, 560px);
+  background: #fff;
+  color: #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(10px, 1.6 * var(--s), 12px);
+  box-shadow: clamp(5px, 0.9 * var(--s), 6px) clamp(5px, 0.9 * var(--s), 6px) 0 #333333;
+  padding: clamp(22px, 2.4 * var(--s), 28px);
+  text-align: center;
+}
+
+.age-card h2 {
+  margin: 0 0 12px;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.age-card .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+#birth-year {
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
+  font-weight: 700;
+  text-align: center;
+}
+
+#age-gate-form .cta {
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  background: #bb29bb;
+  color: #fff;
+  padding: clamp(10px, 1.6 * var(--s), 14px) clamp(14px, 2.2 * var(--s), 18px);
+  border-radius: clamp(8px, 1.6 * var(--s), 12px);
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
+  cursor: pointer;
+  transition: transform .12s ease, background .2s ease;
+  font-size: clamp(14px, 2.2 * var(--s), 18px);
+}
+
+#age-gate-form .cta:hover {
+  transform: translateY(-2px);
+  background: #a420a4;
+}
+
+.error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+/* =============================
+   Responsive tweaks
+   ============================= */
+@media (max-width: 400px) {
+  .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
+  .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
+}

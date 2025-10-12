@@ -1,14 +1,7 @@
 import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
-
-/**
- * App shell:
- * - Sticky header (z-50), nav stacks on mobile, wraps on desktop
- * - Marquee sits BELOW the header (so it never overlaps buttons)
- * - Fixed side rails at lg+, content gets side margins only at lg+
- * - overflow-x-hidden on outer wrapper to kill sideways scroll
- */
+import AgeGate from "./components/AgeGate.jsx";
 
 /* Little round badge */
 const Burst = ({ children, className = "" }) => (
@@ -70,9 +63,22 @@ const Header = () => (
         <span className="italic">Liquidation</span>
         <span className="block">Sale</span>
       </h1>
-      <div className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[4px_4px_0_#000]">
-        That’s UnXpected
-      </div>
+
+      {/* Random link button */}
+      <button
+        onClick={() => {
+          const urls = [
+            "https://media3.giphy.com/media/VFZDuY0nePXry/giphy.gif",
+            "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
+            "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
+          ];
+          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+          window.open(randomUrl, "_blank");
+        }}
+        className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform"
+      >
+        THAT’S UNXPECTED
+      </button>
     </div>
 
     {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
@@ -84,7 +90,6 @@ const Header = () => (
             { to: "/deals", label: "Deals", tone: "bg-purple-500 text-white" },
             { to: "/about", label: "About X", tone: "bg-yellow-300" },
             { to: "/merch", label: "Merch", tone: "bg-purple-500 text-white" },
-            
           ].map((item) => (
             <NavLink
               key={item.to}
@@ -147,7 +152,7 @@ const RightRail = () => (
   </aside>
 );
 
-/* Pages */
+/* Pages (inline versions) */
 const Home = () => (
   <section className="py-10 px-4 sm:px-8">
     <div className="relative w-full rounded-2xl border-[4px] border-black bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow-300">
@@ -199,7 +204,7 @@ const About = () => (
   <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
-      X Zero Sugar brings you bold flavor with no sugar. 
+      X Zero Sugar brings you bold flavor with no sugar.
     </p>
   </section>
 );
@@ -231,11 +236,14 @@ const Events = () => (
   </section>
 );
 
+/* ===== MAIN APP (exported) ===== */
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      {/* OUTER WRAPPER: prevent sideways scroll */}
       <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
+        {/* 🔒 Age gate overlay */}
+        <AgeGate minAge={18} rememberDays={30} requireDob={true} brand="X Zero Sugar" />
+
         <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />
@@ -288,3 +296,4 @@ export default function SugarSaleSite() {
     </HashRouter>
   );
 }
+

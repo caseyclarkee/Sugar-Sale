@@ -1,0 +1,16 @@
+# netlify.toml
+[build]                # Production (teaser served from /public)
+  publish = "public"
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+[context.deploy-preview]     # Pull requests / Deploy Previews
+  publish = "dist"
+  command = "npm install --no-fund --no-audit && npm run build"
+
+[context.branch-deploy]      # Non-main branches
+  publish = "dist"
+  command = "npm install --no-fund --no-audit && npm run build"

@@ -1,0 +1,12 @@
+# netlify.toml
+[build]                # Production (teaser served from /public)
+  publish = "public"
+  command = ""
+
+[context.deploy-preview]     # Pull requests / Deploy Previews
+  publish = "dist"
+  command = "npm ci && npm run build"
+
+[context.branch-deploy]      # Non-main branches
+  publish = "dist"
+  command = "npm ci && npm run build"

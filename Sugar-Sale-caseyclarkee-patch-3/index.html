@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- AGE GATE: pre-hydration lock -->
+  <script>(function(){try{document.documentElement.classList.add('agegate-active');}catch(e){}})();</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sugar Sale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Age Gate (matches teaser) */
+    .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+    .agegate-active body { overflow: hidden !important; }
+    #age-gate-overlay.age-gate {
+      position: fixed; inset: 0; z-index: 2147483647;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; background: #ffffff;
+    }
+    .age-card {
+      border: 2px solid #111;
+      border-radius: 16px;
+      padding: 16px;
+      width: min(560px, 92vw);
+      background: #fff;
+      box-shadow: 0 20px 50px rgba(0,0,0,.12);
+    }
+    .age-card h2 { margin: 0 0 .6rem; font-size: 1.6rem; font-weight: 900; }
+    #age-gate-form .row { display: flex; gap: .6rem; align-items: center; }
+    #age-gate-form input[type="number"] {
+      border: 2px solid #333; border-radius: 10px;
+      padding: 12px 14px; font-size: 1rem; width: 100%;
+    }
+    #age-gate-form .cta {
+      background: #6b21a8; color:#fff; border-radius: 12px; font-weight: 900;
+      padding: .8rem 1rem; border: none; cursor: pointer;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    #age-gate-form .cta:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+  </style>
+
+</head>
+<body class="min-h-screen">
+  <div id="root"></div>
+
+  <!-- Hidden form template so Netlify detects it -->
+  <form name="deal-entry" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="deal" />
+  </form>
+
+  <script type="module" src="/src/main.jsx"></script>
+
+  <script>
+  (function(){
+    // Guard against double init
+    if (window.__ageGateInit) return; window.__ageGateInit = true;
+
+    function unlock(){
+      try{ document.documentElement.classList.remove('agegate-active'); }catch(e){}
+      var ov = document.getElementById('age-gate-overlay');
+      if(ov){ ov.style.display='none'; }
+      document.body.style.overflow = '';
+    }
+
+    function validYear(y){
+      if(!y) return false;
+      var n = parseInt(y,10);
+      var now = new Date();
+      var currentYear = now.getFullYear();
+      if(isNaN(n)) return false;
+      if(n < 1900 || n > currentYear) return false;
+      return true;
+    }
+
+    function is18ByYear(y){
+      var now = new Date();
+      var currentYear = now.getFullYear();
+      return (currentYear - parseInt(y,10)) >= 18;
+    }
+
+    function getPass(){
+      try{ return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); }catch(e){ return null; }
+    }
+    function setPass(){
+      try{ localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); }catch(e){}
+    }
+    function isPassValid(pass){
+      if(!pass || !pass.ts) return false;
+      var ONE_HOUR = 60 * 60 * 1000;
+      return (Date.now() - pass.ts) < ONE_HOUR;
+    }
+
+    function init(){
+      var pass = getPass();
+      if(pass && isPassValid(pass)){ return unlock(); }
+
+      var form = document.getElementById('age-gate-form');
+      var err  = document.getElementById('age-error');
+      var input = document.getElementById('birth-year');
+      if(!form || !input) return;
+
+      // Prevent background scroll while active
+      document.body.style.overflow = 'hidden';
+
+      form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        err.textContent = '';
+        var y = (input.value || '').trim();
+        if(!validYear(y)){ err.textContent = 'Please enter a valid 4-digit year.'; return; }
+        if(!is18ByYear(y)){ err.textContent = 'Sorry, you must be 18 or older.'; return; }
+        setPass();
+        unlock();
+      });
+
+      // Autofocus field
+      try{ input.focus(); }catch(e){}
+    }
+
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+  </script>
+
+</body>
+</html>

@@ -323,3 +323,70 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
   .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
   .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
 }
+/* ===== MOBILE SIZING + SAFE AREA FIXES ===== */
+
+/* 1) Never let overlay cards exceed the visible viewport.
+      Use svh (small viewport height) and safe-area insets. */
+:root {
+  --edge: clamp(16px, 3vmin, 28px); /* breathing space around cards */
+}
+
+.modal-overlay,
+.age-gate {
+  padding: max(var(--edge), env(safe-area-inset-top))
+           max(var(--edge), env(safe-area-inset-right))
+           max(var(--edge), env(safe-area-inset-bottom))
+           max(var(--edge), env(safe-area-inset-left));
+  /* make sure the overlay itself tracks the visible height */
+  height: 100svh;
+}
+
+/* 2) Constrain cards and allow them to scroll internally if needed. */
+.modal-card,
+.age-card {
+  max-width: min(94vw, 560px);
+  max-height: calc(100svh - (var(--edge) * 2));
+  overflow: auto;                 /* internal scroll if content is tall */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 3) Keep the close button inside on small screens. */
+.close {
+  top: clamp(8px, 1.8vmin, 12px);
+  right: clamp(8px, 1.8vmin, 12px);
+  width: clamp(32px, 6vmin, 36px);
+  height: clamp(32px, 6vmin, 36px);
+  font-size: clamp(18px, 3.2vmin, 22px);
+  line-height: 1;
+}
+
+/* 4) Inputs: prevent iOS zoom jump by guaranteeing 16px+ font size. */
+.input,
+#birth-year {
+  font-size: max(16px, 2.2vmin);  /* was clamp(... 14px ...) */
+}
+
+/* 5) CTA buttons: likewise keep 16px+ and ensure they don't overflow. */
+button.cta,
+#age-gate-form .cta {
+  font-size: max(16px, 2.2vmin);
+  min-height: 44px;               /* Apple HIG tap target */
+  white-space: nowrap;            /* avoid wrapping on tiny widths */
+}
+
+/* 6) Footer pinned to bottom with breathing room over iOS bar. */
+.site-footer {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: clamp(6px, 1.2vmin, 14px);
+  z-index: 10;
+}
+
+/* 7) Keep the main stack visible above the fixed footer if content grows. */
+.container {
+  padding-bottom: max(80px, calc(env(safe-area-inset-bottom) + 56px));
+}

@@ -51,7 +51,7 @@ const Marquee = ({ text }) => (
 
 /* Header — stacks on mobile, wraps on desktop, no clipping */
 const Header = () => (
-import sugarLockup from "/images/sugar-lockup.png";
+import sugarLockup from "/public/images/sugar-lockup.png";
 
 const Header = () => (
   <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">

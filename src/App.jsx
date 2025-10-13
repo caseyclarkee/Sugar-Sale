@@ -136,7 +136,7 @@ const RightRail = () => (
       </Burst>
 
       {/* Gary GIF — no border or shadow */}
-      <div className="aspect-[3/4] overflow-hidden rounded-xl mb-6">
+      <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
         <img
           src="/images/gary.gif"
           alt="Gary"

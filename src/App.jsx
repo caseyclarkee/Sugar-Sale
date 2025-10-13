@@ -134,22 +134,28 @@ const LeftRail = () => (
 const RightRail = () => (
   <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-black bg-purple-500 p-4 text-center text-white z-40">
     <div className="mt-20">
+      {/* Burst badge */}
       <Burst className="mx-auto mb-6 h-24 w-24">
         <span className="text-lg">Sale On Now!</span>
       </Burst>
-      <div className="aspect-[3/4] overflow-hidden rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000] mb-6">
+
+      {/* Gary GIF — no border or shadow */}
+      <div className="aspect-[3/4] overflow-hidden rounded-xl mb-6">
         <img
-          src="https://placehold.co/300x400/png?text=Gary"
+          src="/images/gary.gif"
           alt="Gary"
           className="h-full w-full object-cover"
         />
       </div>
+
+      {/* Footer label */}
       <p className="font-black uppercase bg-yellow-300 text-black border-[4px] border-black px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly
       </p>
     </div>
   </aside>
 );
+
 
 /* Pages (inline versions) */
 const Home = () => (

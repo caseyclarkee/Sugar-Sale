@@ -139,10 +139,11 @@ const RightRail = () => (
       </Burst>
       <div className="aspect-[3/4] overflow-hidden rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000] mb-6">
         <img
-          src="https://placehold.co/300x400/png?text=Gary"
+          src="/images/gary.gif"
           alt="Gary"
           className="h-full w-full object-cover"
         />
+
       </div>
       <p className="font-black uppercase bg-yellow-300 text-black border-[4px] border-black px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly

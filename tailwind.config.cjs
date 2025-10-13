@@ -21,12 +21,9 @@ module.exports = {
         heavy: 900,
       },
 
-      body {
-  cursor: none;
-},
       /* Your custom colours (simple names) */
       colors: {
-       purple: '#BB29BB',
+        purple: '#BB29BB',
         yellow: '#FFDD00',
         pink: '#f9a8d4',
         grey: '#333333',

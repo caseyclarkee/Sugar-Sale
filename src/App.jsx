@@ -57,7 +57,7 @@ const Header = () => (
       <img
         src="/images/sugar-lockup.png"
         alt="Sugar Liquidation Sale"
-        className="h-28 sm:h-36 w-auto drop-shadow-[4px_4px_0_#000]"
+        className="h-28 sm:h-36 w-auto"
       />
 
       <button

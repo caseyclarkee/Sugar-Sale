@@ -132,7 +132,11 @@ const LeftRail = () => (
 );
 
 const RightRail = () => (
-<aside className="sticky top-24 w-[280px] shrink-0">
+  <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-black bg-purple-500 p-4 text-center text-white z-40">
+    <div className="mt-20">
+      <Burst className="mx-auto mb-6 h-24 w-24">
+        <span className="text-lg">Sale On Now!</span>
+      </Burst>
   <div className="aspect-[3/4] overflow-hidden mb-6">
     <img
       src="/images/gary.gif"

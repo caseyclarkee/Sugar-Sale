@@ -242,7 +242,7 @@ Buy some sugar, will you? You’ll make a grown man sleep better tonight.
     
   </section>
 
-        </div>
+       
 );
 
 const SugarSale = () => (

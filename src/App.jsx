@@ -203,7 +203,7 @@ const Merch = () => (
 
 const About = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">About X</h3>
+    <h3 className="text-8xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
       I’m Gary.
 I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally). Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
@@ -217,6 +217,7 @@ Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by p
 Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
 
 Buy some sugar, will you? You’ll make a grown man sleep better tonight.
+    <br>P.S Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please buy my sugar first.</br>
     </p>
   </section>
 );

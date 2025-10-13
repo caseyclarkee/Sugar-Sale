@@ -51,19 +51,16 @@ const Marquee = ({ text }) => (
 
 /* Header — stacks on mobile, wraps on desktop, no clipping */
 const Header = () => (
-  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-    {/* Logo row */}
-    <div className="flex items-center justify-between w-full px-4 sm:px-8">
-      <h1 className="relative text-4xl sm:text-6xl font-grey leading-[0.9] text-purple drop-shadow-[3px_3px_0_#000]">
-        <span className="absolute -left-8 -top-10 -z-10 rotate-12 text-[100px] sm:text-[140px] leading-none text-yellow select-none">
-          X
-        </span>
-        <span className="block">Sugar</span>
-        <span className="italic">Liquidation</span>
-        <span className="block">Sale</span>
-      </h1>
+import sugarLockup from "/images/sugar-lockup.png";
 
-      {/* Random link button */}
+const Header = () => (
+  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+    <div className="flex items-center justify-between w-full px-4 sm:px-8">
+      <img
+        src={sugarLockup}
+        alt="Sugar Liquidation Sale"
+        className="h-28 sm:h-36 w-auto drop-shadow-[4px_4px_0_#000]"
+      />
       <button
         onClick={() => {
           const urls = [
@@ -74,11 +71,12 @@ const Header = () => (
           const randomUrl = urls[Math.floor(Math.random() * urls.length)];
           window.open(randomUrl, "_blank");
         }}
-        className="ml-6 inline-block rounded-full border-[4px] border-grey bg-purple px-3 sm:px-4 py-2 text-white font-grey uppercase shadow-[6px_6px_0px_grey] hover:scale-105 transition-transform"
+        className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform"
       >
         THAT’S UNXPECTED
       </button>
     </div>
+
 
     {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
     <nav className="w-full relative z-[60] py-2">

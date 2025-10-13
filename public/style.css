@@ -335,18 +335,25 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
 @media (max-width: 560px) {
-  .age-card .row { grid-template-columns: 1fr 1fr; }
-  #age-gate-form .cta { grid-column: 1 / -1; }
-}
+  .age-card .row {
+    /* keep DD / MM / YYYY inline on mobile */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 10px;
+  }
 
-/* =============================
-   Mobile + Safe Area Fixes
-   ============================= */
-.input, #birth-year { font-size: max(16px, 2.2vmin); }
-button.cta, #age-gate-form .cta {
-  font-size: max(16px, 2.2vmin);
-  min-height: 44px;
-  white-space: nowrap;
+  /* inputs fill their thirds */
+  #birth-day,
+  #birth-month,
+  #birth-year {
+    width: 100%;
+  }
+
+  /* button drops to next row and spans full width */
+  #age-gate-form .cta {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+  }
 }
 
 .site-footer {

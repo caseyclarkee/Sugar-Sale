@@ -222,7 +222,27 @@ Buy some sugar, will you? You’ll make a grown man sleep better tonight.
       P.S. Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please take my sugar first.
     </p>
     <p>P.P.S. I  was the ninth runner up in the central auckland's salesman of the year awards in 2004.</p>
+
+      {/* FAQ */}
+          <div className="mt-6">
+            <h2 className="font-black uppercase text-xl mb-3">FAQ (Frequently Asked Quibbles)</h2>
+            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
+              <summary className="cursor-pointer font-black">Is any of this sugar used in the drink?</summary>
+              <div className="mt-2 text-sm">Absolutely not. X by Long White is zero sugar. Hence… this website.</div>
+            </details>
+            <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
+              <summary className="cursor-pointer font-black">Is the sugar good quality?</summary>
+              <div className="mt-2 text-sm">Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary) will.)</div>
+            </details>
+            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
+              <summary className="cursor-pointer font-black">Can I haggle?</summary>
+              <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
+            </details>
+          </div>
+    
   </section>
+
+        </div>
 );
 
 const SugarSale = () => (

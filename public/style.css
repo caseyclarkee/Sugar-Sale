@@ -281,9 +281,18 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 
 .age-card .row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 1fr 1fr auto; /* day, month, year, button */
   gap: 12px;
+  align-items: stretch; /* makes them all same height */
   margin-bottom: 8px;
+}
+
+#birth-day,
+#birth-month,
+#birth-year,
+#age-gate-form .cta {
+  height: 100%;
+  box-sizing: border-box;
 }
 
 #birth-day {

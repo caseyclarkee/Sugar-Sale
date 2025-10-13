@@ -1,0 +1,19 @@
+
+/* cursor.css — white triangle cursor */
+.sugar-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  background: white;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 9999;
+  transition: transform 0.05s ease-out;
+}
+@media (pointer: coarse) {
+  .sugar-cursor { display: none; }
+}

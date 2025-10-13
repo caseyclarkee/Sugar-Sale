@@ -2,7 +2,7 @@
    Global Font Setup
    ============================= */
 :root {
-  --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
+  --brand-font: "futura-pt-condensed", "Futura PT Condensed", "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
 }
 
 html, body, button, input, select, textarea {

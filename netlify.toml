@@ -1,0 +1,15 @@
+[build]
+  publish = "public"
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+[context.deploy-preview]
+  publish = "dist"
+  command = "npm install --no-fund --no-audit && npm run build"
+
+[context.branch-deploy]
+  publish = "dist"
+  command = "npm install --no-fund --no-audit && npm run build"

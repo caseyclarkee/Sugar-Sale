@@ -190,71 +190,113 @@
 </footer>
 
   <script>
-  (function(){
+  (function () {
     // Guard against double init
     if (window.__ageGateInit) return; window.__ageGateInit = true;
 
-    function unlock(){
-      try{ document.documentElement.classList.remove('agegate-active'); }catch(e){}
+    // --- helpers ---
+    function unlock() {
+      try { document.documentElement.classList.remove('agegate-active'); } catch (e) {}
       var ov = document.getElementById('age-gate-overlay');
-      if(ov){ ov.style.display='none'; }
+      if (ov) { ov.style.display = 'none'; }
       document.body.style.overflow = '';
     }
 
-    function validYear(y){
-      if(!y) return false;
-      var n = parseInt(y,10);
-      var now = new Date();
-      var currentYear = now.getFullYear();
-      if(isNaN(n)) return false;
-      if(n < 1900 || n > currentYear) return false;
-      return true;
+    function getPass() {
+      try { return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); } catch (e) { return null; }
     }
-
-    function is18ByYear(y){
-      var now = new Date();
-      var currentYear = now.getFullYear();
-      return (currentYear - parseInt(y,10)) >= 18;
+    function setPass() {
+      try { localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); } catch (e) {}
     }
-
-    function getPass(){
-      try{ return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); }catch(e){ return null; }
-    }
-    function setPass(){
-      try{ localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); }catch(e){}
-    }
-    function isPassValid(pass){
-      if(!pass || !pass.ts) return false;
+    function isPassValid(pass) {
+      if (!pass || !pass.ts) return false;
       var ONE_HOUR = 60 * 60 * 1000;
       return (Date.now() - pass.ts) < ONE_HOUR;
     }
 
-    function init(){
+    function isValidDate(y, m, d) {
+      // Months are 1–12 in UI, 0–11 in Date
+      var dt = new Date(y, m - 1, d);
+      return dt.getFullYear() === y && (dt.getMonth() + 1) === m && dt.getDate() === d;
+    }
+
+    function isAdult(d, m, y) {
+      var birth = new Date(y, m - 1, d);
+      var cutoff = new Date();
+      cutoff.setHours(0, 0, 0, 0);
+      cutoff.setFullYear(cutoff.getFullYear() - 18);
+      return birth <= cutoff;
+    }
+
+    function autoAdvanceSetup(dayEl, monthEl, yearEl) {
+      function goNext(current, next, maxLen) {
+        current.addEventListener('input', function () {
+          if (this.value.length >= maxLen) { next && next.focus(); }
+        });
+      }
+      if (dayEl && monthEl) goNext(dayEl, monthEl, 2);
+      if (monthEl && yearEl) goNext(monthEl, yearEl, 2);
+    }
+
+    function init() {
+      // If we already have a recent pass, unlock immediately
       var pass = getPass();
-      if(pass && isPassValid(pass)){ return unlock(); }
+      if (pass && isPassValid(pass)) { return unlock(); }
 
-      var form = document.getElementById('age-gate-form');
-      var err  = document.getElementById('age-error');
-      var input = document.getElementById('birth-year');
-      if(!form || !input) return;
+      var form  = document.getElementById('age-gate-form');
+      var err   = document.getElementById('age-error');
+      var dayEl   = document.getElementById('birth-day');
+      var monthEl = document.getElementById('birth-month');
+      var yearEl  = document.getElementById('birth-year');
 
-      form.addEventListener('submit', function(ev){
+      if (!form || !dayEl || !monthEl || !yearEl) return;
+
+      autoAdvanceSetup(dayEl, monthEl, yearEl);
+
+      form.addEventListener('submit', function (ev) {
         ev.preventDefault();
         err.textContent = '';
-        var y = (input.value || '').trim();
-        if(!validYear(y)){ err.textContent = 'Please enter a valid 4-digit year.'; return; }
-        if(!is18ByYear(y)){ err.textContent = 'Sorry, you must be 18 or older.'; return; }
+
+        var d = parseInt((dayEl.value || '').trim(), 10);
+        var m = parseInt((monthEl.value || '').trim(), 10);
+        var y = parseInt((yearEl.value || '').trim(), 10);
+
+        var nowYear = (new Date()).getFullYear();
+
+        // Basic range checks
+        if (!d || !m || !y || m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > nowYear) {
+          err.textContent = 'Please enter a valid date of birth.';
+          return;
+        }
+
+        // Real calendar validation (incl. leap years)
+        if (!isValidDate(y, m, d)) {
+          err.textContent = 'That date doesn’t exist. Please check and try again.';
+          return;
+        }
+
+        // 18+ check (exact, day-accurate)
+        if (!isAdult(d, m, y)) {
+          err.textContent = 'Sorry, you must be 18 or older.';
+          return;
+        }
+
+        // Passed — remember for an hour and unlock
         setPass();
         unlock();
       });
 
-      // Autofocus field
-      try{ input.focus(); }catch(e){}
+      // Autofocus first field
+      try { dayEl.focus(); } catch (e) {}
     }
 
-    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   })();
-  </script>
+</script>
 
 </body>
 

@@ -10,7 +10,7 @@ const Burst = ({ children, className = "" }) => (
       className
     }
   >
-    <div className="px-4 py-2 text-center font-grey uppercase tracking-wide">
+    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">
       {children}
     </div>
   </div>
@@ -19,7 +19,7 @@ const Burst = ({ children, className = "" }) => (
 /* Slow, smooth marquee */
 const Marquee = ({ text }) => (
   <div className="border-y-[4px] border-grey bg-pink-300 text-grey overflow-hidden w-full">
-    <div className="marquee flex whitespace-nowrap py-2 text-sm font-grey uppercase tracking-widest">
+    <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
       <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
         {Array.from({ length: 24 }).map((_, i) => (
           <span key={`a-${i}`} className="mx-6">
@@ -114,7 +114,7 @@ const Header = () => (
 const LeftRail = () => (
   <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-grey bg-yellow p-4 text-center z-40">
     <div className="mt-20">
-      <p className="font-grey uppercase mb-4">We didn't use any sugar in</p>
+      <p className="font-black uppercase mb-4">We didn't use any sugar in</p>
       <div className="aspect-square w-full overflow-hidden rounded-full border-[4px] border-grey shadow-[4px_4px_0_#000] mb-4">
         <img
           src="https://placehold.co/300x300/png?text=Can"
@@ -122,7 +122,7 @@ const LeftRail = () => (
           className="h-full w-full object-cover"
         />
       </div>
-      <p className="font-grey uppercase">So Gary needs to sell the sugar</p>
+      <p className="font-black uppercase">So Gary needs to sell the sugar</p>
     </div>
   </aside>
 );
@@ -145,7 +145,7 @@ const RightRail = () => (
       </div>
 
       {/* Footer label */}
-      <p className="font-grey uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
+      <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly
       </p>
     </div>
@@ -157,12 +157,12 @@ const RightRail = () => (
 const Home = () => (
   <section className="py-10 px-4 sm:px-8">
     <div className="relative w-full rounded-2xl border-[4px] border-grey bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow">
-      <h2 className="text-4xl sm:text-5xl font-grey uppercase mb-6 drop-shadow-[2px_2px_0_#000]">
+      <h2 className="text-4xl sm:text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">
         Sugar Liquidation! Sale!
       </h2>
       <div className="absolute right-3 top-3 sm:right-6 sm:top-6">
         <Burst className="h-24 w-24 sm:h-28 sm:w-28">
-          <span className="text-lg sm:text-xl font-grey">ON NOW!</span>
+          <span className="text-lg sm:text-xl font-black">ON NOW!</span>
         </Burst>
       </div>
       <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
@@ -182,7 +182,7 @@ const Home = () => (
 
 const Merch = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-grey mb-6">Merch</h3>
+    <h3 className="text-3xl font-black mb-6">Merch</h3>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <div
@@ -192,7 +192,7 @@ const Merch = () => (
           <div className="aspect-square rounded-lg border-[3px] border-grey bg-gray-100 grid place-items-center">
             <span className="text-gray-500">Item {i}</span>
           </div>
-          <button className="mt-4 w-full rounded-lg border-[3px] border-grey bg-yellow px-3 py-2 font-grey uppercase shadow-[3px_3px_0_#000]">
+          <button className="mt-4 w-full rounded-lg border-[3px] border-grey bg-yellow px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">
             Register interest
           </button>
         </div>
@@ -203,7 +203,7 @@ const Merch = () => (
 
 const About = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-grey mb-4">About X</h3>
+    <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
       X Zero Sugar brings you bold flavor with no sugar.
     </p>
@@ -212,7 +212,7 @@ const About = () => (
 
 const SugarSale = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-grey mb-4">Sugar Sale</h3>
+    <h3 className="text-3xl font-black mb-4">Sugar Sale</h3>
     <div className="rounded-2xl border-[4px] border-grey bg-yellow-200 p-6 shadow-[4px_4px_0_#000]">
       <p className="text-grey">Buy a 10-pack and get the sugar free—limited time only.</p>
     </div>
@@ -221,7 +221,7 @@ const SugarSale = () => (
 
 const Events = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-grey mb-4">Events</h3>
+    <h3 className="text-3xl font-black mb-4">Events</h3>
     <ul className="space-y-3">
       {["Pop-up tasting — Sat 2pm", "Demo day — Sun 12pm", "Warehouse tour — Next Fri"].map(
         (t, i) => (
@@ -275,13 +275,13 @@ export default function SugarSaleSite() {
                 <div className="flex items-center gap-3">
                   <a
                     href="#"
-                    className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-grey uppercase shadow-[3px_3px_0_#000]"
+                    className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
                   >
                     Terms
                   </a>
                   <a
                     href="#"
-                    className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-grey uppercase text-white shadow-[3px_3px_0_#000]"
+                    className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
                   >
                     Privacy
                   </a>

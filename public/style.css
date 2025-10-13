@@ -6,6 +6,7 @@
 :root {
   --brand-font: "futura-pt", Futura, "Avenir Next", Avenir, Montserrat, Arial, sans-serif;
   --s: 1vmin; /* master scale = smaller viewport side */
+  --edge: clamp(16px, 3vmin, 28px); /* breathing space around cards */
 }
 
 html, body {
@@ -32,7 +33,7 @@ img, svg { display: block; }
    Background X (scrolls with content)
    ============================= */
 .bg-x {
-  position: absolute; /* scrolls naturally with the page */
+  position: absolute;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
@@ -198,15 +199,15 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: clamp(8px, 1.8vmin, 12px);
+  right: clamp(8px, 1.8vmin, 12px);
   border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   background: #fff;
   border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  font-size: 22px;
-  line-height: 28px;
+  width: clamp(32px, 6vmin, 36px);
+  height: clamp(32px, 6vmin, 36px);
+  font-size: clamp(18px, 3.2vmin, 22px);
+  line-height: 1;
   font-weight: 900;
   cursor: pointer;
   box-shadow: clamp(4px, 0.8 * var(--s), 6px) clamp(4px, 0.8 * var(--s), 6px) 0 #333333;
@@ -216,19 +217,17 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
    Footer
    ============================= */
 .site-footer {
-  position: fixed;                        /* pin to viewport */
-  bottom: max(12px, env(safe-area-inset-bottom)); /* a bit of breathing room */
+  position: fixed;
+  bottom: max(12px, env(safe-area-inset-bottom));
   left: 0;
   width: 100%;
-  
-  z-index: 10;                            /* above yellow X */
+  z-index: 10;
   display: flex;
   justify-content: center;
   gap: 1rem;
-
-  padding-bottom: clamp(8px, 1.5vmin, 16px); /* extra visual padding */
+  padding-bottom: clamp(8px, 1.5vmin, 16px);
   font-size: clamp(11px, 1.8 * var(--s), 14px);
-  background: transparent;                /* stays seamless */
+  background: transparent;
 }
 
 .site-footer a {
@@ -238,20 +237,60 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
   transition: border-color 0.2s ease;
 }
 
-.site-footer a:hover {
-  border-bottom-color: #333;
-}
+.site-footer a:hover { border-bottom-color: #333; }
 
 /* =============================
    Age Gate
    ============================= */
-
 .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
 .agegate-active body { overflow: hidden !important; }
 
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(var(--edge), env(safe-area-inset-top))
+           max(var(--edge), env(safe-area-inset-right))
+           max(var(--edge), env(safe-area-inset-bottom))
+           max(var(--edge), env(safe-area-inset-left));
+  background: #ffffff;
+  height: 100svh;
+}
+
+.age-card {
+  width: min(92vw, 560px);
+  background: #fff;
+  color: #333333;
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(10px, 1.6 * var(--s), 12px);
+  box-shadow: clamp(5px, 0.9 * var(--s), 6px) clamp(5px, 0.9 * var(--s), 6px) 0 #333333;
+  padding: clamp(22px, 2.4 * var(--s), 28px);
+  text-align: center;
+  max-width: min(94vw, 560px);
+  max-height: calc(100svh - (var(--edge) * 2));
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.age-card h2 {
+  margin: 0 0 12px;
+  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
 .age-card .row {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.9fr auto; /* day, month, year, button */
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,1fr)
+    minmax(0,1fr)
+    auto;
   gap: 12px;
   align-items: stretch;
   margin-bottom: 8px;
@@ -259,27 +298,16 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 
 #birth-day,
 #birth-month,
-#birth-year,
-#age-gate-form .cta {
+#birth-year {
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: max(16px, 2.2vmin);
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
-}
-
-/* Make it responsive */
-@media (max-width: 560px) {
-  .age-card .row {
-    grid-template-columns: 1fr 1fr; /* split into two columns */
-  }
-
-  #birth-day,
-  #birth-month,
-  #birth-year {
-    width: 100%;
-  }
-
-  #age-gate-form .cta {
-    grid-column: 1 / -1; /* make button span full width */
-  }
 }
 
 #age-gate-form .cta {
@@ -294,6 +322,9 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
   cursor: pointer;
   transition: transform .12s ease, background .2s ease;
   font-size: clamp(14px, 2.2 * var(--s), 18px);
+  height: 100%;
+  white-space: nowrap;
+  min-width: 120px;
 }
 
 #age-gate-form .cta:hover {
@@ -303,65 +334,21 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
+@media (max-width: 560px) {
+  .age-card .row { grid-template-columns: 1fr 1fr; }
+  #age-gate-form .cta { grid-column: 1 / -1; }
+}
+
 /* =============================
-   Responsive tweaks
+   Mobile + Safe Area Fixes
    ============================= */
-@media (max-width: 400px) {
-  .container { padding-top: clamp(12px, env(safe-area-inset-top) + 5vh, 12vh); }
-  .logo { max-height: clamp(120px, 20 * var(--s), 160px); }
-}
-/* ===== MOBILE SIZING + SAFE AREA FIXES ===== */
-
-/* 1) Never let overlay cards exceed the visible viewport.
-      Use svh (small viewport height) and safe-area insets. */
-:root {
-  --edge: clamp(16px, 3vmin, 28px); /* breathing space around cards */
-}
-
-.modal-overlay,
-.age-gate {
-  padding: max(var(--edge), env(safe-area-inset-top))
-           max(var(--edge), env(safe-area-inset-right))
-           max(var(--edge), env(safe-area-inset-bottom))
-           max(var(--edge), env(safe-area-inset-left));
-  /* make sure the overlay itself tracks the visible height */
-  height: 100svh;
-}
-
-/* 2) Constrain cards and allow them to scroll internally if needed. */
-.modal-card,
-.age-card {
-  max-width: min(94vw, 560px);
-  max-height: calc(100svh - (var(--edge) * 2));
-  overflow: auto;                 /* internal scroll if content is tall */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 3) Keep the close button inside on small screens. */
-.close {
-  top: clamp(8px, 1.8vmin, 12px);
-  right: clamp(8px, 1.8vmin, 12px);
-  width: clamp(32px, 6vmin, 36px);
-  height: clamp(32px, 6vmin, 36px);
-  font-size: clamp(18px, 3.2vmin, 22px);
-  line-height: 1;
-}
-
-/* 4) Inputs: prevent iOS zoom jump by guaranteeing 16px+ font size. */
-.input,
-#birth-year {
-  font-size: max(16px, 2.2vmin);  /* was clamp(... 14px ...) */
-}
-
-/* 5) CTA buttons: likewise keep 16px+ and ensure they don't overflow. */
-button.cta,
-#age-gate-form .cta {
+.input, #birth-year { font-size: max(16px, 2.2vmin); }
+button.cta, #age-gate-form .cta {
   font-size: max(16px, 2.2vmin);
-  min-height: 44px;               /* Apple HIG tap target */
-  white-space: nowrap;            /* avoid wrapping on tiny widths */
+  min-height: 44px;
+  white-space: nowrap;
 }
 
-/* 6) Footer pinned to bottom with breathing room over iOS bar. */
 .site-footer {
   position: fixed;
   left: 0;
@@ -373,7 +360,4 @@ button.cta,
   z-index: 10;
 }
 
-/* 7) Keep the main stack visible above the fixed footer if content grows. */
-.container {
-  padding-bottom: max(80px, calc(env(safe-area-inset-bottom) + 56px));
-}
+.container { padding-bottom: max(80px, calc(env(safe-area-inset-bottom) + 56px)); }

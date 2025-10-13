@@ -1,21 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sugar Sale</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen">
-  <div id="root"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sugar Liquidation Sale™</title>
 
-  <!-- Hidden form template so Netlify detects it -->
-  <form name="deal-entry" netlify netlify-honeypot="bot-field" hidden>
-    <input type="text" name="name" />
-    <input type="email" name="email" />
-    <input type="text" name="deal" />
-  </form>
+    <!-- Pre-lock: hide everything until verified -->
+    <script>
+      try { document.documentElement.classList.add('agegate-active'); } catch(e){}
+    </script>
 
-  <script type="module" src="/src/main.jsx"></script>
-</body>
+    <!-- Age Gate stylesheet -->
+    <link rel="stylesheet" href="/agegate.css" />
+  </head>
+
+  <body>
+    <!-- ===================== AGE GATE ====================== -->
+    <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+      <div class="age-card">
+        <h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
+        <form id="age-gate-form">
+          <div class="row">
+            <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
+            <button type="submit" class="cta">Continue</button>
+          </div>
+          <p id="age-error" class="error" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===================== APP ROOT ====================== -->
+    <div id="root"></div>
+
+    <!-- ===================== AGE GATE LOGIC ====================== -->
+    <script>
+      (function(){
+        if (window.__ageGateInit) return; window.__ageGateInit = true;
+
+        function unlock(){
+          document.documentElement.classList.remove('agegate-active');
+          var ov = document.getElementById('age-gate-overlay');
+          if (ov) ov.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+
+        function validYear(y){ const n = +y, Y = new Date().getFullYear(); return n >= 1900 && n <= Y; }
+        function is18ByYear(y){ return (new Date().getFullYear() - (+y)) >= 18; }
+        function getPass(){ try { return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); } catch { return null; } }
+        function setPass(){ localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); }
+        function isPassValid(p){ return p && p.ts && (Date.now() - p.ts) < (60 * 60 * 1000); } // 1 hr
+
+        function init(){
+          const pass = getPass();
+          if (pass && isPassValid(pass)) return unlock();
+
+          document.body.style.overflow = 'hidden';
+          const form = document.getElementById('age-gate-form');
+          const err  = document.getElementById('age-error');
+          const input = document.getElementById('birth-year');
+          if (!form) return;
+
+          form.addEventListener('submit', e => {
+            e.preventDefault(); err.textContent = '';
+            const y = (input.value || '').trim();
+            if (!validYear(y)) return err.textContent = 'Please enter a valid 4-digit year.';
+            if (!is18ByYear(y)) return err.textContent = 'Sorry, you must be 18 or older.';
+            setPass(); unlock();
+          });
+          try { input.focus(); } catch(e){}
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
+      })();
+    </script>
+
+    <!-- ===================== SAFETY GUARD ====================== -->
+    <script>
+      (function(){
+        function ensureNotStuck(){
+          if (document.documentElement.classList.contains('agegate-active') &&
+              !document.getElementById('age-gate-overlay')) {
+            document.documentElement.classList.remove('agegate-active');
+            document.body.style.overflow = '';
+            console.warn('[age-gate] overlay missing; pre-lock removed');
+          }
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureNotStuck);
+        else ensureNotStuck();
+      })();
+    </script>
+
+    <!-- ===================== VITE ENTRY ====================== -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

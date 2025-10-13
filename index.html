@@ -1,43 +1,33 @@
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sugar Liquidation Sale</title>
-
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    
-    <link rel="stylesheet" href="/scripts/sugar-cursor.css"/>
-
-    <!-- Adobe Fonts -->
-    <link rel="stylesheet" href="https://use.typekit.net/sdg5fiu.css" />
-
-    <!-- Age gate pre-lock + stylesheet -->
-    <script>(function(){try{document.documentElement.classList.add('agegate-active');}catch(e){}})();</script>
-    <link rel="stylesheet" href="/agegate.css" />
-  </head>
-
- 
-
-
-  <body>
-    <!-- Age Gate Overlay -->
-    <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
-      <div class="age-card">
-        <h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
-        <form id="age-gate-form">
-          <div class="row">
-            <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
-            <button type="submit" class="cta">Continue</button>
-          </div>
-          <p id="age-error" class="error" aria-live="polite"></p>
-        </form>
-      </div>
-    </div>
-
-    <!-- React mount point -->
-    <div id="root"></div>
-
-    <!-- Age gate logic -->
-    <script>
+ <head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sugar Liquidation Sale</title>
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/scripts/sugar-cursor.css" rel="stylesheet"/>
+<!-- Adobe Fonts -->
+<link href="https://use.typekit.net/sdg5fiu.css" rel="stylesheet"/>
+<!-- Age gate pre-lock + stylesheet -->
+<script>(function(){try{document.documentElement.classList.add('agegate-active');}catch(e){}})();</script>
+<link href="/agegate.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- Age Gate Overlay -->
+<div aria-labelledby="age-title" aria-modal="true" class="age-gate" id="age-gate-overlay" role="dialog">
+<div class="age-card">
+<h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
+<form id="age-gate-form">
+<div class="row">
+<input id="birth-year" inputmode="numeric" min="1900" name="birth-year" placeholder="YYYY" required="" type="number"/>
+<button class="cta" type="submit">Continue</button>
+</div>
+<p aria-live="polite" class="error" id="age-error"></p>
+</form>
+</div>
+</div>
+<!-- React mount point -->
+<div id="root"></div>
+<!-- Age gate logic -->
+<script>
     (function(){
       if (window.__ageGateInit) return; window.__ageGateInit = true;
       function unlock(){ try{ document.documentElement.classList.remove('agegate-active'); }catch(e){}; var ov=document.getElementById('age-gate-overlay'); if(ov){ ov.style.display='none'; } document.body.style.overflow=''; }
@@ -63,9 +53,8 @@
       if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
     })();
     </script>
-
-    <!-- Safety guard -->
-    <script>
+<!-- Safety guard -->
+<script>
     (function(){
       function ensureNotStuck(){
         if (document.documentElement.classList.contains('agegate-active') &&
@@ -79,13 +68,9 @@
       else ensureNotStuck();
     })();
     </script>
-
-    <!-- Vite entry -->
-    <script type="module" src="/src/main.jsx"></script>
-
-    <canvas id="sugar-stage"></canvas>
-<div id="sugar-cursor" aria-hidden="true"></div>
-    <script src="/scripts/sugar-cursor.js"></script>
-  </body>
-</html>
-
+<!-- Vite entry -->
+<script src="/src/main.jsx" type="module"></script>
+<canvas id="sugar-stage"></canvas>
+<div aria-hidden="true" id="sugar-cursor"></div>
+<script src="/scripts/sugar-cursor.js"></script>
+<script defer="True" src="/scripts/sugar-cursor-after-agegate.js"></script></body>

@@ -1,5 +1,5 @@
 /* /public/agegate.css — copied as-is by Vite */
-.agegate-active body > :not(#age-gate-overlay) { display: none !important; }
+.agegate-active body > :not(#age-gate-overlay):not(#sugar-stage):not(#sugar-cursor) { display: none !important; }
 .agegate-active body { overflow: hidden !important; }
 .agegate-active #root { display: none !important; }
 
@@ -31,3 +31,8 @@
   padding: .8rem 1rem; border: none; cursor: pointer;
 }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+
+/* Hide sugar cursor while the age gate is active */
+.agegate-active #sugar-stage,
+.agegate-active #sugar-cursor { display: none !important; }

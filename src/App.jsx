@@ -51,16 +51,11 @@ const Marquee = ({ text }) => (
 
 /* Header — stacks on mobile, wraps on desktop, no clipping */
 const Header = () => (
-import sugarLockup from "/public/images/sugar-lockup.png";
-
-const Header = () => (
-  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-    <div className="flex items-center justify-between w-full px-4 sm:px-8">
-      <img
-        src={sugarLockup}
-        alt="Sugar Liquidation Sale"
-        className="h-28 sm:h-36 w-auto drop-shadow-[4px_4px_0_#000]"
-      />
+<img
+  src="/images/sugar-lockup.png"
+  alt="Sugar Liquidation Sale"
+  className="h-28 sm:h-36 w-auto drop-shadow-[4px_4px_0_#000]"
+/>
       <button
         onClick={() => {
           const urls = [

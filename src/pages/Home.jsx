@@ -23,11 +23,11 @@ export default function Home() {
             <span className="text-xl font-black">ON NOW!</span>
           </Burst>
         </div>
-        <img
-          src="https://placehold.co/800x400/png?text=Gary+Hero"
-          alt="Hero"
-          className="mx-auto mt-6 rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]"
-        />
+       <img
+  src="/images/gary.gif"
+  alt="Gary"
+  className="mx-auto mt-6 rounded-xl border-[4px] border-black shadow-[4px_4px_0_#000]"
+/>
       </div>
     </section>
   );

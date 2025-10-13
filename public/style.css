@@ -245,45 +245,15 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
 /* =============================
    Age Gate
    ============================= */
+
 .agegate-active body > :not(#age-gate-overlay) { display: none !important; }
 .agegate-active body { overflow: hidden !important; }
 
-.age-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483647;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: #ffffff;
-}
-
-.age-card {
-  width: min(92vw, 560px);
-  background: #fff;
-  color: #333333;
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
-  border-radius: clamp(10px, 1.6 * var(--s), 12px);
-  box-shadow: clamp(5px, 0.9 * var(--s), 6px) clamp(5px, 0.9 * var(--s), 6px) 0 #333333;
-  padding: clamp(22px, 2.4 * var(--s), 28px);
-  text-align: center;
-}
-
-.age-card h2 {
-  margin: 0 0 12px;
-  font-family: "futura-pt-condensed","futura-pt",Futura,"Avenir Next",Avenir,Montserrat,Arial,sans-serif;
-  font-weight: 800;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
 .age-card .row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto; /* day, month, year, button */
+  grid-template-columns: 1fr 1fr 0.9fr auto; /* day, month, year, button */
   gap: 12px;
-  align-items: stretch; /* makes them all same height */
+  align-items: stretch;
   margin-bottom: 8px;
 }
 
@@ -295,31 +265,21 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
   box-sizing: border-box;
 }
 
-#birth-day {
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
-  border-radius: clamp(8px, 1.6 * var(--s), 10px);
-  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
-  font-size: clamp(14px, 2 * var(--s), 18px);
-  font-weight: 700;
-  text-align: center;
-}
+/* Make it responsive */
+@media (max-width: 560px) {
+  .age-card .row {
+    grid-template-columns: 1fr 1fr; /* split into two columns */
+  }
 
-#birth-month {
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
-  border-radius: clamp(8px, 1.6 * var(--s), 10px);
-  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
-  font-size: clamp(14px, 2 * var(--s), 18px);
-  font-weight: 700;
-  text-align: center;
-}
+  #birth-day,
+  #birth-month,
+  #birth-year {
+    width: 100%;
+  }
 
-#birth-year {
-  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
-  border-radius: clamp(8px, 1.6 * var(--s), 10px);
-  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
-  font-size: clamp(14px, 2 * var(--s), 18px);
-  font-weight: 700;
-  text-align: center;
+  #age-gate-form .cta {
+    grid-column: 1 / -1; /* make button span full width */
+  }
 }
 
 #age-gate-form .cta {

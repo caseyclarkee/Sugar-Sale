@@ -137,6 +137,7 @@ const RightRail = () => (
       <Burst className="mx-auto mb-6 h-24 w-24">
         <span className="text-lg">Sale On Now!</span>
       </Burst>
+         </div>
     <div className="aspect-[3/4] overflow-hidden mb-6">
   <img
     src="/images/gary.gif"
@@ -145,7 +146,7 @@ const RightRail = () => (
   />
 </div>
 
-      </div>
+   
       <p className="font-black uppercase bg-yellow-300 text-black border-[4px] border-black px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly
       </p>

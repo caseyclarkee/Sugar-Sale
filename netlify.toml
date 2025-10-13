@@ -7,10 +7,10 @@
   NODE_VERSION = "20"
   NPM_VERSION = "10"
 
-[context.deploy-preview]     # PRs / Deploy Previews
+[context.deploy-preview]
   publish = "dist"
   command = "npm install --no-fund --no-audit && npm run build"
 
-[context.branch-deploy]      # Non-main branches
+[context.branch-deploy]
   publish = "dist"
   command = "npm install --no-fund --no-audit && npm run build"

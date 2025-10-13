@@ -217,8 +217,11 @@ Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by p
 Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
 
 Buy some sugar, will you? You’ll make a grown man sleep better tonight.
-    <br>P.S Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please buy my sugar first.</br>
+</p>
+    <p>
+      P.S. Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please take my sugar first.
     </p>
+    <p>P.P.S. I  was the ninth runner up in the central auckland's salesman of the year awards in 2004.</p>
   </section>
 );
 

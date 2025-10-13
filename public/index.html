@@ -28,20 +28,22 @@
 <body>
   <div id="root"></div>
 
-  <!-- Age Gate Overlay -->
-  <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
-    <div class="age-card">
-      <h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
-      <form id="age-gate-form">
-        <div class="row">
-          <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
-          <button type="submit" class="cta">Continue</button>
-        </div>
-        <p id="age-error" class="error" aria-live="polite"></p>
-        <small class="muted"></small> 
-      </form>
-    </div>
+ <!-- Age Gate Overlay -->
+<div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+  <div class="age-card">
+    <h2 id="age-title">Are you 18 or older? Enter your date of birth</h2>
+    <form id="age-gate-form">
+      <div class="row">
+        <input type="number" id="birth-day" name="birth-day" placeholder="DD" min="1" max="31" inputmode="numeric" required />
+        <input type="number" id="birth-month" name="birth-month" placeholder="MM" min="1" max="12" inputmode="numeric" required />
+        <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
+        <button type="submit" class="cta">Continue</button>
+      </div>
+      <p id="age-error" class="error" aria-live="polite"></p>
+      <small class="muted"></small>
+    </form>
   </div>
+</div>
 
 
 <!-- Modal: Register Interest -->

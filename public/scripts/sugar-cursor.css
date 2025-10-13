@@ -3,14 +3,6 @@
   body { cursor: none; }
 }
 
-#sugar-stage {
-  position: fixed;
-  inset: 0;
-  display: block;
-  z-index: 1;
-  pointer-events: none;
-}
-
 #sugar-cursor {
   position: fixed;
   left: 0; top: 0;
@@ -33,3 +25,19 @@
 @media (prefers-reduced-motion: reduce) {
   #sugar-cursor::before { animation: none; }
 }
+/* Make sure cursor appears above nav */
+#sugar-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999; /* ensures it's drawn over nav and other fixed elements */
+}
+
+/* Hide sugar cursor on touch/mobile devices */
+@media (hover: none), (pointer: coarse) {
+  #sugar-stage,
+  #sugar-cursor {
+    display: none !important;
+  }
+}
+

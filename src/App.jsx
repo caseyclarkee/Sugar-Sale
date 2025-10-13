@@ -205,7 +205,18 @@ const About = () => (
   <section className="px-4 sm:px-8 py-12">
     <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
-      X Zero Sugar brings you bold flavor with no sugar.
+      I’m Gary.
+I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally). Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
+Zero. Sugar.
+
+Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent.
+
+So I decided to take matters into my own sticky hands.
+Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation. Everything must go: bagged sugar, boxed sugar, sculpted sugar, mystery sugar. If I can make it out of sugar, I’ll sell it.
+
+Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
+
+Buy some sugar, will you? You’ll make a grown man sleep better tonight.
     </p>
   </section>
 );

@@ -51,13 +51,15 @@ const Marquee = ({ text }) => (
 
 /* Header — stacks on mobile, wraps on desktop, no clipping */
 const Header = () => (
-  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-black bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+    {/* Logo + button row */}
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <img
         src="/images/sugar-lockup.png"
         alt="Sugar Liquidation Sale"
         className="h-28 sm:h-36 w-auto drop-shadow-[4px_4px_0_#000]"
       />
+
       <button
         onClick={() => {
           const urls = [
@@ -65,17 +67,14 @@ const Header = () => (
             "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
             "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
           ];
-          window.open(urls[Math.floor(Math.random() * urls.length)], "_blank");
+          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+          window.open(randomUrl, "_blank");
         }}
-        className="ml-6 inline-block rounded-full border-[4px] border-black bg-purple-500 px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform"
+        className="ml-6 inline-block rounded-full border-[4px] border-grey bg-purple px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform"
       >
         THAT’S UNXPECTED
       </button>
     </div>
-  </header>
-);
-
-
 
     {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
     <nav className="w-full relative z-[60] py-2">
@@ -94,7 +93,7 @@ const Header = () => (
               className={({ isActive }) =>
                 [
                   "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                  "text-base font-grey uppercase",
+                  "text-base font-black uppercase",
                   "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
                   "active:translate-y-[1px]",
                   item.tone,

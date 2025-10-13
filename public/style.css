@@ -286,6 +286,24 @@ small.muted { color:#444; opacity:.8; display:block; margin-top:1rem; }
   margin-bottom: 8px;
 }
 
+#birth-day {
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
+  font-weight: 700;
+  text-align: center;
+}
+
+#birth-month {
+  border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
+  border-radius: clamp(8px, 1.6 * var(--s), 10px);
+  padding: clamp(10px, 1.4 * var(--s), 12px) clamp(12px, 1.6 * var(--s), 14px);
+  font-size: clamp(14px, 2 * var(--s), 18px);
+  font-weight: 700;
+  text-align: center;
+}
+
 #birth-year {
   border: clamp(2px, 0.35 * var(--s), 3px) solid #333333;
   border-radius: clamp(8px, 1.6 * var(--s), 10px);

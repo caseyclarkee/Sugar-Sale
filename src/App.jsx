@@ -53,63 +53,83 @@ const Marquee = ({ text }) => (
 );
 
 /* Header */
-const Header = () => (
-  <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-    <div className="flex items-center justify-between w-full px-4 sm:px-8">
-      <img
-        src="/images/gary.gif"
-        alt="THAT’S UNXPECTED"
-        onClick={() => {
-          const urls = [
-            "https://media3.giphy.com/media/VFZDuY0nePXry/giphy.gif",
-            "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
-            "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
-          ];
-          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
-          window.open(randomUrl, "_blank");
-        }}
-        className="hover:scale-105 transition-transform cursor-pointer w-42 sm:w-28 h-auto"
-      />
-      <img
-        src="/images/lockup.gif"
-        alt="Sugar Liquidation Sale"
-        className="w-64 sm:w-42 h-auto"
-      />
-      <img src="/images/lwlogo.png" alt="X by Long White" className="w-42 sm:w-28 h-auto" />
-    </div>
+const Header = () => {
+  const garyClasses =
+    "hover:scale-105 transition-transform cursor-pointer object-contain h-auto " +
+    "w-16 sm:w-24 md:w-28 lg:w-32";
 
-    <nav className="w-full relative z-[60] py-2">
-      <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
-          {[
-            { to: "/", label: "Home", tone: "bg-yellow" },
-            { to: "/deals", label: "Deals", tone: "bg-purple text-white" },
-            { to: "/about", label: "About X", tone: "bg-yellow" },
-            { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
-          ].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                [
-                  "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                  "text-base font-black uppercase",
-                  "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-                  "active:translate-y-[1px]",
-                  item.tone,
-                  isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
-                ].join(" ")
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
+  const lockupClasses =
+    "object-contain h-auto " +
+    "w-40 sm:w-56 md:w-64 lg:w-72";
+
+  const lwClasses =
+    "object-contain h-auto " +
+    "w-16 sm:w-24 md:w-28 lg:w-32";
+
+  return (
+    <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
+      <div className="flex items-center justify-between w-full px-4 sm:px-8">
+        <img
+          src="/images/gary.gif"
+          alt="THAT’S UNXPECTED"
+          onClick={() => {
+            const urls = [
+              "https://media3.giphy.com/media/VFZDuY0nePXry/giphy.gif",
+              "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
+              "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
+            ];
+            const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+            window.open(randomUrl, "_blank");
+          }}
+          className={garyClasses}
+        />
+
+        <img
+          src="/images/lockup.gif"
+          alt="Sugar Liquidation Sale"
+          className={lockupClasses}
+        />
+
+        <img
+          src="/images/lwlogo.png"
+          alt="X by Long White"
+          className={lwClasses}
+        />
       </div>
-    </nav>
-  </header>
-);
+
+      <nav className="w-full relative z-[60] py-2">
+        <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
+            {[
+              { to: "/", label: "Home", tone: "bg-yellow" },
+              { to: "/deals", label: "Deals", tone: "bg-purple text-white" },
+              { to: "/about", label: "About X", tone: "bg-yellow" },
+              { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
+            ].map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  [
+                    "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                    "text-base font-black uppercase",
+                    "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                    "active:translate-y-[1px]",
+                    item.tone,
+                    isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+                  ].join(" ")
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
+};
 
 /* Utility: safe ResizeObserver */
 function useResizeObserver(targetRef, handler) {

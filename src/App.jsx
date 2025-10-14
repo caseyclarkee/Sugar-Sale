@@ -228,7 +228,7 @@ const Home = () => (
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
+      <div className="min-h-screen bg-white bg-repeat scroll-smooth overflow-x-hidden">
         {/* Background overlay behind rails */}
         <div className="fixed inset-0 bg-white/90 -z-10" />
         <LeftRail />

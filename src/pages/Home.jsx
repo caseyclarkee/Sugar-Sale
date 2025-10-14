@@ -23,7 +23,7 @@ const Home = () => (
           <span className="text-lg sm:text-xl font-black">ON NOW!</span>
         </Burst>
       </div>
-      <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
+        <div className="mx-auto mt-6 aspect-video w-full max-w-6xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
         <iframe
           src="https://player.vimeo.com/video/843809307?h=6a8b6a8a9a&title=0&byline=0&portrait=0"
           width="100%"

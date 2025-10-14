@@ -1,6 +1,8 @@
 import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
+import About from "./pages/About.jsx";
+import Merch from "./pages/Merch.jsx";
 
 /* Little round badge */
 const Burst = ({ children, className = "" }) => (

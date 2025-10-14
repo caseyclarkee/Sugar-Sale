@@ -76,7 +76,7 @@ const Header = () => (
         className="h-28 sm:h-36 w-auto"
       />
       <img src="/images/lwlogo.png" alt="X by Long White" 
-       className="h-24 sm:h-28 w-auto/>
+       className="h-24 sm:h-28 w-auto" />
     </div>
 
     <nav className="w-full relative z-[60] py-2">

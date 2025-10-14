@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 const About = () => (
   <section className="px-4 sm:px-8 py-12">
     <h3 className="text-20xl font-black mb-4">About X</h3>

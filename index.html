@@ -11,48 +11,119 @@
 <link href="/agegate.css" rel="stylesheet"/>
 </head>
 <body>
-<!-- Age Gate Overlay -->
-<div aria-labelledby="age-title" aria-modal="true" class="age-gate" id="age-gate-overlay" role="dialog">
-<div class="age-card">
-<h2 id="age-title">Are you 18 or older? Enter your birth year</h2>
-<form id="age-gate-form">
-<div class="row">
-<input id="birth-year" inputmode="numeric" min="1900" name="birth-year" placeholder="YYYY" required="" type="number"/>
-<button class="cta" type="submit">Continue</button>
+
+  <!-- Age Gate Overlay -->
+<div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+  <div class="age-card">
+    <h2 id="age-title">Are you 18 or older? Enter your date of birth</h2>
+    <form id="age-gate-form">
+      <div class="row">
+        <input type="number" id="birth-day" name="birth-day" placeholder="DD" min="1" max="31" inputmode="numeric" required />
+        <input type="number" id="birth-month" name="birth-month" placeholder="MM" min="1" max="12" inputmode="numeric" required />
+        <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
+        <button type="submit" class="cta">Continue</button>
+      </div>
+      <p id="age-error" class="error" aria-live="polite"></p>
+      <small class="muted"></small>
+    </form>
+  </div>
 </div>
-<p aria-live="polite" class="error" id="age-error"></p>
-</form>
-</div>
-</div>
+
 <!-- React mount point -->
 <div id="root"></div>
 <!-- Age gate logic -->
 <script>
-    (function(){
-      if (window.__ageGateInit) return; window.__ageGateInit = true;
-      function unlock(){ try{ document.documentElement.classList.remove('agegate-active'); }catch(e){}; var ov=document.getElementById('age-gate-overlay'); if(ov){ ov.style.display='none'; } document.body.style.overflow=''; }
-      function validYear(y){ if(!y) return false; var n=+y, Y=(new Date).getFullYear(); return n>=1900 && n<=Y; }
-      function is18ByYear(y){ return ((new Date).getFullYear()) - (+y) >= 18; }
-      function getPass(){ try{ return JSON.parse(localStorage.getItem('ageGatePass')||'null'); }catch(e){ return null; } }
-      function setPass(){ try{ localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); }catch(e){} }
-      function isPassValid(p){ return p && p.ts && (Date.now()-p.ts) < (60*60*1000); } // 1 hour
-      function init(){
-        var pass = getPass(); if (pass && isPassValid(pass)) return unlock();
-        document.body.style.overflow='hidden';
-        var form=document.getElementById('age-gate-form'), err=document.getElementById('age-error'), input=document.getElementById('birth-year');
-        if(!form || !input) return;
-        form.addEventListener('submit', function(e){
-          e.preventDefault(); err.textContent='';
-          var y=(input.value||'').trim();
-          if(!validYear(y)) return err.textContent='Please enter a valid 4-digit year.';
-          if(!is18ByYear(y)) return err.textContent='Sorry, you must be 18 or older.';
-          setPass(); unlock();
-        });
-        try{ input.focus(); }catch(e){}
+(function(){
+  if (window.__ageGateInit) return; 
+  window.__ageGateInit = true;
+
+  function unlock(){ 
+    try { document.documentElement.classList.remove('agegate-active'); } catch(e) {}
+    const ov = document.getElementById('age-gate-overlay');
+    if (ov) ov.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function validDate(d, m, y) {
+    const day = +d, month = +m, year = +y;
+    if (!day || !month || !year) return false;
+    if (year < 1900 || year > new Date().getFullYear()) return false;
+    if (month < 1 || month > 12) return false;
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return day >= 1 && day <= daysInMonth;
+  }
+
+  function is18OrOlder(d, m, y) {
+    const birth = new Date(y, m - 1, d);
+    const today = new Date();
+    const eighteenYearsAgo = new Date(
+      today.getFullYear() - 18, 
+      today.getMonth(), 
+      today.getDate()
+    );
+    return birth <= eighteenYearsAgo;
+  }
+
+  function getPass(){ 
+    try { return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); } 
+    catch(e) { return null; } 
+  }
+
+  function setPass(){ 
+    try { localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); } 
+    catch(e) {} 
+  }
+
+  function isPassValid(p){ 
+    return p && p.ts && (Date.now() - p.ts) < (60*60*1000); // 1 hour
+  }
+
+  function init(){
+    const pass = getPass(); 
+    if (pass && isPassValid(pass)) return unlock();
+
+    document.body.style.overflow = 'hidden';
+
+    const form = document.getElementById('age-gate-form');
+    const err = document.getElementById('age-error');
+    const dayInput = document.getElementById('birth-day');
+    const monthInput = document.getElementById('birth-month');
+    const yearInput = document.getElementById('birth-year');
+
+    if (!form || !yearInput) return;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      err.textContent = '';
+
+      const d = (dayInput.value || '').trim();
+      const m = (monthInput.value || '').trim();
+      const y = (yearInput.value || '').trim();
+
+      if (!validDate(d, m, y)) {
+        err.textContent = 'Please enter a valid date of birth.';
+        return;
       }
-      if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
-    })();
-    </script>
+
+      if (!is18OrOlder(d, m, y)) {
+        err.textContent = 'Sorry, you must be 18 or older.';
+        return;
+      }
+
+      setPass(); 
+      unlock();
+    });
+
+    try { dayInput.focus(); } catch(e) {}
+  }
+
+  if (document.readyState === 'loading') 
+    document.addEventListener('DOMContentLoaded', init); 
+  else 
+    init();
+})();
+</script>
+
 <!-- Safety guard -->
 <script>
     (function(){

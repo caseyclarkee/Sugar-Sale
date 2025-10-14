@@ -57,26 +57,25 @@ const Header = () => (
   <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <img
-  src="/images/gary.gif" // Use your desired image here
-  alt="THAT’S UNXPECTED"
-  onClick={() => {
-    const urls = [
-      "https://media3.giphy.com/media/VFZDuY0nePXry/giphy.gif",
-      "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
-      "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
-    ];
-    const randomUrl = urls[Math.floor(Math.random() * urls.length)];
-    window.open(randomUrl, "_blank");
-  }}
-  className="hover:scale-105 transition-transform cursor-pointer w-42 sm:w-28 h-auto"
-/>
+        src="/images/gary.gif"
+        alt="THAT’S UNXPECTED"
+        onClick={() => {
+          const urls = [
+            "https://media3.giphy.com/media/VFZDuY0nePXry/giphy.gif",
+            "https://media4.giphy.com/media/gjgWQA5QBuBmUZahOP/giphy.gif",
+            "https://media1.giphy.com/media/8cEFp9dQCcE8M/giphy.gif",
+          ];
+          const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+          window.open(randomUrl, "_blank");
+        }}
+        className="hover:scale-105 transition-transform cursor-pointer w-42 sm:w-28 h-auto"
+      />
       <img
         src="/images/lockup.gif"
         alt="Sugar Liquidation Sale"
         className="w-64 sm:w-42 h-auto"
       />
-      <img src="/images/lwlogo.png" alt="X by Long White" 
-       className="w-42 sm:w-28 h-auto" />
+      <img src="/images/lwlogo.png" alt="X by Long White" className="w-42 sm:w-28 h-auto" />
     </div>
 
     <nav className="w-full relative z-[60] py-2">
@@ -112,6 +111,16 @@ const Header = () => (
   </header>
 );
 
+/* Utility: safe ResizeObserver */
+function useResizeObserver(targetRef, handler) {
+  React.useEffect(() => {
+    if (!targetRef.current || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => handler());
+    ro.observe(targetRef.current);
+    return () => ro.disconnect();
+  }, [targetRef, handler]);
+}
+
 /* Fixed Left Rail */
 const LeftRail = () => {
   const railRef = React.useRef(null);
@@ -129,12 +138,12 @@ const LeftRail = () => {
   const recalc = React.useCallback(() => {
     const rail = railRef.current;
     if (!rail) return;
-    const H = rail.clientHeight;
+    const H = rail.clientHeight || window.innerHeight;
     const ratios = ratiosRef.current;
 
     if (ratios.length !== panels.length || ratios.some((r) => !r)) {
-      const even = Array(panels.length).fill(H / panels.length);
-      setHeights(even);
+      // Fallback: show immediately with equal slices so it doesn't look empty
+      setHeights(Array(panels.length).fill(H / panels.length));
       return;
     }
 
@@ -142,17 +151,21 @@ const LeftRail = () => {
     setHeights(ratios.map((r) => (r / total) * H));
   }, [panels.length]);
 
+  // 1) Run immediately on mount so rails are visible on first paint
+  React.useLayoutEffect(() => {
+    recalc();
+  }, [recalc]);
+
+  // 2) Recalc on viewport resize and rail size changes
   React.useEffect(() => {
     const onResize = () => recalc();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [recalc]);
 
-  React.useEffect(() => {
-    window.addEventListener("load", recalc);
-    return () => window.removeEventListener("load", recalc);
-  }, [recalc]);
+  useResizeObserver(railRef, recalc);
 
+  // 3) Record image aspect ratios as they load, then recalc
   const onImgLoad = (idx, e) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
     ratiosRef.current[idx] = h / Math.max(1, w);
@@ -162,7 +175,7 @@ const LeftRail = () => {
   return (
     <aside
       ref={railRef}
-      className="hidden md:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+      className="hidden md:flex fixed left-0 top-0 h-screen w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
     >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
@@ -174,7 +187,7 @@ const LeftRail = () => {
             <img
               src={p.src}
               alt={p.alt}
-              className="w-full h-full object-contain block select-none pointer-events-none"
+              className="w-full h-full object-contain block select-none"
               draggable="false"
               onLoad={(e) => onImgLoad(i, e)}
             />
@@ -185,6 +198,7 @@ const LeftRail = () => {
   );
 };
 
+/* Fixed Right Rail */
 const RightRail = () => {
   const railRef = React.useRef(null);
   const [heights, setHeights] = React.useState([]);
@@ -201,12 +215,11 @@ const RightRail = () => {
   const recalc = React.useCallback(() => {
     const rail = railRef.current;
     if (!rail) return;
-    const H = rail.clientHeight;
+    const H = rail.clientHeight || window.innerHeight;
     const ratios = ratiosRef.current;
 
     if (ratios.length !== panels.length || ratios.some((r) => !r)) {
-      const even = Array(panels.length).fill(H / panels.length);
-      setHeights(even);
+      setHeights(Array(panels.length).fill(H / panels.length));
       return;
     }
 
@@ -214,16 +227,17 @@ const RightRail = () => {
     setHeights(ratios.map((r) => (r / total) * H));
   }, [panels.length]);
 
+  React.useLayoutEffect(() => {
+    recalc();
+  }, [recalc]);
+
   React.useEffect(() => {
     const onResize = () => recalc();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [recalc]);
 
-  React.useEffect(() => {
-    window.addEventListener("load", recalc);
-    return () => window.removeEventListener("load", recalc);
-  }, [recalc]);
+  useResizeObserver(railRef, recalc);
 
   const onImgLoad = (idx, e) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
@@ -234,7 +248,7 @@ const RightRail = () => {
   return (
     <aside
       ref={railRef}
-      className="hidden md:flex fixed right-0 top-0 h-full w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
+      className="hidden md:flex fixed right-0 top-0 h-screen w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
     >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
@@ -246,7 +260,7 @@ const RightRail = () => {
             <img
               src={p.src}
               alt={p.alt}
-              className="w-full h-full object-contain block select-none pointer-events-none"
+              className="w-full h-full object-contain block select-none"
               draggable="false"
               onLoad={(e) => onImgLoad(i, e)}
             />
@@ -259,8 +273,10 @@ const RightRail = () => {
 
 export default function SugarSaleSite() {
   React.useEffect(() => {
+    // Nudge layout for any early Tailwind/scroll calculations
     window.dispatchEvent(new Event("resize"));
   }, []);
+
   return (
     <HashRouter>
       <div className="min-h-screen bg-white bg-repeat scroll-smooth overflow-x-hidden">
@@ -324,3 +340,4 @@ export default function SugarSaleSite() {
     </HashRouter>
   );
 }
+

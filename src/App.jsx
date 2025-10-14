@@ -148,11 +148,9 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/left-rail/Left01.png", alt: "X can" },
+    { src: "/images/left-rail/Left01.gif", alt: "X can" },
     { src: "/images/left-rail/Left02.gif", alt: "Sale on now" },
     { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
-    { src: "/images/left-rail/Left04.gif", alt: "All Sugar badge" },
-    { src: "/images/left-rail/Left05.png", alt: "Gary’s sugar hotline" },
   ];
 
   const recalc = React.useCallback(() => {
@@ -225,11 +223,10 @@ const RightRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/right-rail/Right01.png", alt: "Sale On Now!" },
-    { src: "/images/right-rail/Right02.png", alt: "That’s Unexpected" },
-    { src: "/images/right-rail/Right03.png", alt: "Liquidate Responsibly" },
+    { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
+    { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
+    { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
     { src: "/images/right-rail/Right04.png", alt: "Sugar Badge" },
-    { src: "/images/right-rail/Right05.png", alt: "Call Gary’s Hotline" },
   ];
 
   const recalc = React.useCallback(() => {

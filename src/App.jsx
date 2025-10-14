@@ -1,6 +1,8 @@
 import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
+import About from "./pages/About.jsx";
+import Merch from "./pages/Merch.jsx";
 
 /* Little round badge */
 const Burst = ({ children, className = "" }) => (
@@ -242,10 +244,12 @@ export default function SugarSaleSite() {
 
           <main className="flex flex-col w-full">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/deals" element={<Deals />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/deals" element={<Deals />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/merch" element={<Merch />} />
+  <Route path="*" element={<Home />} />
+</Routes>
           </main>
         </div>
       </div>

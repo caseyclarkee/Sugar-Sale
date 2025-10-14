@@ -112,24 +112,14 @@ const Header = () => (
 
 /* Fixed side rails (lg+) */
 const LeftRail = () => (
-  <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-grey bg-yellow p-4 text-center z-40">
-    <div className="mt-20">
-        {/* Burst badge */}
-      <svg class="size-6 animate-bounce ...">
-      <Burst className="mx-auto mb-6 h-24 w-24">
-        <span className="text-lg">ALL SUGAR MUST GO</span>
-      </Burst>
-        </svg>
-      <p className="font-black uppercase mb-4">We didn't use any sugar in</p>
-      <div className="aspect-square w-full overflow-hidden rounded-full border-[4px] border-grey shadow-[4px_4px_0_#000] mb-4">
-        <img
-          src="https://placehold.co/300x300/png?text=Can"
-          alt="X Can"
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <p className="font-black uppercase">So Gary needs to sell the sugar</p>
-    </div>
+  <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40">
+    {/* Use object-cover if you want it to fully fill; object-contain if you prefer full image without cropping */}
+    <img
+      src="/images/left-rail-poster.png"
+      alt="Sugar sale: All sugar must go. Call Gary's sugar hotline now."
+      className="h-full w-full object-contain bg-yellow"
+      draggable="false"
+    />
   </aside>
 );
 

@@ -200,8 +200,12 @@ const RightRail = () => (
   </aside>
 );
 
-/* ===== MAIN APP ===== */
 export default function SugarSaleSite() {
+  // --- Add this useEffect at the top, inside your component ---
+  React.useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, []);
+  // -----------------------------------------------------------
   return (
     <HashRouter>
       <div className="min-h-screen bg-white bg-repeat scroll-smooth overflow-x-hidden">

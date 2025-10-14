@@ -111,7 +111,6 @@ const Header = () => (
 );
 
 /* Fixed side rails (lg+) */
-import React from "react";
 
 /**
  * Fixed left rail that proportionally fits N images into the rail height.

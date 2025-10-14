@@ -2,62 +2,40 @@ import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
 
-/* Little round badge */
-const Burst = ({ children, className = "" }) => (
-  <div
-    className={
-      "grid place-items-center rounded-full bg-yellow text-grey border-[4px] border-grey shadow-[4px_4px_0_#000] " +
-      className
-    }
-  >
-    <div className="px-4 py-2 text-center font-black uppercase tracking-wide">
-      {children}
-    </div>
-  </div>
+/* Poster-Style Fixed Left Rail */
+const LeftRail = () => (
+  <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] bg-yellow z-40 overflow-hidden">
+    <img
+      src="/images/left-rail/left-rail-poster.png"
+      alt="Gary’s Sugar Liquidation Poster"
+      className="w-full h-full object-contain block select-none pointer-events-none"
+      draggable="false"
+    />
+  </aside>
 );
 
-/* Slow, smooth marquee */
-const Marquee = ({ text }) => (
-  <div className="border-y-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
-    <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
-      <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
-        {Array.from({ length: 24 }).map((_, i) => (
-          <span key={`a-${i}`} className="mx-6">
-            ✦ {text} ✦
-          </span>
-        ))}
+/* Right Rail */
+const RightRail = () => (
+  <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">
+    <div className="mt-20">
+      <div className="mx-auto mb-6 h-24 w-24 grid place-items-center rounded-full bg-yellow text-grey border-[4px] border-grey shadow-[4px_4px_0_#000]">
+        <span className="text-lg font-black">Sale On Now!</span>
       </div>
-      <div
-        className="marquee__track flex shrink-0"
-        aria-hidden
-        style={{ animationDuration: "80s" }}
-      >
-        {Array.from({ length: 24 }).map((_, i) => (
-          <span key={`b-${i}`} className="mx-6">
-            ✦ {text} ✦
-          </span>
-        ))}
+      <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
+        <img src="/images/gary.gif" alt="Gary" className="h-full w-full object-cover" />
       </div>
+      <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
+        Liquidate responsibly
+      </p>
     </div>
-    <style>{`
-      .marquee__track { will-change: transform; animation: marquee linear infinite; }
-      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      @media (prefers-reduced-motion: reduce) {
-        .marquee__track { animation-duration: 0s !important; animation-play-state: paused !important; transform: translateX(0) !important; }
-      }
-    `}</style>
-  </div>
+  </aside>
 );
 
 /* Header */
 const Header = () => (
   <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
-      <img
-        src="/images/sugar-lockup.png"
-        alt="Sugar Liquidation Sale"
-        className="h-28 sm:h-36 w-auto"
-      />
+      <img src="/images/sugar-lockup.png" alt="Sugar Liquidation Sale" className="h-28 sm:h-36 w-auto" />
       <button
         onClick={() => {
           const urls = [
@@ -73,7 +51,6 @@ const Header = () => (
         THAT’S UNXPECTED
       </button>
     </div>
-
     <nav className="w-full relative z-[60] py-2">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
@@ -107,87 +84,33 @@ const Header = () => (
   </header>
 );
 
-/* Fixed Left Rail (Poster Style) */
-const LeftRail = () => {
-  const railRef = React.useRef(null);
-  const ratiosRef = React.useRef([]);
-  const [heights, setHeights] = React.useState([]);
-
-  const panels = [
-    { src: "/images/left-rail/Left01.png", alt: "X can" },
-    { src: "/images/left-rail/Left02.gif", alt: "Sale on now" },
-    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
-    { src: "/images/left-rail/Left04.gif", alt: "All Sugar badge" },
-    { src: "/images/left-rail/Left05.png", alt: "Gary’s sugar hotline" },
-  ];
-
-  const recalc = React.useCallback(() => {
-    const rail = railRef.current;
-    if (!rail) return;
-    const totalHeight = rail.clientHeight;
-    const ratios = ratiosRef.current;
-    if (ratios.length !== panels.length || ratios.some((r) => !r)) return;
-
-    const sum = ratios.reduce((a, b) => a + b, 0);
-    setHeights(ratios.map((r) => (r / sum) * totalHeight));
-  }, [panels.length]);
-
-  React.useEffect(() => {
-    const resize = () => recalc();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, [recalc]);
-
-  const onLoad = (i, e) => {
-    const { naturalWidth: w, naturalHeight: h } = e.target;
-    ratiosRef.current[i] = h / w;
-    recalc();
-  };
-
-  return (
-    <aside
-      ref={railRef}
-      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] bg-yellow z-40 overflow-hidden"
-    >
-      <div className="flex flex-col h-full w-full">
-        {panels.map((p, i) => (
-          <div
-            key={i}
-            style={{ height: heights[i] || 0, transition: "height 200ms ease-in-out" }}
-            className="overflow-hidden"
-          >
-            <img
-              src={p.src}
-              alt={p.alt}
-              draggable="false"
-              onLoad={(e) => onLoad(i, e)}
-              className="w-full h-full object-cover block select-none pointer-events-none"
-            />
-          </div>
+/* Marquee */
+const Marquee = ({ text }) => (
+  <div className="border-y-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
+    <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
+      <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
+        {Array.from({ length: 24 }).map((_, i) => (
+          <span key={`a-${i}`} className="mx-6">
+            ✦ {text} ✦
+          </span>
         ))}
       </div>
-    </aside>
-  );
-};
-
-/* Fixed Right Rail */
-const RightRail = () => (
-  <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">
-    <div className="mt-20">
-      <Burst className="mx-auto mb-6 h-24 w-24">
-        <span className="text-lg">Sale On Now!</span>
-      </Burst>
-      <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
-        <img src="/images/gary.gif" alt="Gary" className="h-full w-full object-cover" />
+      <div className="marquee__track flex shrink-0" aria-hidden style={{ animationDuration: "80s" }}>
+        {Array.from({ length: 24 }).map((_, i) => (
+          <span key={`b-${i}`} className="mx-6">
+            ✦ {text} ✦
+          </span>
+        ))}
       </div>
-      <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
-        Liquidate responsibly
-      </p>
     </div>
-  </aside>
+    <style>{`
+      .marquee__track { will-change: transform; animation: marquee linear infinite; }
+      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    `}</style>
+  </div>
 );
 
-/* Pages */
+/* Main Page */
 const Home = () => (
   <section className="py-10 px-4 sm:px-8">
     <div className="relative w-full rounded-2xl border-[4px] border-grey bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow">
@@ -195,9 +118,9 @@ const Home = () => (
         Sugar Liquidation! Sale!
       </h2>
       <div className="absolute right-3 top-3 sm:right-6 sm:top-6">
-        <Burst className="h-24 w-24 sm:h-28 sm:w-28">
+        <div className="h-24 w-24 sm:h-28 sm:w-28 grid place-items-center rounded-full bg-yellow text-grey border-[4px] border-grey shadow-[4px_4px_0_#000]">
           <span className="text-lg sm:text-xl font-black">ON NOW!</span>
-        </Burst>
+        </div>
       </div>
       <div className="mx-auto mt-6 aspect-video w-full max-w-4xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
         <iframe
@@ -214,21 +137,17 @@ const Home = () => (
   </section>
 );
 
-/* ===== MAIN APP ===== */
 export default function SugarSaleSite() {
   return (
     <HashRouter>
       <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
-        <div className="fixed inset-0 bg-white/90 -z-10" />
         <LeftRail />
         <RightRail />
-
         <div className="min-h-screen flex flex-col w-auto lg:ml-[200px] lg:mr-[200px] relative z-10">
           <Header />
           <div className="mt-2">
             <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
           </div>
-
           <main className="flex flex-col w-full">
             <Routes>
               <Route path="/" element={<Home />} />

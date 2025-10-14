@@ -68,15 +68,15 @@ const Header = () => (
     const randomUrl = urls[Math.floor(Math.random() * urls.length)];
     window.open(randomUrl, "_blank");
   }}
-  className="hover:scale-105 transition-transform cursor-pointer h-24 sm:h-28 w-auto"
+  className="hover:scale-105 transition-transform cursor-pointer w-42 sm:w-28 h-auto"
 />
       <img
         src="/images/lockup.gif"
         alt="Sugar Liquidation Sale"
-        className="h-28 sm:h-36 w-auto"
+        className="w-64 sm:w-42 h-auto"
       />
       <img src="/images/lwlogo.png" alt="X by Long White" 
-       className="h-24 sm:h-28 w-auto" />
+       className="w-42 sm:h-28 h-auto" />
     </div>
 
     <nav className="w-full relative z-[60] py-2">

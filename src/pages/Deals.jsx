@@ -124,7 +124,7 @@ const DealCard = ({ deal }) => {
                 setOpen(true);
                 setDone(false);
               }}
-              className="rounded-xl border-[4px] border-black bg-yellow-300 px-4 py-2 font-black uppercase text-black shadow-[4px_4px_0_#000]"
+              className="rounded-xl border-[4px] border-black bg-yellow px-4 py-2 font-black uppercase text-black shadow-[4px_4px_0_#000]"
             >
               Join Waitlist
             </button>
@@ -141,7 +141,7 @@ const DealCard = ({ deal }) => {
                 setOpen(true);
                 setDone(false);
               }}
-              className="rounded-xl border-[4px] border-black bg-purple-500 px-4 py-2 font-black uppercase text-white shadow-[4px_4px_0_#000]"
+              className="rounded-xl border-[4px] border-black bg-purple px-4 py-2 font-black uppercase text-white shadow-[4px_4px_0_#000]"
             >
               Enter Draw
             </button>
@@ -193,7 +193,7 @@ const DealCard = ({ deal }) => {
                     <button type="button" onClick={() => setOpen(false)} className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold" disabled={submitting}>
                       Cancel
                     </button>
-                    <button type="submit" className="rounded-xl border-[3px] border-black bg-yellow-300 px-3 py-1 font-bold shadow-[3px_3px_0_#000]" disabled={submitting}>
+                    <button type="submit" className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]" disabled={submitting}>
                       {submitting ? "Submitting…" : submitCta}
                     </button>
                   </div>
@@ -211,7 +211,7 @@ const DealCard = ({ deal }) => {
                 )}
                 <button
                   onClick={() => setOpen(false)}
-                  className="mx-auto rounded-xl border-[3px] border-black bg-yellow-300 px-4 py-2 font-black shadow-[3px_3px_0_#000]"
+                  className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
                 >
                   Close
                 </button>

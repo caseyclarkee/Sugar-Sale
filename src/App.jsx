@@ -107,11 +107,11 @@ const Header = () => (
   </header>
 );
 
-/* Fixed Left Rail */
+/* Fixed Left Rail (Poster Style) */
 const LeftRail = () => {
   const railRef = React.useRef(null);
-  const [heights, setHeights] = React.useState([]);
   const ratiosRef = React.useRef([]);
+  const [heights, setHeights] = React.useState([]);
 
   const panels = [
     { src: "/images/left-rail/Left01.png", alt: "X can" },
@@ -124,55 +124,44 @@ const LeftRail = () => {
   const recalc = React.useCallback(() => {
     const rail = railRef.current;
     if (!rail) return;
-    const H = rail.clientHeight;
+    const totalHeight = rail.clientHeight;
     const ratios = ratiosRef.current;
+    if (ratios.length !== panels.length || ratios.some((r) => !r)) return;
 
-    // If we don't have all intrinsic ratios yet, split equally so there's no gaps
-    if (ratios.length !== panels.length || ratios.some((r) => !r)) {
-      setHeights(Array(panels.length).fill(H / panels.length));
-      return;
-    }
-
-    const total = ratios.reduce((a, b) => a + b, 0) || 1;
-    setHeights(ratios.map((r) => (r / total) * H));
+    const sum = ratios.reduce((a, b) => a + b, 0);
+    setHeights(ratios.map((r) => (r / sum) * totalHeight));
   }, [panels.length]);
 
   React.useEffect(() => {
-    const onResize = () => recalc();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const resize = () => recalc();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
   }, [recalc]);
 
-  React.useEffect(() => {
-    window.addEventListener("load", recalc);
-    return () => window.removeEventListener("load", recalc);
-  }, [recalc]);
-
-  const onImgLoad = (idx, e) => {
-    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    ratiosRef.current[idx] = h / Math.max(1, w);
+  const onLoad = (i, e) => {
+    const { naturalWidth: w, naturalHeight: h } = e.target;
+    ratiosRef.current[i] = h / w;
     recalc();
   };
 
   return (
     <aside
       ref={railRef}
-      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] bg-yellow z-40 overflow-hidden"
     >
-      {/* No inner borders, no gaps: one seamless poster column */}
-      <div className="h-full w-full flex flex-col gap-0">
+      <div className="flex flex-col h-full w-full">
         {panels.map((p, i) => (
           <div
             key={i}
-            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
-            className="relative overflow-hidden bg-yellow"
+            style={{ height: heights[i] || 0, transition: "height 200ms ease-in-out" }}
+            className="overflow-hidden"
           >
             <img
               src={p.src}
               alt={p.alt}
-              className="w-full h-full object-cover block select-none pointer-events-none scale-[1.02]"
               draggable="false"
-              onLoad={(e) => onImgLoad(i, e)}
+              onLoad={(e) => onLoad(i, e)}
+              className="w-full h-full object-cover block select-none pointer-events-none"
             />
           </div>
         ))}
@@ -180,31 +169,6 @@ const LeftRail = () => {
     </aside>
   );
 };
-
-  return (
-    <aside
-      ref={railRef}
-      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
-    >
-      <div className="h-full w-full flex flex-col">
-        {panels.map((p, i) => (
-          <div
-            key={i}
-            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
-            className="relative border-b-[4px] border-black last:border-b-0 overflow-hidden bg-yellow"
-          >
-            <img
-              src={p.src}
-              alt={p.alt}
-              className="w-full h-full object-contain block select-none pointer-events-none"
-              draggable="false"
-              onLoad={(e) => onImgLoad(i, e)}
-            />
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
 
 /* Fixed Right Rail */
 const RightRail = () => (
@@ -255,7 +219,6 @@ export default function SugarSaleSite() {
   return (
     <HashRouter>
       <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
-        {/* Background overlay behind rails */}
         <div className="fixed inset-0 bg-white/90 -z-10" />
         <LeftRail />
         <RightRail />
@@ -278,5 +241,3 @@ export default function SugarSaleSite() {
     </HashRouter>
   );
 }
-
-

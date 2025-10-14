@@ -76,7 +76,7 @@ const Header = () => (
       </button>
     </div>
 
-    {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
+    {/* Nav */}
     <nav className="w-full relative z-[60] py-2">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
@@ -111,7 +111,6 @@ const Header = () => (
 );
 
 /* Fixed side rails (lg+) */
-
 /**
  * Fixed left rail that proportionally fits N images into the rail height.
  * - Rail stays fixed at left, width 200px (change if you want)
@@ -131,33 +130,29 @@ const LeftRail = () => {
     { src: "/images/left-rail/Left05.png", alt: "Gary’s sugar hotline" },
   ];
 
-  // calculate heights once all ratios are known (or on resize)
   const recalc = React.useCallback(() => {
     const rail = railRef.current;
     if (!rail) return;
     const H = rail.clientHeight; // total height to fill
     const ratios = ratiosRef.current;
-    if (ratios.length !== panels.length || ratios.some(r => !r)) return;
+    if (ratios.length !== panels.length || ratios.some((r) => !r)) return;
 
     const total = ratios.reduce((a, b) => a + b, 0);
     if (total <= 0) return;
 
-    // Each slice gets height_i = (ratio_i / sum(ratios)) * H
-    const newHeights = ratios.map(r => (r / total) * H);
+    const newHeights = ratios.map((r) => (r / total) * H);
     setHeights(newHeights);
   }, [panels.length]);
 
-  // update on resize
   React.useEffect(() => {
     const onResize = () => recalc();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [recalc]);
 
-  // when each image loads, store its intrinsic ratio and recalc
   const onImgLoad = (idx, e) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
-    ratiosRef.current[idx] = h / Math.max(1, w); // avoid div by 0
+    ratiosRef.current[idx] = h / Math.max(1, w);
     recalc();
   };
 
@@ -170,7 +165,6 @@ const LeftRail = () => {
         {panels.map((p, i) => (
           <div
             key={i}
-            // height is computed; smooth the layout with a quick transition
             style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
             className="relative border-b-[4px] border-black last:border-b-0 overflow-hidden bg-yellow"
           >
@@ -188,34 +182,21 @@ const LeftRail = () => {
   );
 };
 
-export default LeftRail;
-
-
 const RightRail = () => (
   <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">
     <div className="mt-20">
-      {/* Burst badge */}
       <Burst className="mx-auto mb-6 h-24 w-24">
         <span className="text-lg">Sale On Now!</span>
       </Burst>
-
-      {/* Gary GIF — no border or shadow */}
       <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
-        <img
-          src="/images/gary.gif"
-          alt="Gary"
-          className="h-full w-full object-cover"
-        />
+        <img src="/images/gary.gif" alt="Gary" className="h-full w-full object-cover" />
       </div>
-
-      {/* Footer label */}
       <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly
       </p>
     </div>
   </aside>
 );
-
 
 /* Pages (inline versions) */
 const Home = () => (
@@ -267,46 +248,43 @@ const Merch = () => (
 
 const About = () => (
   <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-20xl font-black mb-4">About X</h3>
+    <h3 className="text-3xl font-black mb-4">About X</h3>
     <p className="max-w-2xl">
       I’m Gary.
-I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally). Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
-Zero. Sugar.
-
-Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent.
-
-So I decided to take matters into my own sticky hands.
-Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation. Everything must go: bagged sugar, boxed sugar, sculpted sugar, mystery sugar. If I can make it out of sugar, I’ll sell it.
-
-Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
-
-Buy some sugar, will <i>you?</i> You’ll make a grown man sleep better tonight.
-</p>
-    <p>
+      I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally).
+      Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
+      Zero. Sugar.
+      <br /><br />
+      Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent.
+      <br /><br />
+      So I decided to take matters into my own sticky hands. Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation. Everything must go: bagged sugar, boxed sugar, sculpted sugar, mystery sugar. If I can make it out of sugar, I’ll sell it.
+      <br /><br />
+      Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
+      <br /><br />
+      Buy some sugar, will <i>you?</i> You’ll make a grown man sleep better tonight.
+    </p>
+    <p className="mt-4 max-w-2xl">
       P.S. Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please take my sugar first.
     </p>
-    <p>P.P.S. I  was the ninth runner up in the central auckland's salesman of the year awards in 2004.</p>
+    <p className="mt-2 max-w-2xl">P.P.S. I was the ninth runner up in the central Auckland salesman of the year awards in 2004.</p>
 
-      {/* FAQ */}
-          <div className="mt-6">
-            <h2 className="font-black uppercase text-xl mb-3">FAQ (Frequently Asked Quibbles)</h2>
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">Is any of this sugar used in the drink?</summary>
-              <div className="mt-2 text-sm">Absolutely not. X by Long White is zero sugar. Hence… this website.</div>
-            </details>
-            <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">Is the sugar good quality?</summary>
-              <div className="mt-2 text-sm">Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary) will.)</div>
-            </details>
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
-              <summary className="cursor-pointer font-black">Can I haggle?</summary>
-              <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
-            </details>
-          </div>
-    
+    {/* FAQ */}
+    <div className="mt-6">
+      <h2 className="font-black uppercase text-xl mb-3">FAQ (Frequently Asked Quibbles)</h2>
+      <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
+        <summary className="cursor-pointer font-black">Is any of this sugar used in the drink?</summary>
+        <div className="mt-2 text-sm">Absolutely not. X by Long White is zero sugar. Hence… this website.</div>
+      </details>
+      <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3 text-white">
+        <summary className="cursor-pointer font-black">Is the sugar good quality?</summary>
+        <div className="mt-2 text-sm">Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary) will.)</div>
+      </details>
+      <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
+        <summary className="cursor-pointer font-black">Can I haggle?</summary>
+        <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
+      </details>
+    </div>
   </section>
-
-       
 );
 
 const SugarSale = () => (
@@ -341,7 +319,7 @@ export default function SugarSaleSite() {
   return (
     <HashRouter>
       <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
-        {/* 🔒 Age gate overlay */}<div className="min-h-screen bg-white/90">
+        <div className="min-h-screen bg-white/90">
           <LeftRail />
           <RightRail />
 
@@ -372,32 +350,32 @@ export default function SugarSaleSite() {
                   © {new Date().getFullYear()} Long White X Zero Sugar.
                 </p>
                 <div className="flex items-center gap-3">
-                <a
-  href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
->
-  Website Terms of Use
-</a>
+                  <a
+                    href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                  >
+                    Website Terms of Use
+                  </a>
 
-<a
-  href="https://www.asahibeverages.com/privacy-collection-notice"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
->
-  Privacy Collection Notice
-</a>
+                  <a
+                    href="https://www.asahibeverages.com/privacy-collection-notice"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
+                  >
+                    Privacy Collection Notice
+                  </a>
 
-<a
-  href="https://www.asahibeverages.com/privacy-policy"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
->
-  Privacy Policy
-</a>
+                  <a
+                    href="https://www.asahibeverages.com/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                  >
+                    Privacy Policy
+                  </a>
                 </div>
               </div>
             </footer>
@@ -407,3 +385,4 @@ export default function SugarSaleSite() {
     </HashRouter>
   );
 }
+

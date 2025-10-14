@@ -219,7 +219,7 @@ export default function SugarSaleSite() {
           <main className="flex flex-col w-full">
             <Routes>
   <Route path="/" element={<Home />} />
-  <Route path="/deals" element={<Deals />} />
+  <Route path="/home" element={<Home />} />
   <Route path="/deals" element={<Deals />} />
   <Route path="/about" element={<About />} />
   <Route path="/merch" element={<Merch />} />

@@ -111,17 +111,86 @@ const Header = () => (
 );
 
 /* Fixed side rails (lg+) */
-const LeftRail = () => (
-  <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40">
-    {/* Use object-cover if you want it to fully fill; object-contain if you prefer full image without cropping */}
-    <img
-      src="/images/left-rail-poster.png"
-      alt="Sugar sale: All sugar must go. Call Gary's sugar hotline now."
-      className="h-full w-full object-contain bg-yellow"
-      draggable="false"
-    />
-  </aside>
-);
+import React from "react";
+
+/**
+ * Fixed left rail that proportionally fits N images into the rail height.
+ * - Rail stays fixed at left, width 200px (change if you want)
+ * - No scroll; images keep aspect ratio
+ * - Each slice gets height = (its ratio / sum of ratios) * railHeight
+ */
+const LeftRail = () => {
+  const railRef = React.useRef(null);
+  const [heights, setHeights] = React.useState([]); // pixel heights per panel
+  const ratiosRef = React.useRef([]);               // naturalHeight / naturalWidth
+
+  const panels = [
+    { src: "/images/left-rail/Left01.png", alt: "X can" },
+    { src: "/images/left-rail/Left02.gif", alt: "Sale on now" },
+    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
+    { src: "/images/left-rail/Left04.gif", alt: "All Sugar badge" },
+    { src: "/images/left-rail/Left05.png", alt: "Gary’s sugar hotline" },
+  ];
+
+  // calculate heights once all ratios are known (or on resize)
+  const recalc = React.useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const H = rail.clientHeight; // total height to fill
+    const ratios = ratiosRef.current;
+    if (ratios.length !== panels.length || ratios.some(r => !r)) return;
+
+    const total = ratios.reduce((a, b) => a + b, 0);
+    if (total <= 0) return;
+
+    // Each slice gets height_i = (ratio_i / sum(ratios)) * H
+    const newHeights = ratios.map(r => (r / total) * H);
+    setHeights(newHeights);
+  }, [panels.length]);
+
+  // update on resize
+  React.useEffect(() => {
+    const onResize = () => recalc();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [recalc]);
+
+  // when each image loads, store its intrinsic ratio and recalc
+  const onImgLoad = (idx, e) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    ratiosRef.current[idx] = h / Math.max(1, w); // avoid div by 0
+    recalc();
+  };
+
+  return (
+    <aside
+      ref={railRef}
+      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+    >
+      <div className="h-full w-full flex flex-col">
+        {panels.map((p, i) => (
+          <div
+            key={i}
+            // height is computed; smooth the layout with a quick transition
+            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
+            className="relative border-b-[4px] border-black last:border-b-0 overflow-hidden bg-yellow"
+          >
+            <img
+              src={p.src}
+              alt={p.alt}
+              className="w-full h-full object-contain block select-none pointer-events-none"
+              draggable="false"
+              onLoad={(e) => onImgLoad(i, e)}
+            />
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+};
+
+export default LeftRail;
+
 
 const RightRail = () => (
   <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">

@@ -127,9 +127,9 @@ const LeftRail = () => {
     const H = rail.clientHeight;
     const ratios = ratiosRef.current;
 
+    // If we don't have all intrinsic ratios yet, split equally so there's no gaps
     if (ratios.length !== panels.length || ratios.some((r) => !r)) {
-      const even = Array(panels.length).fill(H / panels.length);
-      setHeights(even);
+      setHeights(Array(panels.length).fill(H / panels.length));
       return;
     }
 
@@ -159,12 +159,39 @@ const LeftRail = () => {
       ref={railRef}
       className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
     >
+      {/* No inner borders, no gaps: one seamless poster column */}
+      <div className="h-full w-full flex flex-col gap-0">
+        {panels.map((p, i) => (
+          <div
+            key={i}
+            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
+            className="relative overflow-hidden bg-yellow"
+          >
+            <img
+              src={p.src}
+              alt={p.alt}
+              className="w-full h-full object-cover block select-none pointer-events-none scale-[1.02]"
+              draggable="false"
+              onLoad={(e) => onImgLoad(i, e)}
+            />
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+};
+
+  return (
+    <aside
+      ref={railRef}
+      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+    >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
           <div
             key={i}
             style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
-            className="relative border-b-[0px] border-black last:border-b-0 overflow-hidden bg-yellow"
+            className="relative border-b-[4px] border-black last:border-b-0 overflow-hidden bg-yellow"
           >
             <img
               src={p.src}
@@ -252,4 +279,5 @@ export default function SugarSaleSite() {
     </HashRouter>
   );
 }
+
 

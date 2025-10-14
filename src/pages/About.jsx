@@ -42,3 +42,4 @@ Buy some sugar, will <i>you?</i> You’ll make a grown man sleep better tonight.
 
        
 );
+export default About;

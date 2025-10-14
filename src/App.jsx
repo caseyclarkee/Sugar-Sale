@@ -185,22 +185,77 @@ const LeftRail = () => {
   );
 };
 
-/* Fixed Right Rail */
-const RightRail = () => (
-  <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">
-    <div className="mt-20">
-      <Burst className="mx-auto mb-6 h-24 w-24">
-        <span className="text-lg">Sale On Now!</span>
-      </Burst>
-      <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
-        <img src="/images/gary.gif" alt="Gary" className="h-full w-full object-cover" />
+const RightRail = () => {
+  const railRef = React.useRef(null);
+  const [heights, setHeights] = React.useState([]);
+  const ratiosRef = React.useRef([]);
+
+  const panels = [
+    { src: "/images/right-rail/Right01.png", alt: "Sale On Now!" },
+    { src: "/images/right-rail/Right02.png", alt: "That’s Unexpected" },
+    { src: "/images/right-rail/Right03.png", alt: "Liquidate Responsibly" },
+    { src: "/images/right-rail/Right04.png", alt: "Sugar Badge" },
+    { src: "/images/right-rail/Right05.png", alt: "Call Gary’s Hotline" },
+  ];
+
+  const recalc = React.useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const H = rail.clientHeight;
+    const ratios = ratiosRef.current;
+
+    if (ratios.length !== panels.length || ratios.some((r) => !r)) {
+      const even = Array(panels.length).fill(H / panels.length);
+      setHeights(even);
+      return;
+    }
+
+    const total = ratios.reduce((a, b) => a + b, 0) || 1;
+    setHeights(ratios.map((r) => (r / total) * H));
+  }, [panels.length]);
+
+  React.useEffect(() => {
+    const onResize = () => recalc();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [recalc]);
+
+  React.useEffect(() => {
+    window.addEventListener("load", recalc);
+    return () => window.removeEventListener("load", recalc);
+  }, [recalc]);
+
+  const onImgLoad = (idx, e) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    ratiosRef.current[idx] = h / Math.max(1, w);
+    recalc();
+  };
+
+  return (
+    <aside
+      ref={railRef}
+      className="hidden md:flex fixed right-0 top-0 h-full w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
+    >
+      <div className="h-full w-full flex flex-col">
+        {panels.map((p, i) => (
+          <div
+            key={i}
+            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
+            className="relative border-b-[0px] border-grey last:border-b-0 overflow-hidden bg-purple"
+          >
+            <img
+              src={p.src}
+              alt={p.alt}
+              className="w-full h-full object-contain block select-none pointer-events-none"
+              draggable="false"
+              onLoad={(e) => onImgLoad(i, e)}
+            />
+          </div>
+        ))}
       </div>
-      <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
-        Liquidate responsibly
-      </p>
-    </div>
-  </aside>
-);
+    </aside>
+  );
+};
 
 export default function SugarSaleSite() {
   React.useEffect(() => {

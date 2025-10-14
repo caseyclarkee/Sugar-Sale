@@ -68,14 +68,15 @@ const Header = () => (
     const randomUrl = urls[Math.floor(Math.random() * urls.length)];
     window.open(randomUrl, "_blank");
   }}
-  className="ml-6 inline-block rounded-full border-[4px] border-grey bg-purple px-3 sm:px-4 py-2 text-white font-black uppercase shadow-[6px_6px_0px_black] hover:scale-105 transition-transform cursor-pointer h-16 w-auto"
+  className="hover:scale-105 transition-transform cursor-pointer h-24 sm:h-28 w-auto"
 />
       <img
         src="/images/lockup.gif"
         alt="Sugar Liquidation Sale"
         className="h-28 sm:h-36 w-auto"
       />
-      <img src="/images/lwlogo.png" alt="X by Long White" className="h-full w-full object-cover" />
+      <img src="/images/lwlogo.png" alt="X by Long White" 
+       className="h-24 sm:h-28 w-auto/>
     </div>
 
     <nav className="w-full relative z-[60] py-2">
@@ -161,7 +162,7 @@ const LeftRail = () => {
   return (
     <aside
       ref={railRef}
-      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+      className="hidden md:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
     >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (

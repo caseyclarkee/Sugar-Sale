@@ -164,7 +164,7 @@ const LeftRail = () => {
           <div
             key={i}
             style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
-            className="relative border-b-[4px] border-black last:border-b-0 overflow-hidden bg-yellow"
+            className="relative border-b-[0px] border-black last:border-b-0 overflow-hidden bg-yellow"
           >
             <img
               src={p.src}

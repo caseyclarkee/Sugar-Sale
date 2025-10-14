@@ -38,4 +38,4 @@ const Home = () => (
   </section>
 );
 
-export default function Home() {
+export default Home() {

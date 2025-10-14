@@ -205,7 +205,6 @@ const LeftRail = () => {
       </div>
     </aside>
   );
-};
 
 /* Fixed Right Rail */
 const RightRail = () => (

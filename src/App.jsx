@@ -1,7 +1,7 @@
 import React from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
-import Home from "./pages/home.jsx";
+import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Merch from "./pages/Merch.jsx";
 

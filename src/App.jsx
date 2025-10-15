@@ -330,7 +330,7 @@ export default function SugarSaleSite() {
                   href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
                 >
                   NZ Promotional Terms and Conditions
                 </a>

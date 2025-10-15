@@ -9,23 +9,14 @@ const About = () => {
       style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}
     >
       <section className="px-0 sm:px-0 py-0 text-lg backdrop-blur-sm">
-        <h3 className="text-4xl sm:text-5xl font-black mb-8">About X</h3>
+        <h3 className="mt-1 text-4xl sm:text-5xl font-black mb-8">About X</h3>
 
         {/* 3-column responsive layout */}
         <div className="grid grid-cols-12 gap-0 items-center">
           {/* LEFT: Text */}
-          <div className="col-span-12 md:col-span-4 order-1 md:order-1">
+          <div className="col-span-12 md:col-span-4 order-1 md:order-1 flex justify-center">
             <p className="max-w-md">
-              I’m Gary.<br />
-              I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally).
-              Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
-              <br /><br />
-              Zero. Sugar.
-              <br /><br />
-              Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it.
-              So I decided to take matters into my own sticky hands.
-              <br /><br />
-              Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation.
+              Forget everything you know about Long White. Introducing X by Long White. A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD. Expect the unXpected.
             </p>
           </div>
 

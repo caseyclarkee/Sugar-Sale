@@ -345,8 +345,8 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
           animation: pulse-bg 2s ease-in-out infinite;
         }
         @keyframes pulse-bg {
-          0%, 100% { background-color: bg-yellow; } /* yellow */
-          50% { background-color: bg-purple; } /* purple */
+          0%, 100% { background-color: bg-yellow } /* yellow */
+          50% { background-color: bg-purple } /* purple */
         }
 
         /* Accessibility fallback */

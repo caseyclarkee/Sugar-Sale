@@ -14,37 +14,35 @@ const About = () => {
           About X
         </h3>
 
-        {/* 3-column layout: Gary | Text | Cans */}
+        {/* 2-column layout: Gary + Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-8 items-end">
-          {/* LEFT: Gary (bottom aligned) */}
-          <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-start">
+          {/* LEFT: Gary + Text + GIF */}
+          <div className="col-span-12 md:col-span-6 order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left gap-6">
             <img
               src={Gary}
               alt="Gary holding a can of X"
-              className="block w-auto max-h-[520px] md:absolute md:bottom-0 md:left-0"
+              className="block w-auto max-h-[520px] md:self-start"
             />
-          </div>
 
-          {/* MIDDLE: Text + GIF */}
-          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col items-center text-center md:items-center gap-5 md:gap-8">
-            <p className="max-w-md leading-relaxed">
-              <b>X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.</b>
-              <br />
-              Forget everything you know about Long White. Introducing X by Long White.
-              A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD.
-              <br />
-              Expect the unXpected.
-            </p>
-
-            <img
-              src={UnXpected}
-              alt="THAT’S UNXPECTED"
-              className="block max-h-[160px] w-auto object-contain mt-2 md:mt-4"
-            />
+            <div className="max-w-md">
+              <p className="leading-relaxed">
+                <b>X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.</b>
+                <br />
+                Forget everything you know about Long White. Introducing X by Long White.
+                A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD.
+                <br />
+                Expect the unXpected.
+              </p>
+              <img
+                src={UnXpected}
+                alt="THAT’S UNXPECTED"
+                className="block max-h-[160px] w-auto object-contain mt-4"
+              />
+            </div>
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center md:justify-end">
+          <div className="col-span-12 md:col-span-6 order-1 md:order-2 flex justify-center md:justify-end">
             <img
               src={Can}
               alt="X by Long White cans"

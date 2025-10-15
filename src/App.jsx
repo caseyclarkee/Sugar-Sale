@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
+import X from "./pages/X.jsx";
 import Merch from "./pages/Merch.jsx";
 
 /* Little round badge */
@@ -21,7 +22,7 @@ const Burst = ({ children, className = "" }) => (
 
 /* Slow, smooth marquee */
 const Marquee = ({ text }) => (
-  <div className="border-y-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
+  <div className="border-b-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
     <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
       <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
         {Array.from({ length: 24 }).map((_, i) => (
@@ -102,9 +103,10 @@ const Header = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
             {[
               { to: "/", label: "Home", tone: "bg-yellow" },
-              { to: "/deals", label: "Deals", tone: "bg-purple text-white" },
-              { to: "/about", label: "About X", tone: "bg-yellow" },
-              { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
+              { to: "/about", label: "About", tone: "bg-purple text-white" },
+              { to: "/X", label: "X by Long White", tone: "bg-yellow" },
+              { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
+              { to: "/merch", label: "Merch", tone: "bg-yellow" },
             ].map((item) => (
               <NavLink
                 key={item.to}
@@ -305,7 +307,7 @@ export default function SugarSaleSite() {
 
         <div className="min-h-screen flex flex-col w-auto md:mr-[140px] md:ml-[140px] lg:ml-[200px] lg:mr-[200px] relative z-10">
           <Header />
-          <div className="mt-2">
+          <div className="mt-0">
             <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
           </div>
 
@@ -313,8 +315,9 @@ export default function SugarSaleSite() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/deals" element={<Deals />} />
               <Route path="/about" element={<About />} />
+              <Route path="/x" element={<X />} />
+              <Route path="/deals" element={<Deals />} />
               <Route path="/merch" element={<Merch />} />
               <Route path="*" element={<Home />} />
             </Routes>

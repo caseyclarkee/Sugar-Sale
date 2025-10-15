@@ -296,9 +296,6 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
     // Left rail
     { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
     { src: "/images/left-rail/Left02.gif", alt: "Customer support phone" },
-    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
-
-    // Right rail
     { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
     { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
     { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
@@ -343,7 +340,6 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
   );
 };
 
-
 export default function SugarSaleSite() {
   React.useEffect(() => {
     // Nudge layout for any early Tailwind/scroll calculations
@@ -378,7 +374,7 @@ export default function SugarSaleSite() {
 
           {/* Mobile-only image marquee below all page content */}
 <MobileImageMarquee />
-          
+            
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
             <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
               <p className="text-center text-sm font-medium md:text-left">

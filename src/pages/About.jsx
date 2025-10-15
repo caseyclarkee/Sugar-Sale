@@ -9,20 +9,7 @@ const About = () => (
       <h3 className="text-4xl sm:text-5xl font-black mb-4">Meet Gary</h3>
 
       <p className="max-w-2xl">
-        I’m Gary.<br />
-        I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally).
-        Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
-        <br /><br />
-        Zero. Sugar.
-        <br /><br />
-        Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent.
-        <br /><br />
-        So I decided to take matters into my own sticky hands.
-        Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation. Everything must go: bagged sugar, boxed sugar, sculpted sugar, mystery sugar. If I can make it out of sugar, I’ll sell it.
-        <br /><br />
-        Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
-        <br /><br />
-        Buy some sugar, will <i>you?</i> You’ll make a grown man sleep better tonight.
+                I’m Gary. You might know me as the ninth runner-up in Central Auckland’s Salesman of the Year Awards, 2004. I’m also the guy who sells sugar. Steady hours, sweet perks, it’s a pretty good gig. Well, it was until the Long White marketing team strolled in all excited, saying the delicious new RTD was “going to be zero sugar.” Zero. Sugar. Good for them. Meanwhile, I’m here knee-deep in unused sugar, trying to keep the ants off the forklift while I figure out what to do with it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent. So I decided to take matters into my own sticky hands with the Sugar Liquidation Sale. The clearance event powered entirely by panic and desperation. Everything must go. Bagged sugar, boxed sugar, sculpted sugar, mystery sugar. Sugar in all shapes and forms. If something can be made out of sugar, I’ll sell it. Buy a bag, will you? You’ll help a grown man sleep better tonight. P.S. Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please, take my sugar first.
       </p>
 
       <p className="max-w-2xl mt-4">

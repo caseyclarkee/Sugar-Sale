@@ -196,7 +196,6 @@ const LeftRail = () => {
   ref={railRef}
   className="hidden md:flex fixed right-0 top-0 h-screen w-[140px] lg:w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
 >
-    >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
           <div

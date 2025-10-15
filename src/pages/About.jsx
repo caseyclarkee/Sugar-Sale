@@ -5,6 +5,8 @@ const About = () => (
     className="bg-cover bg-center"
     style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}
   >
+  </div>
+  
     <section className="px-4 sm:px-8 py-12 text-lg">
       <h3 className="text-4xl sm:text-5xl font-black mb-4">About X</h3>
 <div class="grid grid-cols-12 gap-4">
@@ -18,7 +20,6 @@ Middle column (goes last on mobile
 Right column
   <div class="col-span-12 md:col-span-3 order-2 md:order-3 bg-blue-200">Right</div>
 
-</div>
 
 </div>
       <p className="max-w-2xl">

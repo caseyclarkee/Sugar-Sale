@@ -228,12 +228,12 @@ const DealCard = ({ deal }) => {
 function Deals() {
   // Hard-coded tiles
   const deals = [
-    { id: 1, title: "Deal of the Day 1", placeholder: true, badges: [{ text: "Coming Soon", tone: "gray" }] },
-    { id: 2, title: "Deal of the Day 2", placeholder: true, badges: [{ text: "Coming Soon", tone: "gray" }] },
-    { id: 3, title: "Deal of the Day 3", placeholder: true, badges: [{ text: "Coming Soon", tone: "gray" }] },
-    { id: 4, title: "Deal of the Day 4", placeholder: true, badges: [{ text: "Coming Soon", tone: "gray" }] },
-    { id: 5, title: "Sugar Dentures", image: "/images/dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true, disabledLabel: "Sold Out" },
-    { id: 6, title: "10kg of Sugar", image: "/images/10kg", ribbon: { text: "Replenishing soon", tone: "blue" }, waitlist: true },
+    { id: 3, title: "Deal of the Day", placeholder: true, badges: [{ text: "FREE!", tone: "gray" }] },
+    { id: 4, title: "Deal of the Day", placeholder: true, badges: [{ text: "Now $0.00", tone: "gray" }] },
+    { id: 5, title: "Deal of the Day", placeholder: true, badges: [{ text: "WIN FOR FREEEEE!", tone: "gray" }] },
+    { id: 6, title: "Deal of the Day", placeholder: true, badges: [{ text: "100% OFF", tone: "gray" }] },
+    { id: 1, title: "Sugar Dentures", image: "/images/dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true, disabledLabel: "Sold Out" },
+    { id: 2, title: "10kg of Sugar", image: "/images/10kg", ribbon: { text: "Replenishing soon", tone: "blue" }, waitlist: true },
   ];
 
   return (

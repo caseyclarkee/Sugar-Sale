@@ -11,7 +11,7 @@ const X = () => {
     >
       <section className="px-6 sm:px-12 py-0 text-lg">
         {/* 3-column layout: Gary | Text | Cans */}
-        <div className="grid grid-cols-12 gap-6 md:gap-10 items-end">
+        <div className="grid grid-cols-12 gap-6 md:gap-10 items-center min-h-[80vh]">
           {/* LEFT: Gary with minimal GIF lozenge */}
           <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-end">
             <img
@@ -31,7 +31,7 @@ const X = () => {
           </div>
 
           {/* MIDDLE: Centered header + text */}
-          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col items-center text-center gap-4 md:gap-6 -translate-y-4 md:-translate-y-8">
+          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6">
             <div className="flex flex-col items-center justify-center mb-1">
               <h1 className="font-black tracking-tight leading-tight text-[clamp(38px,6.4vw,88px)]">
                 Introducing
@@ -53,7 +53,7 @@ const X = () => {
             <img
               src={Can}
               alt="X by Long White cans"
-              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain md:translate-y-0"
+              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain"
             />
           </div>
         </div>

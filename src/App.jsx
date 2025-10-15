@@ -291,6 +291,59 @@ const RightRail = () => {
   );
 };
 
+const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
+  const images = [
+    // Left rail
+    { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
+    { src: "/images/left-rail/Left02.gif", alt: "Customer support phone" },
+    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
+
+    // Right rail
+    { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
+    { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
+    { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
+    { src: "/images/right-rail/Right04.png", alt: "Sugar Badge" },
+  ];
+
+  const Track = ({ ariaHidden = false }) => (
+    <div
+      className="marquee-images__track flex shrink-0 gap-4 pr-4"
+      aria-hidden={ariaHidden || undefined}
+      style={{ animationDuration: `${speedSec}s` }}
+    >
+      {images.map((p, i) => (
+        <div key={`${ariaHidden ? "b" : "a"}-${i}`} className={`${itemHeight} min-w-[80px] flex items-center`}>
+          <img
+            src={p.src}
+            alt={ariaHidden ? "" : p.alt}
+            className="h-full w-auto object-contain select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="md:hidden border-y-[4px] border-grey bg-yellow overflow-hidden w-full">
+      <div className="marquee-images flex items-center py-2">
+        <Track />
+        <Track ariaHidden />
+      </div>
+
+      <style>{`
+        .marquee-images__track { will-change: transform; animation: marquee-x linear infinite; }
+        @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-images__track { animation-duration: 0s !important; animation-play-state: paused !important; transform: translateX(0) !important; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
 export default function SugarSaleSite() {
   React.useEffect(() => {
     // Nudge layout for any early Tailwind/scroll calculations
@@ -323,6 +376,9 @@ export default function SugarSaleSite() {
             </Routes>
           </main>
 
+          {/* Mobile-only image marquee below all page content */}
+<MobileImageMarquee />
+          
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
             <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
               <p className="text-center text-sm font-medium md:text-left">

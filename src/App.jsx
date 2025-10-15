@@ -342,11 +342,11 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
 
         /* Smooth pulsing background (fade between yellow and purple) */
         .animate-pulse-bg {
-          animation: pulse-bg 4s ease-in-out infinite;
+          animation: pulse-bg 2s ease-in-out infinite;
         }
         @keyframes pulse-bg {
-          0%, 100% { background-color: #FBE400; } /* yellow */
-          50% { background-color: #8C3AFF; } /* purple */
+          0%, 100% { background-color: #bg-yellow; } /* yellow */
+          50% { background-color: #bg-purple; } /* purple */
         }
 
         /* Accessibility fallback */
@@ -358,7 +358,7 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
           }
           .animate-pulse-bg {
             animation: none !important;
-            background-color: #FBE400; /* static yellow */
+            background-color: #bg-yellow; /* static yellow */
           }
         }
       `}</style>

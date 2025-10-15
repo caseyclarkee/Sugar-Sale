@@ -44,8 +44,8 @@ X by Long White
 </div>
 
 
-<p className="max-w-md leading-snug">
-Forget everything you know about Long White. Introducing X by Long White. A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD.
+<p className="max-w-md leading-snug md:mb-2">
+Forget everything you know about Long White. Say hello to a refreshing Zero Sugar, Zero Carb, 94 Calories, lemon Vodka flavoured RTD.
 <br />
 <b>“X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.”</b>
 </p>

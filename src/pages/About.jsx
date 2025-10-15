@@ -15,14 +15,15 @@ const About = () => {
         {/* 3-column responsive layout */}
         <div className="grid grid-cols-12 gap-0 items-center">
 
-          {/* LEFT: Gary (bottom on mobile) */}
-          <div className="col-span-12 md:col-span-4 order-last md:order-1 flex justify-center items-end">
-            <img
-              src={Gary}
-              alt="Gary holding a can of X"
-              className="block max-h-[450px] w-auto object-contain"
-            />
-          </div>
+{/* LEFT: Gary (bottom on mobile) */}
+<div className="col-span-12 md:col-span-4 order-last md:order-1 flex justify-center md:justify-start items-end md:pb-0 pb-0">
+  <img
+    src={Gary}
+    alt="Gary holding a can of X"
+    className="block max-h-[450px] w-auto object-contain align-bottom"
+  />
+</div>
+
 
           {/* MIDDLE: Text + GIF */}
           <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col items-center text-center gap-4">

@@ -21,7 +21,7 @@ const Burst = ({ children, className = "" }) => (
 
 /* Slow, smooth marquee */
 const Marquee = ({ text }) => (
-  <div className="border-y-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
+  <div className="border-b-[4px] border-grey bg-purple/50 text-grey overflow-hidden w-full">
     <div className="marquee flex whitespace-nowrap py-2 text-sm font-black uppercase tracking-widest">
       <div className="marquee__track flex shrink-0" style={{ animationDuration: "80s" }}>
         {Array.from({ length: 24 }).map((_, i) => (

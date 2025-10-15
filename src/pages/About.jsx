@@ -20,8 +20,8 @@ const About = () => {
               <b>X Skipped the sugar, but Gary's got a plan. Grab a sweet deal, crack open a can.</b><br>Forget everything you know about Long White. Introducing X by Long White. A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD. Expect the unXpected.</br>
             </p>
             <img
-              src={Gary}
-              alt="Gary holding a can of X"
+              src={UnXpected}
+              alt="Gif"
               className="max-h-[450px] w-auto object-contain"
             />
           </div>

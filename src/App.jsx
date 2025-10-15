@@ -54,7 +54,7 @@ const Marquee = ({ text }) => (
 
 /* Header */
 const Header = () => {
-  const garyClasses =
+  const unxpectedClasses =
     "hover:scale-105 transition-transform cursor-pointer object-contain h-auto " +
     "w-16 sm:w-24 md:w-28 lg:w-32";
 
@@ -70,7 +70,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
       <div className="flex items-center justify-between w-full px-4 sm:px-8">
         <img
-          src="/images/gary.gif"
+          src="/images/unxpectedcan.gif"
           alt="THAT’S UNXPECTED"
           onClick={() => {
             const urls = [
@@ -81,7 +81,7 @@ const Header = () => {
             const randomUrl = urls[Math.floor(Math.random() * urls.length)];
             window.open(randomUrl, "_blank");
           }}
-          className={garyClasses}
+          className={unxpectedClasses}
         />
 
         <img
@@ -91,7 +91,7 @@ const Header = () => {
         />
 
         <img
-          src="/images/lwlogo.png"
+          src="/images/lwlogo.gif"
           alt="X by Long White"
           className={lwClasses}
         />
@@ -148,8 +148,8 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/left-rail/Left01.gif", alt: "X can" },
-    { src: "/images/left-rail/Left02.gif", alt: "Sale on now" },
+    { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
+    { src: "/images/left-rail/Left02.gif", alt: "phone" },
     { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
   ];
 
@@ -325,6 +325,14 @@ export default function SugarSaleSite() {
                 © {new Date().getFullYear()} Long White X Zero Sugar.
               </p>
               <div className="flex items-center gap-3">
+                <a
+                  href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                >
+                  NZ Promotional Terms and Conditions
+                </a>
                 <a
                   href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
                   target="_blank"

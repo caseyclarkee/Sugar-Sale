@@ -8,7 +8,7 @@ const About = () => {
       className="bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}
     >
-      <section className="px-4 sm:px-8 py-12 text-lg backdrop-blur-sm">
+      <section className="px-0 sm:px-0 py-0 text-lg backdrop-blur-sm">
         <h3 className="text-4xl sm:text-5xl font-black mb-8">About X</h3>
 
         {/* 3-column responsive layout */}

@@ -1,6 +1,6 @@
 import React from "react";
 
-// ASSETS (exact filenames you provided)
+// === ASSETS (your filenames) ===
 import Clouds from "/images/about/clouds.jpg";
 import Gary from "/images/about/PhotoGary.png";
 import CanPassion from "/images/about/X_Website_Product_Page-07.png"; // purple X can
@@ -13,102 +13,82 @@ import BurstCals from "/images/about/X_Website_Product_Page-05.png";      // 92 
 import BurstIceCold from "/images/about/X_Website_Product_Page-06.png";   // ICE COLD
 import ThatsUnxpected from "/images/gary.gif"; // round sticker gif
 
+/*
+Rebalanced layout notes
+- Gary anchors left and is larger (base ~68vh).
+- Cans are clustered as a stack on the right with stronger counter-rotations.
+- Bursts overlap cans with tuned z-index for depth.
+- Quote card sits lower, overlapping baseline a touch.
+- Headline/body use clamp + snug leading; cloud bg gets a soft overlay for contrast.
+*/
+
 const About = () => {
   return (
-    <div
-      className="relative bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${Clouds})` }}
-    >
-      <section className="px-4 sm:px-8 lg:px-14 py-10 lg:py-16 text-lg">
+    <div className="relative">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${Clouds})` }}
+      />
+      {/* Soft overlay to keep foreground readable */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.05),rgba(0,0,0,0.0)_40%),linear-gradient(to_bottom,rgba(255,255,255,0.06),transparent_30%,transparent_60%,rgba(0,0,0,0.05))]" />
+
+      <section className="relative px-4 sm:px-8 lg:px-14 pt-10 lg:pt-14 pb-16 lg:pb-24">
         {/* HEADLINE */}
         <div className="text-center">
-          <h3 className="font-black leading-tight tracking-tight text-[clamp(36px,6vw,72px)]">
-            Introducing
-          </h3>
-          <p className="font-black leading-none tracking-tight text-[clamp(28px,4.2vw,48px)] -mt-1">
-            X by Long White
-          </p>
+          <h1 className="font-black tracking-tight leading-tight text-[clamp(38px,6.4vw,88px)]">Introducing</h1>
+          <p className="font-black tracking-tight leading-none text-[clamp(28px,4.6vw,56px)] -mt-1">X by Long White</p>
         </div>
 
         {/* BODY COPY - skinny measure */}
-        <p className="mx-auto mt-6 max-w-[640px] text-center leading-relaxed text-[clamp(14px,1.4vw,18px)]">
+        <p className="mx-auto mt-5 max-w-[520px] text-center leading-snug text-[clamp(14px,1.3vw,18px)]">
           Forget everything you know about Long White. Introducing X by Long White. A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD.
         </p>
 
-        {/* MAIN STAGE */}
-        <div className="relative mt-8 grid grid-cols-12 gap-6 md:gap-8 items-end">
-          {/* LEFT: Gary anchored bottom-left */}
-          <div className="col-span-12 md:col-span-5 relative order-last md:order-1">
-            <img
-              src={Gary}
-              alt="Gary holding a can of X"
-              className="block mx-auto md:mx-0 md:absolute md:bottom-0 md:left-0 w-auto max-h-[clamp(360px,58vh,760px)] object-contain drop-shadow-[8px_8px_0_rgba(0,0,0,0.25)]"
-            />
-            {/* THAT'S UNXPECTED sticker */}
-            <img
-              src={ThatsUnxpected}
-              alt="That's UnXpected"
-              className="hidden md:block absolute -top-8 left-[6%] w-[120px] rotate-[-12deg] drop-shadow-[6px_6px_0_rgba(0,0,0,0.25)]"
-            />
-          </div>
+        {/* STAGE: we use a single relatively positioned grid, but the hero pieces are absolutely composed for poster-like control */}
+        <div className="relative mt-6 min-h-[520px] md:min-h-[640px] lg:min-h-[720px]">
+          {/* GARY */}
+          <img
+            src={Gary}
+            alt="Gary holding a can of X"
+            className="absolute bottom-0 left-[4%] w-auto max-h-[68vh] md:max-h-[72vh] object-contain z-[20] drop-shadow-[10px_10px_0_rgba(0,0,0,0.25)]"
+          />
+          {/* Gary sticker */}
+          <img
+            src={ThatsUnxpected}
+            alt="That's UnXpected"
+            className="hidden md:block absolute left-[11%] top-[6%] w-[120px] rotate-[-12deg] z-[30] drop-shadow-[6px_6px_0_#000]"
+          />
 
-          {/* MIDDLE: Quote card with chunky shadow */}
-          <div className="col-span-12 md:col-span-3 order-1 md:order-2 relative">
-            <div className="mx-auto md:mx-0 max-w-[560px] md:max-w-none">
-              <div className="relative rounded-2xl border-[4px] border-black bg-white/85 backdrop-blur shadow-[8px_8px_0_#000] px-6 py-6 md:px-8 md:py-8 -mb-2 md:mb-0 md:translate-y-8">
-                <p className="text-center font-black leading-snug text-[clamp(16px,2.2vw,24px)]">
-                  “X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can”
-                </p>
-              </div>
+          {/* CANS CLUSTER (right) */}
+          {/* Yellow can (top/front) */}
+          <img
+            src={CanLemon}
+            alt="Vodka & Lemon can"
+            className="absolute right-[10%] top-[2%] w-[min(44vw,460px)] md:w-[min(34vw,480px)] rotate-[-18deg] z-[18] object-contain drop-shadow-[12px_12px_0_#000]"
+          />
+          {/* Purple can (back/lower) */}
+          <img
+            src={CanPassion}
+            alt="Vodka, Lemon & Passionfruit can"
+            className="absolute right-[4%] bottom-[4%] w-[min(42vw,440px)] md:w-[min(32vw,460px)] rotate-[10deg] translate-x-[12px] -translate-y-[6px] z-[16] object-contain drop-shadow-[12px_12px_0_#000]"
+          />
+
+          {/* BURSTS around cans (depth tuned) */}
+          <img src={BurstVodkaLemon} alt="Vodka & Lemon" className="absolute right-[36%] top-[6%] w-[120px] rotate-[8deg] z-[22] drop-shadow-[6px_6px_0_#000]" />
+          <img src={BurstVodkaLemonPassion} alt="Vodka Lemon & Passionfruit" className="absolute right-[32%] top-[40%] w-[170px] rotate-[-6deg] z-[22] drop-shadow-[6px_6px_0_#000]" />
+          <img src={BurstZeroSugar} alt="Zero Sugar" className="absolute right-[6%] top-[28%] w-[120px] rotate-[10deg] z-[22] drop-shadow-[6px_6px_0_#000]" />
+          <img src={BurstZeroCarb} alt="Zero Carb" className="absolute right-[4%] top-[46%] w-[160px] rotate-[2deg] z-[23] drop-shadow-[6px_6px_0_#000]" />
+          <img src={BurstCals} alt="92 Calories" className="absolute right-[22%] bottom-[18%] w-[120px] rotate-[-12deg] z-[22] drop-shadow-[6px_6px_0_#000]" />
+          <img src={BurstIceCold} alt="Ice Cold" className="absolute right-[6%] bottom-[4%] w-[120px] rotate-[6deg] z-[24] drop-shadow-[6px_6px_0_#000]" />
+
+          {/* QUOTE CARD (lower, overlaps baseline slightly) */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[6%] md:bottom-[8%] z-[26]">
+            <div className="rounded-2xl border-[4px] border-black bg-white/90 backdrop-blur shadow-[8px_8px_0_#000] px-6 py-6 md:px-8 md:py-8">
+              <p className="text-center font-black leading-snug text-[clamp(16px,2.2vw,24px)]">
+                “X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can”
+              </p>
             </div>
-          </div>
-
-          {/* RIGHT: Oversized cans + bursts composed absolutely */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 relative min-h-[440px]">
-            {/* Top can (yellow) */}
-            <img
-              src={CanLemon}
-              alt="Vodka & Lemon can"
-              className="absolute right-[8%] -top-6 w-[min(46vw,430px)] md:w-[min(32vw,430px)] rotate-[-12deg] object-contain drop-shadow-[10px_10px_0_#000]"
-            />
-            {/* Bottom can (purple) */}
-            <img
-              src={CanPassion}
-              alt="Vodka, Lemon & Passionfruit can"
-              className="absolute right-0 bottom-0 w-[min(44vw,410px)] md:w-[min(30vw,410px)] rotate-[8deg] object-contain drop-shadow-[10px_10px_0_#000]"
-            />
-
-            {/* Bursts (positions tuned to your mock) */}
-            <img
-              src={BurstVodkaLemon}
-              alt="Vodka & Lemon"
-              className="absolute right-[38%] top-[-10px] w-[120px] rotate-[6deg] drop-shadow-[6px_6px_0_#000]"
-            />
-            <img
-              src={BurstVodkaLemonPassion}
-              alt="Vodka Lemon & Passionfruit"
-              className="absolute right-[35%] top-[42%] w-[160px] rotate-[-8deg] drop-shadow-[6px_6px_0_#000]"
-            />
-            <img
-              src={BurstZeroSugar}
-              alt="Zero Sugar"
-              className="absolute right-[2%] top-[26%] w-[120px] rotate-[8deg] drop-shadow-[6px_6px_0_#000]"
-            />
-            <img
-              src={BurstZeroCarb}
-              alt="Zero Carb"
-              className="absolute right-[4%] top-[40%] w-[150px] rotate-[2deg] drop-shadow-[6px_6px_0_#000]"
-            />
-            <img
-              src={BurstCals}
-              alt="92 Calories"
-              className="absolute right-[24%] bottom-[12%] w-[120px] rotate-[-10deg] drop-shadow-[6px_6px_0_#000]"
-            />
-            <img
-              src={BurstIceCold}
-              alt="Ice Cold"
-              className="absolute right-[6%] bottom-[2%] w-[120px] rotate-[4deg] drop-shadow-[6px_6px_0_#000]"
-            />
           </div>
         </div>
       </section>
@@ -117,5 +97,3 @@ const About = () => {
 };
 
 export default About;
-
-

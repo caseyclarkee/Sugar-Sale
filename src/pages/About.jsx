@@ -6,6 +6,7 @@ const About = () => (
     style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}
   >
     <section className="px-4 sm:px-8 py-12 text-lg backdrop-blur-sm">
+      {/* 2-column layout for text + image */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left column: text */}
         <div>
@@ -35,51 +36,52 @@ const About = () => (
             <b>P.P.S.</b> I was the ninth runner up in central Auckland&apos;s salesman of
             the year awards in 2004.
           </p>
-
-          {/* FAQ */}
-          <div className="mt-8">
-            <h2 className="font-black uppercase text-xl mb-3">
-              FAQ (Frequently Asked Quibbles)
-            </h2>
-
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">
-                Is any of this sugar used in the drink?
-              </summary>
-              <div className="mt-2 text-sm">
-                Absolutely not. X by Long White is zero sugar. Hence… this website.
-              </div>
-            </details>
-
-            <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">
-                Is the sugar good quality?
-              </summary>
-              <div className="mt-2 text-sm">
-                Yes. It’s the good stuff. Please do not build furniture out of it. (I
-                (Gary) will.)
-              </div>
-            </details>
-
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
-              <summary className="cursor-pointer font-black">Can I haggle?</summary>
-              <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
-            </details>
-          </div>
         </div>
 
         {/* Right column: image */}
         <div className="flex justify-center md:justify-end">
           <img
-            src="/images/Remove background project.png"
+            src="/images/placeholder.png"
             alt="Gary"
             className="max-w-full md:max-w-md rounded-2xl border-[4px] border-grey shadow-[6px_6px_0_#000]"
           />
         </div>
+      </div>
+
+      {/* FAQ below both columns */}
+      <div className="mt-12">
+        <h2 className="font-black uppercase text-xl mb-3">
+          FAQ (Frequently Asked Quibbles)
+        </h2>
+
+        <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
+          <summary className="cursor-pointer font-black">
+            Is any of this sugar used in the drink?
+          </summary>
+          <div className="mt-2 text-sm">
+            Absolutely not. X by Long White is zero sugar. Hence… this website.
+          </div>
+        </details>
+
+        <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
+          <summary className="cursor-pointer font-black">
+            Is the sugar good quality?
+          </summary>
+          <div className="mt-2 text-sm">
+            Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary)
+            will.)
+          </div>
+        </details>
+
+        <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
+          <summary className="cursor-pointer font-black">Can I haggle?</summary>
+          <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
+        </details>
       </div>
     </section>
   </div>
 );
 
 export default About;
+
 

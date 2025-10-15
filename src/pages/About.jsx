@@ -15,7 +15,7 @@ import ThatsUnxpected from "/images/gary.gif"; // round sticker gif
 
 /*
 Rebalanced layout notes
-- Gary anchors left and is larger (base ~68vh).
+- Gary anchors left and is larger  (base ~68vh).
 - Cans are clustered as a stack on the right with stronger counter-rotations.
 - Bursts overlap cans with tuned z-index for depth.
 - Quote card sits lower, overlapping baseline a touch.

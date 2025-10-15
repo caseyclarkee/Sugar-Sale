@@ -15,13 +15,13 @@ const About = () => {
         </h3>
 
         {/* 3-column layout: Gary | Text | Cans */}
-        <div className="grid grid-cols-12 gap-6 md:gap-8 items-end">
+        <div className="grid grid-cols-12 gap-6 md:gap-10 items-end">
           {/* LEFT: Gary (bottom aligned) */}
           <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-end">
             <img
               src={Gary}
               alt="Gary holding a can of X"
-              className="block w-auto max-h-[520px] md:absolute md:bottom-0 md:left-0"
+              className="block w-auto max-h-[500px] md:max-h-[560px] object-contain md:absolute md:bottom-0 md:left-0"
             />
           </div>
 
@@ -44,11 +44,11 @@ const About = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center">
+          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center md:justify-start">
             <img
               src={Can}
               alt="X by Long White cans"
-              className="block w-auto max-h-[500px] object-contain"
+              className="block w-auto max-h-[620px] md:max-h-[700px] object-contain md:translate-y-4"
             />
           </div>
         </div>
@@ -58,4 +58,7 @@ const About = () => {
 };
 
 export default About;
+
+
+
 

@@ -4,6 +4,7 @@ const About = () => (
   <div className="bg-[url(/about/images/clouds.jpg)] bg-cover bg-center">
     <section className="px-4 sm:px-8 py-12 text-lg">
       <h3 className="text-4xl sm:text-5xl font-black mb-4">About X</h3>
+
       <p className="max-w-2xl">
         I’m Gary.<br />
         I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally).
@@ -26,7 +27,7 @@ const About = () => (
       </p>
 
       <p className="max-w-2xl mt-2">
-        <b>P.P.S.</b> I was the ninth runner up in central Auckland's salesman of the year awards in 2004.
+        <b>P.P.S.</b> I was the ninth runner up in central Auckland&apos;s salesman of the year awards in 2004.
       </p>
 
       {/* FAQ */}
@@ -55,8 +56,7 @@ const About = () => (
         </details>
       </div>
     </section>
-  </div>  {/* ✅ properly closed */}
+  </div>
 );
 
 export default About;
-

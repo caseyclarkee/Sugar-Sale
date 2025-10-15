@@ -12,16 +12,24 @@ const X = () => {
       <section className="px-6 sm:px-12 py-10 lg:py-16 text-lg">
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end">
-          {/* LEFT: Gary (bottom aligned) */}
-          <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-end">
+          {/* LEFT: Gary with GIF lozenge */}
+          <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-end pb-0">
             <img
               src={Gary}
               alt="Gary holding a can of X"
-              className="block w-auto max-h-[500px] md:max-h-[560px] object-contain md:absolute md:bottom-0 md:left-0"
+              className="block w-auto max-h-[560px] object-contain md:absolute md:bottom-0 md:left-0"
             />
+            {/* Lozenge GIF overlapping edge of Gary */}
+            <div className="absolute right-[-30px] bottom-[40px] md:right-[-50px] md:bottom-[60px]">
+              <img
+                src={UnXpected}
+                alt="THAT’S UNXPECTED"
+                className="block w-[120px] md:w-[160px] h-auto object-contain rounded-full border-[4px] border-black shadow-[4px_4px_0_#000]"
+              />
+            </div>
           </div>
 
-          {/* MIDDLE: Centered header + text + GIF */}
+          {/* MIDDLE: Centered header + text */}
           <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col items-center text-center gap-5 md:gap-8">
             <div className="flex flex-col items-center justify-center mb-2">
               <h1 className="font-black tracking-tight leading-tight text-[clamp(38px,6.4vw,88px)]">
@@ -37,12 +45,6 @@ const X = () => {
               <br />
               <b>“X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.”</b>
             </p>
-
-            <img
-              src={UnXpected}
-              alt="THAT’S UNXPECTED"
-              className="block max-h-[160px] w-auto object-contain mt-2 md:mt-4"
-            />
           </div>
 
           {/* RIGHT: Can image */}

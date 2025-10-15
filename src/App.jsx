@@ -305,7 +305,7 @@ export default function SugarSaleSite() {
 
         <div className="min-h-screen flex flex-col w-auto md:mr-[140px] md:ml-[140px] lg:ml-[200px] lg:mr-[200px] relative z-10">
           <Header />
-          <div className="mt-2">
+          <div className="mt-0">
             <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
           </div>
 

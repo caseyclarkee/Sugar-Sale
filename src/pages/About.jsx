@@ -1,6 +1,6 @@
 import React from "react";
 
-const Gary = () => (
+const About = () => (
   <div
     className="bg-cover bg-center"
     style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}
@@ -62,4 +62,4 @@ const Gary = () => (
   </div>
 );
 
-export default Gary;
+export default About;

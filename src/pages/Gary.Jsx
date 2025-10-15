@@ -1,6 +1,6 @@
 import React from "react";
 
-const Gary.jsx = () => (
+const Gary = () => (
   <div
     className="bg-cover bg-center"
     style={{ backgroundImage: "url('/images/about/clouds.jpg')" }}

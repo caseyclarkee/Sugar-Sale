@@ -10,19 +10,19 @@ const About = () => {
         <h3 className="text-4xl sm:text-5xl font-black mb-6">About X</h3>
 
         {/* 12-col grid. Middle drops last on mobile */}
-        <div className="grid grid-cols-12 gap-4 mb-6">
+        <div className="grid grid-cols-12 gap-0 mb-1">
           {/* Left column */}
-          <div className="col-span-12 md:col-span-3 order-1 md:order-1 bg-red-200 p-4 rounded-xl">
+          <div className="col-span-12 md:col-span-3 order-1 md:order-1">
             Left
           </div>
 
           {/* Middle column (last on mobile, middle on md+) */}
-          <div className="col-span-12 md:col-span-6 order-last md:order-2 bg-green-200 p-4 rounded-xl">
+          <div className="col-span-12 md:col-span-6 order-last">
             Middle (goes last on mobile)
           </div>
 
           {/* Right column */}
-          <div className="col-span-12 md:col-span-3 order-2 md:order-3 bg-blue-200 p-4 rounded-xl">
+          <div className="col-span-12 md:col-span-3 order-2 md:order-3">
             Right
           </div>
         </div>

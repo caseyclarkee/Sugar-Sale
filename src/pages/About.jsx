@@ -1,6 +1,6 @@
 import React from "react";
 import Gary from "/images/about/PhotoGary.png";
-import Can from "/images/about/CanCallouts.png";
+import Can from "/images/about/CanCallOuts.png";
 
 const About = () => {
   return (

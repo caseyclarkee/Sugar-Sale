@@ -1,10 +1,9 @@
 import React from "react";
 
 const About = () => (
-  <div className="bg-[url(images/about/clouds.jpg)] bg-cover bg-center">
     <div
   class="bg-cover"
-  style="background-image: url('...'); "bg-center"></div>
+  style="background-image: url('images/about/clouds.jpg'); "bg-center"></div>
     <section className="px-4 sm:px-8 py-12 text-lg">
       <h3 className="text-4xl sm:text-5xl font-black mb-4">About X</h3>
     

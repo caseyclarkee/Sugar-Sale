@@ -33,7 +33,7 @@ const About = () => {
             <img
     src={Gary}
     alt="Gary holding a can of X"
-    className="block max-h-[450px] w-auto object-contain align-bottom"
+    className="block max-h-auto w-auto object-contain align-bottom"
   />
           </div>
 

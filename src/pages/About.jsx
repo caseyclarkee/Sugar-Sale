@@ -15,9 +15,18 @@ const About = () => {
         {/* 3-column responsive layout */}
         <div className="grid grid-cols-12 gap-0 items-center">
 
-          {/* LEFT: Text + GIF */}
-          <div className="col-span-12 md:col-span-5 order-1 md:order-1 flex flex-col items-center md:items-start gap-4">
-            <p className="max-w-md; text-center">
+          {/* LEFT: Gary (bottom on mobile) */}
+          <div className="col-span-12 md:col-span-4 order-last md:order-1 flex justify-center items-end">
+            <img
+              src={Gary}
+              alt="Gary holding a can of X"
+              className="block max-h-[450px] w-auto object-contain"
+            />
+          </div>
+
+          {/* MIDDLE: Text + GIF */}
+          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col items-center text-center gap-4">
+            <p className="max-w-md">
               <b>X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.</b>
               <br />
               Forget everything you know about Long White. Introducing X by Long White.
@@ -33,20 +42,11 @@ const About = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-5 order-2 md:order-3 flex justify-center">
+          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center">
             <img
               src={Can}
               alt="X by Long White cans"
               className="block h-auto w-auto object-contain"
-            />
-          </div>
-
-          {/* MIDDLE: Gary (bottom on mobile) */}
-          <div className="col-span-12 md:col-span-2 order-last md:order-2 flex justify-center items-end">
-            <img
-              src={Gary}
-              alt="Gary holding a can of X"
-              className="block max-h-[450px] w-auto object-contain"
             />
           </div>
 
@@ -57,4 +57,3 @@ const About = () => {
 };
 
 export default About;
-

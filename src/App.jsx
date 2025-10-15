@@ -323,22 +323,49 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
   );
 
   return (
-    <div className="md:hidden border-y-[4px] border-grey bg-yellow overflow-hidden w-full">
+    <div className="md:hidden border-y-[4px] border-grey overflow-hidden w-full animate-pulse-bg">
       <div className="marquee-images flex items-center py-2">
         <Track />
         <Track ariaHidden />
       </div>
 
       <style>{`
-        .marquee-images__track { will-change: transform; animation: marquee-x linear infinite; }
-        @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        /* Scrolling movement */
+        .marquee-images__track {
+          will-change: transform;
+          animation: marquee-x linear infinite;
+        }
+        @keyframes marquee-x {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+
+        /* Smooth pulsing background (fade between yellow and purple) */
+        .animate-pulse-bg {
+          animation: pulse-bg 4s ease-in-out infinite;
+        }
+        @keyframes pulse-bg {
+          0%, 100% { background-color: #FBE400; } /* yellow */
+          50% { background-color: #8C3AFF; } /* purple */
+        }
+
+        /* Accessibility fallback */
         @media (prefers-reduced-motion: reduce) {
-          .marquee-images__track { animation-duration: 0s !important; animation-play-state: paused !important; transform: translateX(0) !important; }
+          .marquee-images__track {
+            animation-duration: 0s !important;
+            animation-play-state: paused !important;
+            transform: translateX(0) !important;
+          }
+          .animate-pulse-bg {
+            animation: none !important;
+            background-color: #FBE400; /* static yellow */
+          }
         }
       `}</style>
     </div>
   );
 };
+
 
 export default function SugarSaleSite() {
   React.useEffect(() => {

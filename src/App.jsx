@@ -56,7 +56,7 @@ const Marquee = ({ text }) => (
 const Header = () => {
   const unxpectedClasses =
     "hover:scale-105 transition-transform cursor-pointer object-contain h-auto " +
-    "w-16 sm:w-24 md:w-28 lg:w-32";
+    "w-24 sm:w-24 md:w-28 lg:w-32";
 
   const lockupClasses =
     "object-contain h-auto " +
@@ -64,7 +64,7 @@ const Header = () => {
 
   const lwClasses =
     "object-contain h-auto " +
-    "w-16 sm:w-24 md:w-28 lg:w-32";
+    "w-24 sm:w-24 md:w-28 lg:w-32";
 
   return (
     <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">

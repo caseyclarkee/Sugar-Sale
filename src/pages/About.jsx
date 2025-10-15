@@ -9,13 +9,13 @@ const About = () => (
       <h3 className="text-4xl sm:text-5xl font-black mb-4">About X</h3>
 <div class="grid grid-cols-12 gap-4">
 
-  <!-- Left column -->
+  <-- Left column -->
   <div class="col-span-12 md:col-span-3 order-1 md:order-1 bg-red-200">Left</div>
 
-  <!-- Middle column (goes last on mobile) -->
+  <-- Middle column (goes last on mobile) -->
   <div class="col-span-12 md:col-span-6 order-3 md:order-2 bg-green-200">Middle</div>
 
-  <!-- Right column -->
+  <-- Right column -->
   <div class="col-span-12 md:col-span-3 order-2 md:order-3 bg-blue-200">Right</div>
 
 </div>

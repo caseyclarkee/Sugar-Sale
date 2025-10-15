@@ -16,7 +16,7 @@ const About = () => {
         <div className="grid grid-cols-12 gap-0 items-center">
 
 {/* LEFT: Gary (bottom on mobile) */}
-<div className="col-span-12 md:col-span-4 order-last md:order-1 flex justify-center md:justify-end items-end md:pb-0 pb-0">
+<div className="col-span-12 md:col-span-3 order-last md:order-1 flex justify-center md:justify-end items-end md:pb-0 pb-0">
   <img
     src={Gary}
     alt="Gary holding a can of X"
@@ -43,7 +43,7 @@ const About = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center">
+          <div className="col-span-12 md:col-span-5 order-2 md:order-3 flex justify-center">
             <img
               src={Can}
               alt="X by Long White cans"

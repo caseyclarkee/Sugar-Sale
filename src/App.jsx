@@ -112,8 +112,9 @@ const Header = () => {
                 end={item.to === "/"}
                 className={({ isActive }) =>
                   [
+                    "flex items-center justify-center min-h-[48px]",
                     "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                    "text-base font-black uppercase",
+                    "text-xl font-black uppercase",
                     "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
                     "active:translate-y-[1px]",
                     item.tone,
@@ -329,7 +330,7 @@ export default function SugarSaleSite() {
                   href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
                 >
                   NZ Promotional Terms and Conditions
                 </a>

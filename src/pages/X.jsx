@@ -3,7 +3,7 @@ import Gary from "/images/about/PhotoGary.png";
 import Can from "/images/about/CanCallOuts.png";
 import UnXpected from "/images/gary.gif";
 
-const About = () => {
+const X = () => {
   return (
     <div
       className="bg-cover bg-center bg-no-repeat"
@@ -59,4 +59,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default X;

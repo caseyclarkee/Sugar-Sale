@@ -68,7 +68,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-      <div className="flex items-center justify-between w-full px-4 sm:px-8">
+      <div className="flex items-center justify-center w-full px-4 sm:px-8"> 
         <img
           src="/images/unxpectedcan.gif"
           alt="THAT’S UNXPECTED"

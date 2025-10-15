@@ -7,7 +7,20 @@ const About = () => (
   >
     <section className="px-4 sm:px-8 py-12 text-lg">
       <h3 className="text-4xl sm:text-5xl font-black mb-4">About X</h3>
+<div class="grid grid-cols-12 gap-4">
 
+  <!-- Left column -->
+  <div class="col-span-12 md:col-span-3 order-1 md:order-1 bg-red-200">Left</div>
+
+  <!-- Middle column (goes last on mobile) -->
+  <div class="col-span-12 md:col-span-6 order-3 md:order-2 bg-green-200">Middle</div>
+
+  <!-- Right column -->
+  <div class="col-span-12 md:col-span-3 order-2 md:order-3 bg-blue-200">Right</div>
+
+</div>
+
+</div>
       <p className="max-w-2xl">
         I’m Gary.<br />
         I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally).

@@ -98,38 +98,57 @@ const Header = () => {
         />
       </div>
 
-      <nav className="w-full relative z-[60] py-2">
-        <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
-            {[
-              { to: "/", label: "Home", tone: "bg-yellow" },
-              { to: "/about", label: "About", tone: "bg-purple text-white" },
-              { to: "/X", label: "X by Long White", tone: "bg-yellow" },
-              { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-              { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
-            ].map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === "/"}
-                className={({ isActive }) =>
-                  [
-                    "flex items-center justify-center min-h-[48px]",
-                    "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                    "text-xl font-black uppercase",
-                    "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-                    "active:translate-y-[1px]",
-                    item.tone,
-                    isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
-                  ].join(" ")
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-        </div>
-      </nav>
+   <nav className="w-full relative z-[60] py-2">
+  <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
+      {[
+        { to: "/", label: "Home", tone: "bg-yellow" },
+        { to: "/about", label: "About", tone: "bg-purple text-white" },
+        { to: "/X", label: "X by Long White", tone: "bg-yellow" },
+        { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
+        { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
+      ].map((item) =>
+        item.to === "/merch" ? (
+          {/* --- TEMP MERCH IMAGE (DELETE WHEN SWITCHING BACK) --- */}
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className="flex items-center justify-center min-h-[48px]"
+          >
+            <img
+              src="/images/merchcoming.png"
+              alt="Merch coming soon"
+              className="h-12 w-auto"
+            />
+          </NavLink>
+          {/* --- END TEMP MERCH IMAGE --- */}
+        ) : (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              [
+                "flex items-center justify-center min-h-[48px]",
+                "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                "text-xl font-black uppercase",
+                "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                "active:translate-y-[1px]",
+                item.tone,
+                isActive
+                  ? "ring-2 ring-grey ring-offset-2 ring-offset-white"
+                  : "",
+              ].join(" ")
+            }
+          >
+            {item.label}
+          </NavLink>
+        )
+      )}
+    </div>
+  </div>
+</nav>
+
     </header>
   );
 };

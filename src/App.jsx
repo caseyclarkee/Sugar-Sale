@@ -106,7 +106,7 @@ const Header = () => {
         { to: "/about", label: "About", tone: "bg-purple text-white" },
         { to: "/X", label: "X by Long White", tone: "bg-yellow" },
         { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-        { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
+        { to: "/merch", label: "Merch", tone: "bg-yellow text-white" },
       ].map((item) =>
         item.to === "/merch" ? (
           <div key={item.to} className="relative flex items-center justify-center">
@@ -148,6 +148,7 @@ const Header = () => {
                   shadow-[2px_2px_0_#000]
                 "
               >
+                Coming&nbsp;Soon
               </span>
             </span>
             {/* END TEMP: Code-only COMING SOON ribbon */}

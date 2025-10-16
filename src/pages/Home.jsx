@@ -17,7 +17,8 @@ const Home = () => (
   <section className="py-10 px-4 sm:px-8">
     <div className="relative w-full rounded-2xl border-[4px] border-grey bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow">
       <h2 className="text-4xl sm:text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">
-        Sugar Liquidation! Sale!
+        <img src="/images/x_website_header.png"
+          alt="Sugar Liquidation! Sale!"
       </h2>
 
       {/* Replaced Burst badge with a responsive PNG that stays attached to the card */}

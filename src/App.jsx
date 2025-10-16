@@ -135,7 +135,7 @@ const Header = () => {
             {/* TEMP: Code-only COMING SOON ribbon (remove when ready) */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -top-2 -right-2 z-10 rotate-12"
+              className="pointer-events-none absolute -top-2 -left-2 z-10 rotate-12"
               data-temp="coming-soon-ribbon"
             >
               <span
@@ -164,7 +164,7 @@ const Header = () => {
             className={({ isActive }) =>
               [
                 "flex items-center justify-center min-h-[48px]",
-                "w-full md:w-auto md:min-w-[190px]", // match width normalization
+                "w-full md:w-auto md:min-w-[140px]", // match width normalization
                 "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
                 "text-xl font-black uppercase",
                 "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",

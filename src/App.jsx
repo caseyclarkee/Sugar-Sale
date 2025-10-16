@@ -109,19 +109,22 @@ const Header = () => {
         { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
       ].map((item) =>
         item.to === "/merch" ? (
-          {/* --- TEMP MERCH IMAGE (DELETE WHEN SWITCHING BACK) --- */}
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className="flex items-center justify-center min-h-[48px]"
-          >
-            <img
-              src="/images/merchcoming.png"
-              alt="Merch coming soon"
-              className="h-12 w-auto"
-            />
-          </NavLink>
-          {/* --- END TEMP MERCH IMAGE --- */}
+          <>
+            {/* --- TEMP MERCH IMAGE (DELETE UNTIL THIS COMMENT) --- */}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className="flex items-center justify-center min-h-[48px]"
+              data-temp="merch-png"
+            >
+              <img
+                src="/images/merchcoming.png"
+                alt="Merch coming soon"
+                className="h-12 w-auto"
+              />
+            </NavLink>
+            {/* --- END TEMP MERCH IMAGE --- */}
+          </>
         ) : (
           <NavLink
             key={item.to}
@@ -135,9 +138,7 @@ const Header = () => {
                 "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
                 "active:translate-y-[1px]",
                 item.tone,
-                isActive
-                  ? "ring-2 ring-grey ring-offset-2 ring-offset-white"
-                  : "",
+                isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
               ].join(" ")
             }
           >
@@ -148,6 +149,7 @@ const Header = () => {
     </div>
   </div>
 </nav>
+
 
     </header>
   );

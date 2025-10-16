@@ -10,8 +10,8 @@ const About = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left column: text */}
         <div>
-          <h3 className="text-4xl sm:text-5xl font-black mb-4">Meet Gary</h3>
-          <p className="max-w-2xl">
+          <h3 className="text-4xl sm:text-5xl font-black text-white mb-4">Meet Gary</h3>
+          <p className="max-w-2xl text-white">
             I’m Gary. You might know me as the ninth runner-up in Central Auckland’s
             Salesman of the Year Awards, 2004. I’m also the guy who sells sugar. Steady
             hours, sweet perks, it’s a pretty good gig. Well, it was until the Long White

@@ -125,7 +125,7 @@ const Header = () => {
               >
                 {item.label}
               </NavLink>
-              <img class="h-auto max-w-full" src="/image/merchcoming.png" },
+              <img class="h-auto max-w-full", src="/image/merchcoming.png" },
             ))}
           </div>
         </div>

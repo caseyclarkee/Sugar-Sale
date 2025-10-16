@@ -98,7 +98,7 @@ const Header = () => {
         />
       </div>
 
-   <nav className="w-full relative z-[60] py-2">
+  <nav className="w-full relative z-[60] py-2">
   <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
     <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
       {[
@@ -107,29 +107,109 @@ const Header = () => {
         { to: "/X", label: "X by Long White", tone: "bg-yellow" },
         { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
         { to: "/merch", label: "Merch", tone: "bg-yellow text-white" },
-      ].map((item) =>
-      {item.to === "/merch" ? (
-  <div key={item.to} className="relative flex items-center justify-center group">
-    {/* Base Merch button (unchanged) */}
-    <NavLink
-      to={item.to}
-      aria-label="Merch (coming soon)"
-      end={item.to === "/"}
-      className={({ isActive }) =>
-        [
-          "flex items-center justify-center min-h-[48px]",
-          "w-full md:w-auto md:min-w-[140px]",
-          "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-          "text-xl font-black uppercase",
-          "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-          "active:translate-y-[1px]",
-          "bg-yellow text-black", // (or use item.tone to keep it purple)
-          isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
-        ].join(" ")
+      ].map((item) => (
+        item.to === "/merch" ? (
+          <div key={item.to} className="relative flex items-center justify-center group">
+            {/* Base Merch button (unchanged) */}
+            <NavLink
+              to={item.to}
+              aria-label="Merch (coming soon)"
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                [
+                  "flex items-center justify-center min-h-[48px]",
+                  "w-full md:w-auto md:min-w-[140px]",
+                  "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                  "text-xl font-black uppercase",
+                  "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                  "active:translate-y-[1px]",
+                  "bg-yellow text-black", // or use item.tone to keep purple
+                  isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+                ].join(" ")
+              }
+            >
+              Merch
+            </NavLink>
+
+            {/* Sticker (code-only) */}
+            <span
+              aria-hidden="true"
+              className="coming-soon-sticker pointer-events-none absolute -top-2 -left-2 z-10"
+              data-temp="coming-soon-ribbon"
+            >
+              <span className="
+                relative inline-block
+                bg-[#F24E4E] text-white uppercase font-black tracking-widest
+                text-[10px] sm:text-xs px-2 py-1
+                rounded
+                border-[3px] border-black
+                shadow-[2px_2px_0_#000]
+              ">
+                Coming&nbsp;Soon
+              </span>
+            </span>
+          </div>
+        ) : (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              [
+                "flex items-center justify-center min-h-[48px]",
+                "w-full md:w-auto md:min-w-[140px]",
+                "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                "text-xl font-black uppercase",
+                "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                "active:translate-y-[1px]",
+                item.tone,
+                isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+              ].join(" ")
+            }
+          >
+            {item.label}
+          </NavLink>
+        )
+      ))}
+    </div>
+  </div>
+
+  {/* Sticker animation CSS (pure CSS; no Tailwind config needed) */}
+  <style>{`
+    /* Wiggle on first paint */
+    @keyframes sticker-wiggle {
+      0%   { transform: rotate(-14deg) scale(1); }
+      20%  { transform: rotate(-18deg) scale(1.05); }
+      50%  { transform: rotate(-10deg) scale(0.98); }
+      80%  { transform: rotate(-16deg) scale(1.03); }
+      100% { transform: rotate(-14deg) scale(1); }
+    }
+
+    /* Base pose + initial wiggle once */
+    .coming-soon-sticker {
+      transform: rotate(-14deg);
+      animation: sticker-wiggle 600ms ease-in-out 1;
+    }
+
+    /* Subtle tilt/scale on hover of the whole button/pill */
+    .group:hover .coming-soon-sticker {
+      transform: rotate(-8deg) scale(1.05);
+      transition: transform 200ms ease-out;
+    }
+
+    /* Respect reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .coming-soon-sticker {
+        animation: none !important;
       }
-    >
-      Merch
-    </NavLink>
+      .group:hover .coming-soon-sticker {
+        transform: rotate(-14deg) !important;
+        transition: none !important;
+      }
+    }
+  `}</style>
+</nav>
+
 
     {/* Sticker (code-only) */}
     <span

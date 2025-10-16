@@ -98,38 +98,59 @@ const Header = () => {
         />
       </div>
 
-      <nav className="w-full relative z-[60] py-2">
-        <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
-            {[
-              { to: "/", label: "Home", tone: "bg-yellow" },
-              { to: "/about", label: "About", tone: "bg-purple text-white" },
-              { to: "/X", label: "X by Long White", tone: "bg-yellow" },
-              { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-              { to: "/merch", label: "Merch", tone: "bg-yellow" },
-            ].map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === "/"}
-                className={({ isActive }) =>
-                  [
-                    "flex items-center justify-center min-h-[48px]",
-                    "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                    "text-xl font-black uppercase",
-                    "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-                    "active:translate-y-[1px]",
-                    item.tone,
-                    isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
-                  ].join(" ")
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-        </div>
-      </nav>
+   <nav className="w-full relative z-[60] py-2">
+  <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
+      {[
+        { to: "/", label: "Home", tone: "bg-yellow" },
+        { to: "/about", label: "About", tone: "bg-purple text-white" },
+        { to: "/X", label: "X by Long White", tone: "bg-yellow" },
+        { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
+        { to: "/merch", label: "Merch", tone: "bg-yellow" },
+      ].map((item) =>
+        item.to === "/merch" ? (
+          <>
+            {/* --- TEMP MERCH IMAGE (DELETE UNTIL THIS COMMENT) --- */}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className="flex items-center justify-center min-h-[48px]"
+              data-temp="merch-png"
+            >
+              <img
+                src="/images/merchcoming.png"
+                alt="Merch coming soon"
+                className="h-12 w-auto"
+              />
+            </NavLink>
+            {/* --- END TEMP MERCH IMAGE --- */}
+          </>
+        ) : (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              [
+                "flex items-center justify-center min-h-[48px]",
+                "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                "text-xl font-black uppercase",
+                "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                "active:translate-y-[1px]",
+                item.tone,
+                isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+              ].join(" ")
+            }
+          >
+            {item.label}
+          </NavLink>
+        )
+      )}
+    </div>
+  </div>
+</nav>
+
+
     </header>
   );
 };
@@ -291,6 +312,82 @@ const RightRail = () => {
   );
 };
 
+const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
+  const images = [
+    // Left rail
+    { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
+    { src: "/images/left-rail/Left02.gif", alt: "Customer support phone" },
+    { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
+    { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
+    { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
+    { src: "/images/right-rail/Right04.png", alt: "Sugar Badge" },
+  ];
+
+  const Track = ({ ariaHidden = false }) => (
+    <div
+      className="marquee-images__track flex shrink-0 gap-4 pr-4"
+      aria-hidden={ariaHidden || undefined}
+      style={{ animationDuration: `${speedSec}s` }}
+    >
+      {images.map((p, i) => (
+        <div key={`${ariaHidden ? "b" : "a"}-${i}`} className={`${itemHeight} min-w-[80px] flex items-center`}>
+          <img
+            src={p.src}
+            alt={ariaHidden ? "" : p.alt}
+            className="h-full w-auto object-contain select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="md:hidden border-y-[4px] border-grey overflow-hidden w-full animate-pulse-bg">
+      <div className="marquee-images flex items-center py-2">
+        <Track />
+        <Track ariaHidden />
+      </div>
+
+      <style>{`
+        /* Scrolling movement */
+        .marquee-images__track {
+          will-change: transform;
+          animation: marquee-x linear infinite;
+        }
+        @keyframes marquee-x {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+
+        /* Smooth pulsing background (fade between yellow and purple) */
+        .animate-pulse-bg {
+          animation: pulse-bg 2s ease-in-out infinite;
+        }
+        @keyframes pulse-bg {
+          0%, 100% { background-color: #FFDD00; } /* yellow */
+          50% { background-color: #BB29BB; } /* purple */
+        }
+
+        /* Accessibility fallback */
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-images__track {
+            animation-duration: 0s !important;
+            animation-play-state: paused !important;
+            transform: translateX(0) !important;
+          }
+          .animate-pulse-bg {
+            animation: none !important;
+            background-color: #FFDD00; /* static yellow */
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
 export default function SugarSaleSite() {
   React.useEffect(() => {
     // Nudge layout for any early Tailwind/scroll calculations
@@ -323,6 +420,9 @@ export default function SugarSaleSite() {
             </Routes>
           </main>
 
+          {/* Mobile-only image marquee below all page content */}
+<MobileImageMarquee />
+            
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
             <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
               <p className="text-center text-sm font-medium md:text-left">

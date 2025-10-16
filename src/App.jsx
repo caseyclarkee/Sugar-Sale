@@ -135,7 +135,7 @@ const Header = () => {
             {/* TEMP: Code-only COMING SOON ribbon (remove when ready) */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -top-2 -left-2 z-10 rotate-6"
+              className="pointer-events-none absolute -top-2 -left-2 z-10 -rotate-12"
               data-temp="coming-soon-ribbon"
             >
               <span

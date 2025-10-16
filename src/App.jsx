@@ -106,25 +106,56 @@ const Header = () => {
         { to: "/about", label: "About", tone: "bg-purple text-white" },
         { to: "/X", label: "X by Long White", tone: "bg-yellow" },
         { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-        { to: "/merch", label: "Merch", tone: "bg-yellow" },
+        { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
       ].map((item) =>
         item.to === "/merch" ? (
-          <>
-            {/* --- TEMP MERCH IMAGE (DELETE UNTIL THIS COMMENT) --- */}
+          <div key={item.to} className="relative flex items-center justify-center">
+            {/* Base Merch button (unchanged styling) */}
             <NavLink
-              key={item.to}
               to={item.to}
-              className="flex items-center justify-center min-h-[48px]"
-              data-temp="merch-png"
+              aria-label="Merch (coming soon)"
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                [
+                  "flex items-center justify-center min-h-[48px]",
+                  // Optional: normalize widths so this pill isn't visually smaller
+                  "w-full md:w-auto md:min-w-[190px]",
+                  "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                  "text-xl font-black uppercase",
+                  "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                  "active:translate-y-[1px]",
+                  "bg-yellow text-black", // or item.tone to keep purple—your choice
+                  isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+                ].join(" ")
+              }
             >
-              <img
-                src="/images/merchcoming.png"
-                alt="Merch coming soon"
-                className="h-12 w-auto"
-              />
+              Merch
             </NavLink>
-            {/* --- END TEMP MERCH IMAGE --- */}
-          </>
+
+            {/* TEMP: Code-only COMING SOON ribbon (remove when ready) */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-2 -right-2 z-10 rotate-12"
+              data-temp="coming-soon-ribbon"
+            >
+              <span
+                className="
+                  relative inline-block
+                  bg-[#F24E4E] text-white uppercase font-black tracking-widest
+                  text-[10px] sm:text-xs px-2 py-1
+                  rounded
+                  border-[3px] border-black
+                  shadow-[2px_2px_0_#000]
+                "
+              >
+                Coming&nbsp;Soon
+                {/* faux ribbon tails */}
+                <span className="absolute -bottom-1 left-1 w-0 h-0 border-t-[8px] border-t-[#A13333] border-l-[8px] border-l-transparent"></span>
+                <span className="absolute -bottom-1 right-1 w-0 h-0 border-t-[8px] border-t-[#A13333] border-r-[8px] border-r-transparent"></span>
+              </span>
+            </span>
+            {/* END TEMP: Code-only COMING SOON ribbon */}
+          </div>
         ) : (
           <NavLink
             key={item.to}
@@ -133,6 +164,7 @@ const Header = () => {
             className={({ isActive }) =>
               [
                 "flex items-center justify-center min-h-[48px]",
+                "w-full md:w-auto md:min-w-[190px]", // match width normalization
                 "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
                 "text-xl font-black uppercase",
                 "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
@@ -149,6 +181,7 @@ const Header = () => {
     </div>
   </div>
 </nav>
+
 
 
     </header>

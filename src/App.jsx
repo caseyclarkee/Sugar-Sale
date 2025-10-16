@@ -119,7 +119,7 @@ const Header = () => {
                 [
                   "flex items-center justify-center min-h-[48px]",
                   // Optional: normalize widths so this pill isn't visually smaller
-                  "w-full md:w-auto md:min-w-[190px]",
+                  "w-full md:w-auto md:min-w-[140px]",
                   "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
                   "text-xl font-black uppercase",
                   "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
@@ -135,7 +135,7 @@ const Header = () => {
             {/* TEMP: Code-only COMING SOON ribbon (remove when ready) */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -top-2 -left-2 z-10 rotate-12"
+              className="pointer-events-none absolute -top-2 -left-2 z-10 rotate-6"
               data-temp="coming-soon-ribbon"
             >
               <span
@@ -148,10 +148,6 @@ const Header = () => {
                   shadow-[2px_2px_0_#000]
                 "
               >
-                Coming&nbsp;Soon
-                {/* faux ribbon tails */}
-                <span className="absolute -bottom-1 left-1 w-0 h-0 border-t-[8px] border-t-[#A13333] border-l-[8px] border-l-transparent"></span>
-                <span className="absolute -bottom-1 right-1 w-0 h-0 border-t-[8px] border-t-[#A13333] border-r-[8px] border-r-transparent"></span>
               </span>
             </span>
             {/* END TEMP: Code-only COMING SOON ribbon */}

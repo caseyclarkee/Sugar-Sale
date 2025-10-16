@@ -120,7 +120,7 @@ const Header = () => {
               <img
                 src="/images/merchcoming.png"
                 alt="Merch coming soon"
-                className="h-12 w-auto"
+                className="h-auto w-auto"
               />
             </NavLink>
             {/* --- END TEMP MERCH IMAGE --- */}

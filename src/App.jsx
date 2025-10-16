@@ -106,7 +106,7 @@ const Header = () => {
               { to: "/about", label: "About", tone: "bg-purple text-white" },
               { to: "/X", label: "X by Long White", tone: "bg-yellow" },
               { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-              { to: "/merch", label: "Merch" tone: "bg-purple text-white" },
+              { to: "/merch", label: "Merch", tone: "bg-purple text-white" },
             ].map((item) => (
               <NavLink
                 key={item.to}

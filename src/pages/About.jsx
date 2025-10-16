@@ -10,8 +10,8 @@ const About = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left column: text */}
         <div>
-          <h3 className="text-4xl sm:text-5xl font-black text-white mb-4">Meet Gary</h3>
-          <p className="max-w-2xl text-white">
+          <h3 className="text-4xl sm:text-6xl font-black text-white mb-4">Meet Gary</h3>
+          <p className="max-w-4xl text-white">
             I’m Gary. You might know me as the ninth runner-up in Central Auckland’s
             Salesman of the Year Awards, 2004. I’m also the guy who sells sugar. Steady
             hours, sweet perks, it’s a pretty good gig. Well, it was until the Long White
@@ -27,14 +27,13 @@ const About = () => (
             help a grown man sleep better tonight.
           </p>
 
-          <p className="max-w-2xl mt-4">
-            <b>P.S.</b> Yes, the RTD tastes good. Yes, you should buy it at your local
-            liquor store. But please take my sugar first.
+          <p className="max-w-2xl mt-4 text-white">
+            <b>P.S.</b> Yes, the RTD tastes good. 
           </p>
 
-          <p className="max-w-2xl mt-2">
-            <b>P.P.S.</b> I was the ninth runner up in central Auckland&apos;s salesman of
-            the year awards in 2004.
+          <p className="max-w-2xl mt-2 text-white">
+            <b>P.P.S.</b> Yes, you should buy it at your local
+            liquor store. But please take my sugar first.
           </p>
         </div>
 

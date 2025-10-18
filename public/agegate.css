@@ -51,7 +51,7 @@
   line-height: 1;
   text-transform: uppercase;
   color: #fff;
-  background: linear-gradient(180deg, #C546CE 0%, #9A36B8 100%);
+  background: bg-purple;
   position: relative;
   cursor: pointer;
   box-shadow: none;                /* use hard offset like the card */
@@ -68,6 +68,28 @@
   z-index: -1;
 }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
+
+/* Hover: pop forward and add a glow */
+#age-gate-form .cta:hover {
+  transform: translate(-2px, -2px);
+  background: #C935C9; /* slightly lighter purple for feedback */
+  box-shadow: 0 0 0 4px rgba(187, 41, 187, 0.25);
+}
+
+#age-gate-form .cta:hover::after {
+  transform: translate(6px, 6px);
+}
+
+/* Click: pressed-in feel */
+#age-gate-form .cta:active {
+  transform: translate(2px, 2px);
+  background: #A322A3; /* slightly darker when pressed */
+  box-shadow: none;
+}
+
+#age-gate-form .cta:active::after {
+  transform: translate(8px, 8px);
+}
 
 /* Heading: bold, uppercase, slightly italic, tighter tracking */
 .age-card h2,

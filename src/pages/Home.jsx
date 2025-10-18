@@ -26,14 +26,13 @@ const Home = () => (
 
       {/* VIDEO/GIF WRAPPER */}
       <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-visible rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
-  {/* TEMP GIF */}
+  {/* TEMP GIF delete from here down */}
   <img
     src="/images/home/homepage.gif"
     alt="Temporary Hero GIF"
-    className="w-full h-full object-cover rounded-xl"
+    className="w-full h-full object-cover"
   />
           {/* delete the bit here and at the end to get back
-      <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
         <iframe
           src="vimeolinkgoeshere"
           width="100%"
@@ -49,7 +48,7 @@ const Home = () => (
   <img
     src="/images/saleonnow.png"
     alt="On Now"
-    className="absolute right-4 -top-8 sm:right-6 sm:-top-10 pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto drop-shadow-[4px_4px_0_#000]"
+    className="absolute right-8 -top-8 sm:right-10 sm:-top-10 pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto drop-shadow-[4px_4px_0_#000]"
     aria-hidden
   />
 </div>

@@ -512,7 +512,7 @@ export default function SugarSaleSite() {
       >
         Privacy Policy
       </a>
-    </div>
+
 
     <div className="flex items-center justify-center gap-2 mt-2">
   <p className="text-sm font-medium">

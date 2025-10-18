@@ -49,7 +49,7 @@ const Home = () => (
         <img
           src="/images/saleonnow.png"
           alt="On Now"
-          className="absolute -right-3 top-3 sm:-right-4 sm:top-4 pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto drop-shadow-[4px_4px_0_#000]"
+          className="absolute -right-3 –top-9 sm:-right-4 sm:–top-12 pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto drop-shadow-[4px_4px_0_#000]"
           aria-hidden
         />
       </div>

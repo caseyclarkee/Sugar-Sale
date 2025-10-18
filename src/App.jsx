@@ -476,7 +476,7 @@ export default function SugarSaleSite() {
 <MobileImageMarquee />
             
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
-            <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
+            <div className="w-full flex flex-col items-center justify-center gap-3 md:flex-row">
               <p className="text-center text-sm font-medium md:text-left">
                 © {new Date().getFullYear()} Long White X Zero Sugar.
               </p>

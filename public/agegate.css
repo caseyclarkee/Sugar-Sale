@@ -80,6 +80,11 @@
   color: #333;
 }
 
+/* Force standard cursor while age gate is active */
+.agegate-active #age-gate-overlay,
+.agegate-active #age-gate-overlay * {
+  cursor: auto !important;
+}
 
 /* Hide sugar cursor while the age gate is active */
 .agegate-active #sugar-stage,

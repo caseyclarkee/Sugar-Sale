@@ -54,7 +54,35 @@ const Home = () => (
 </div>
     
 {/* Social Icons */}
-<div className="mt-10 flex justify-center gap-6">
+<style>
+{`
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  25% { transform: translateY(-3px) rotate(-2deg) scale(1.05); }
+  50% { transform: translateY(2px) rotate(2deg) scale(0.98); }
+  75% { transform: translateY(-1px) rotate(-1deg) scale(1.03); }
+}
+@keyframes bounceWiggle {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  20% { transform: translateY(-4px) rotate(-5deg) scale(1.1); }
+  40% { transform: translateY(-2px) rotate(5deg) scale(1.05); }
+  60% { transform: translateY(-6px) rotate(-3deg) scale(1.15); }
+  80% { transform: translateY(2px) rotate(3deg) scale(1.1); }
+}
+.icon-float {
+  animation: floaty 3s ease-in-out infinite;
+  transition: transform 0.3s ease-out;
+}
+.icon-float:hover {
+  animation: bounceWiggle 0.8s ease-in-out;
+}
+.icon-delay-1 { animation-delay: 0s; }
+.icon-delay-2 { animation-delay: 0.8s; }
+.icon-delay-3 { animation-delay: 1.6s; }
+`}
+</style>
+
+<div className="mt-12 flex justify-center gap-10">
   <a
     href="https://www.tiktok.com/@longwhite.nz"
     target="_blank"
@@ -63,7 +91,7 @@ const Home = () => (
     <img
       src="/icons/tiktok.png"
       alt="TikTok"
-      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+      className="w-16 h-16 icon-float icon-delay-1"
     />
   </a>
 
@@ -75,7 +103,7 @@ const Home = () => (
     <img
       src="/icons/instagram.png"
       alt="Instagram"
-      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+      className="w-16 h-16 icon-float icon-delay-2"
     />
   </a>
 
@@ -87,10 +115,11 @@ const Home = () => (
     <img
       src="/icons/facebook.png"
       alt="Facebook"
-      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+      className="w-16 h-16 icon-float icon-delay-3"
     />
   </a>
 </div>
+
 
     </div>
   </section>

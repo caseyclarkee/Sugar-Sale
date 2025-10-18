@@ -31,7 +31,7 @@ const X = () => {
           </div>
 
           {/* MIDDLE: Vertically centered header + text only */}
-          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">
+          <div className="col-span-12 md:col-span-4 order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">
             <div className="flex flex-col items-center justify-center mb-1">
               <h1 className="font-black tracking-tight leading-tight text-white text-[clamp(56px,6.4vw,88px)]">
                 Introducing
@@ -49,7 +49,7 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center md:justify-start">
+          <div className="col-span-12 md:col-span-4 order-1 md:order-3 flex justify-center md:justify-start">
             <img
               src={Can}
               alt="X by Long White cans"

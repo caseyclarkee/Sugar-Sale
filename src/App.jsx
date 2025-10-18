@@ -54,6 +54,7 @@ const Marquee = ({ text }) => (
 );
 
 /* Header */
+/* Header (drop-in replacement) */
 const Header = () => {
   const unxpectedClasses =
     "hover:scale-105 transition-transform cursor-pointer object-contain h-auto " +
@@ -69,7 +70,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-      <div className="flex items-center justify-evenly w-full px-4 sm:px-4"> 
+      <div className="flex items-center justify-evenly w-full px-4 sm:px-4">
         <img
           src="/images/unxpectedcan.gif"
           alt="THAT’S UNXPECTED"
@@ -85,72 +86,134 @@ const Header = () => {
           className={unxpectedClasses}
         />
 
-        <img
-          src="/images/lockup.gif"
-          alt="Sugar Liquidation Sale"
-          className={lockupClasses}
-        />
-
-        <img
-          src="/images/lwlogo.gif"
-          alt="X by Long White"
-          className={lwClasses}
-        />
+    {/* Lockup → link to home */}
+<NavLink
+  to="/"
+  aria-label="Home"
+  className="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg"
+>
+  <img
+    src="/images/lockup.gif"
+    alt="Gary's Sugar Liquidation Sale"
+    className={lockupClasses + " cursor-pointer"}
+  />
+</NavLink>
+        <img src="/images/lwlogo.gif" alt="X by Long White" className={lwClasses} />
       </div>
 
-   <nav className="w-full relative z-[60] py-2">
-  <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
-      {[
-        { to: "/", label: "Home", tone: "bg-yellow" },
-        { to: "/about", label: "About", tone: "bg-purple text-white" },
-        { to: "/X", label: "X by Long White", tone: "bg-yellow" },
-        { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
-        { to: "/merch", label: "Merch", tone: "bg-yellow" },
-      ].map((item) =>
-        item.to === "/merch" ? (
-          <>
-            {/* --- TEMP MERCH IMAGE (DELETE UNTIL THIS COMMENT) --- */}
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className="flex items-center justify-center min-h-[48px]"
-              data-temp="merch-png"
-            >
-              <img
-                src="/images/merchcoming.png"
-                alt="Merch coming soon"
-                className="h-12 w-auto"
-              />
-            </NavLink>
-            {/* --- END TEMP MERCH IMAGE --- */}
-          </>
-        ) : (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === "/"}
-            className={({ isActive }) =>
-              [
-                "flex items-center justify-center min-h-[48px]",
-                "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
-                "text-xl font-black uppercase",
-                "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
-                "active:translate-y-[1px]",
-                item.tone,
-                isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
-              ].join(" ")
+      <nav className="w-full relative z-[60] py-2">
+        <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
+            {[
+              { to: "/", label: "Home", tone: "bg-yellow" },
+              { to: "/about", label: "About", tone: "bg-purple text-white" },
+              { to: "/X", label: "X by Long White", tone: "bg-yellow" },
+              { to: "/deals", label: "Sweet Deals", tone: "bg-purple text-white" },
+              { to: "/merch", label: "Merch", tone: "bg-yellow text-white" },
+            ].map((item) => (
+              item.to === "/merch" ? (
+                <div key={item.to} className="relative flex items-center justify-center group">
+                  {/* Base Merch button (unchanged) */}
+                  <NavLink
+                    to={item.to}
+                    aria-label="Merch (coming soon)"
+                    end={item.to === "/"}
+                    className={({ isActive }) =>
+                      [
+                        "flex items-center justify-center min-h-[48px]",
+                        "w-full md:w-auto md:min-w-[140px]",
+                        "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                        "text-xl font-black uppercase",
+                        "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                        "active:translate-y-[1px]",
+                        "bg-yellow text-black", // or use item.tone to keep purple
+                        isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+                      ].join(" ")
+                    }
+                  >
+                    Merch
+                  </NavLink>
+
+                  {/* Sticker (code-only) */}
+                  <span
+                    aria-hidden="true"
+                    className="coming-soon-sticker pointer-events-none absolute -top-2 -left-2 z-10"
+                    data-temp="coming-soon-ribbon"
+                  >
+                    <span
+                      className="
+                        relative inline-block
+                        bg-[#F24E4E] text-white uppercase font-black tracking-widest
+                        text-[10px] sm:text-xs px-2 py-1
+                        rounded
+                        border-[3px] border-black
+                        shadow-[2px_2px_0_#000]
+                      "
+                    >
+                      Coming&nbsp;Soon
+                    </span>
+                  </span>
+                </div>
+              ) : (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.to === "/"}
+                  className={({ isActive }) =>
+                    [
+                      "flex items-center justify-center min-h-[48px]",
+                      "w-full md:w-auto md:min-w-[140px]",
+                      "rounded-2xl border-[4px] border-grey px-5 py-2 text-center leading-none",
+                      "text-xl font-black uppercase",
+                      "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
+                      "active:translate-y-[1px]",
+                      item.tone,
+                      isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
+                    ].join(" ")
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              )
+            ))}
+          </div>
+        </div>
+
+        {/* Sticker animation CSS (pure CSS; no Tailwind config needed) */}
+        <style>{`
+          /* Wiggle on first paint */
+          @keyframes sticker-wiggle {
+            0%   { transform: rotate(-14deg) scale(1); }
+            20%  { transform: rotate(-18deg) scale(1.05); }
+            50%  { transform: rotate(-10deg) scale(0.98); }
+            80%  { transform: rotate(-16deg) scale(1.03); }
+            100% { transform: rotate(-14deg) scale(1); }
+          }
+
+          /* Base pose + initial wiggle once */
+          .coming-soon-sticker {
+            transform: rotate(-14deg);
+            animation: sticker-wiggle 600ms ease-in-out 1;
+          }
+
+          /* Subtle tilt/scale on hover of the whole button/pill */
+          .group:hover .coming-soon-sticker {
+            transform: rotate(-8deg) scale(1.05);
+            transition: transform 200ms ease-out;
+          }
+
+          /* Respect reduced-motion */
+          @media (prefers-reduced-motion: reduce) {
+            .coming-soon-sticker {
+              animation: none !important;
             }
-          >
-            {item.label}
-          </NavLink>
-        )
-      )}
-    </div>
-  </div>
-</nav>
-
-
+            .group:hover .coming-soon-sticker {
+              transform: rotate(-14deg) !important;
+              transition: none !important;
+            }
+          }
+        `}</style>
+      </nav>
     </header>
   );
 };
@@ -422,48 +485,62 @@ export default function SugarSaleSite() {
 
           {/* Mobile-only image marquee below all page content */}
 <MobileImageMarquee />
-            
+
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
-            <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
-              <p className="text-center text-sm font-medium md:text-left">
-                © {new Date().getFullYear()} Long White X Zero Sugar.
-              </p>
-              <div className="flex items-center gap-3">
-                <a
-                  href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
-                >
-                  NZ Promotional Terms and Conditions
-                </a>
-                <a
-                  href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
-                >
-                  Website Terms of Use
-                </a>
-                <a
-                  href="https://www.asahibeverages.com/privacy-collection-notice"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
-                >
-                  Privacy Collection Notice
-                </a>
-                <a
-                  href="https://www.asahibeverages.com/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
-                >
-                  Privacy Policy
-                </a>
-              </div>
-            </div>
-          </footer>
+  <div className="w-full flex flex-col items-center justify-center gap-3">
+    {/* Links row (compact + centered) */}
+    <div className="flex flex-wrap items-center justify-center gap-2 max-w-[640px] mx-auto text-xs">
+      <a
+        href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
+      >
+        NZ Promotional Terms and Conditions
+      </a>
+      <a
+        href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+      >
+        Website Terms of Use
+      </a>
+      <a
+        href="https://www.asahibeverages.com/privacy-collection-notice"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
+      >
+        Privacy Collection Notice
+      </a>
+      <a
+        href="https://www.asahibeverages.com/privacy-policy"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+      >
+        Privacy Policy
+      </a>
+    </div>
+
+    {/* © + Cheers inline, below */}
+    <div className="flex items-center justify-center gap-2 mt-2">
+      <p className="text-sm font-medium">
+        © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
+      </p>
+      <a
+        href="https://cheers.org.nz"
+        target="_blank" rel="noopener noreferrer"
+        className="inline-flex items-center"
+        aria-label="Cheers.org.nz"
+      >
+        <img
+          src="/images/Cheers-logo-BLK-URL.png"
+          alt="Cheers.org.nz"
+          className="h-5 w-auto"
+        />
+      </a>
+    </div>
+  </div>
+</footer>
+
         </div>
       </div>
     </HashRouter>

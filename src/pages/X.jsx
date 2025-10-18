@@ -31,17 +31,17 @@ const X = () => {
           </div>
 
           {/* MIDDLE: Vertically centered header + text only */}
-          <div className="col-span-12 md:col-span-4 order-1 md:order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">
+          <div className="col-span-12 md:col-span-4 order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">
             <div className="flex flex-col items-center justify-center mb-1">
-              <h1 className="font-black tracking-tight leading-tight text-[clamp(38px,6.4vw,88px)]">
+              <h1 className="font-black tracking-tight leading-tight text-white text-[clamp(56px,6.4vw,88px)]">
                 Introducing
               </h1>
-              <p className="font-black tracking-tight leading-none text-[clamp(28px,4.6vw,56px)] -mt-1">
+              <p className="font-black tracking-tight leading-none text-white text-[clamp(48px,4.6vw,56px)] -mt-1">
                 X by Long White
               </p>
             </div>
 
-            <p className="max-w-md leading-snug">
+            <p className="max-w-md leading-snug text-white">
               Forget everything you know about Long White. Introducing X by Long White. A refreshing Zero Sugar, Zero Carb, 94 Calories, Lemon Vodka flavoured RTD.
               <br />
               <b>“X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.”</b>
@@ -49,7 +49,7 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 md:col-span-4 order-2 md:order-3 flex justify-center md:justify-start">
+          <div className="col-span-12 md:col-span-4 order-1 md:order-3 flex justify-center md:justify-start">
             <img
               src={Can}
               alt="X by Long White cans"

@@ -53,7 +53,45 @@ const Home = () => (
   />
 </div>
     
-    
+{/* Social Icons */}
+<div className="mt-10 flex justify-center gap-6">
+  <a
+    href="https://www.tiktok.com/@longwhite.nz"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="/icons/tiktok.png"
+      alt="TikTok"
+      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+    />
+  </a>
+
+  <a
+    href="https://www.instagram.com/longwhite.nz"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="/icons/instagram.png"
+      alt="Instagram"
+      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+    />
+  </a>
+
+  <a
+    href="https://www.facebook.com/longwhite.nz"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="/icons/facebook.png"
+      alt="Facebook"
+      className="w-10 h-10 hover:scale-110 transition-transform duration-200"
+    />
+  </a>
+</div>
+
     </div>
   </section>
 );

@@ -86,7 +86,18 @@ const Header = () => {
           className={unxpectedClasses}
         />
 
-        <img src="/images/lockup.gif" alt="Sugar Liquidation Sale" className={lockupClasses} />
+    {/* Lockup → link to home */}
+<NavLink
+  to="/"
+  aria-label="Home"
+  className="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg"
+>
+  <img
+    src="/images/lockup.gif"
+    alt="Gary's Sugar Liquidation Sale"
+    className={lockupClasses + " cursor-pointer"}
+  />
+</NavLink>
         <img src="/images/lwlogo.gif" alt="X by Long White" className={lwClasses} />
       </div>
 

@@ -475,64 +475,60 @@ export default function SugarSaleSite() {
           {/* Mobile-only image marquee below all page content */}
 <MobileImageMarquee />
 
-          
-         <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
+          <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
   <div className="w-full flex flex-col items-center justify-center gap-3">
-    {/* Links row */}
-    <div className="flex flex-wrap items-center justify-center gap-3">
+    {/* Links row (compact + centered) */}
+    <div className="flex flex-wrap items-center justify-center gap-2 max-w-[640px] mx-auto text-xs">
       <a
         href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
       >
         NZ Promotional Terms and Conditions
       </a>
       <a
         href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
       >
         Website Terms of Use
       </a>
       <a
         href="https://www.asahibeverages.com/privacy-collection-notice"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
       >
         Privacy Collection Notice
       </a>
       <a
         href="https://www.asahibeverages.com/privacy-policy"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
+        target="_blank" rel="noopener noreferrer"
+        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
       >
         Privacy Policy
       </a>
+    </div>
 
-
+    {/* © + Cheers inline, below */}
     <div className="flex items-center justify-center gap-2 mt-2">
-  <p className="text-sm font-medium">
-    © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
-  </p>
-  <a
-    href="https://cheers.org.nz"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center"
-  >
-    <img
-      src="/images/Cheers-logo-BLK-URL.png"
-      alt="Cheers.org.nz"
-      className="h-5 w-auto"
-    />
-  </a>
+      <p className="text-sm font-medium">
+        © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
+      </p>
+      <a
+        href="https://cheers.org.nz"
+        target="_blank" rel="noopener noreferrer"
+        className="inline-flex items-center"
+        aria-label="Cheers.org.nz"
+      >
+        <img
+          src="/images/Cheers-logo-BLK-URL.png"
+          alt="Cheers.org.nz"
+          className="h-5 w-auto"
+        />
+      </a>
+    </div>
   </div>
 </footer>
-          
 
         </div>
       </div>

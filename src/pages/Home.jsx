@@ -20,12 +20,12 @@ const Home = () => (
         <img
           src="/images/x_website_header.gif"
           alt="Sugar Liquidation Sale!"
-          className="block mx-auto w-3/4 lg:w-1/2"
+          className="block mx-auto w-3/4 xl:w-1/2"
         />
       </h2>
 
       {/* Replaced Burst badge with a responsive PNG that stays attached to the card */}
-      <div className="absolute right-3 top-3 sm:right-6 sm:top-6 pointer-events-none">
+      <div className="absolute right-6 top-6 sm:right-6 sm:top-6 pointer-events-none">
         <img
           src="/images/saleonnow.png"
           alt="On Now"

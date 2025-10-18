@@ -514,12 +514,25 @@ export default function SugarSaleSite() {
       </a>
     </div>
 
-    {/* Copyright line below */}
-    <p className="text-center text-sm font-medium mt-2">
-      © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
-    </p>
+    <div className="flex items-center justify-center gap-2 mt-2">
+  <p className="text-sm font-medium">
+    © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
+  </p>
+  <a
+    href="https://cheers.org.nz"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center"
+  >
+    <img
+      src="/images/Cheers-logo-BLK-URL.png"
+      alt="Cheers.org.nz"
+      className="h-5 w-auto"
+    />
+  </a>
   </div>
 </footer>
+          
 
         </div>
       </div>

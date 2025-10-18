@@ -54,7 +54,7 @@
   cursor: pointer;
 
   /* hard offset shadow block */
-  box-shadow: 8px 8px 0 #333;
+  box-shadow: 6px 6px 0 #333;
 
   transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
 }

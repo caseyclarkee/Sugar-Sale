@@ -46,6 +46,17 @@
 }
 .error { color: #b00020; font-weight: 700; margin: 6px 0 0; }
 
+/* Heading: bold, uppercase, slightly italic, tighter tracking */
+.age-card h2,
+.age-card .title {
+  margin: 0 0 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: .02em;
+  color: #333;
+}
+
 
 /* Hide sugar cursor while the age gate is active */
 .agegate-active #sugar-stage,

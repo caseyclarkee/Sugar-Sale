@@ -19,7 +19,7 @@ const Home = () => (
       <h2 className="text-4xl sm:text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">
         <img src="/images/x_website_header.gif"
           alt="Sugar Liquidation Sale!"
-          className="w-3/4 lg:w-1/2"></img>
+          className="w-3/4 lg:w-1/2 center"></img>
       </h2>
 
       {/* Replaced Burst badge with a responsive PNG that stays attached to the card */}

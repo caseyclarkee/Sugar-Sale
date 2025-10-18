@@ -23,9 +23,6 @@ const Home = () => (
           className="block mx-auto w-3/4 lg:w-1/2"
         />
       </h2>
-    </div>
-  </section>
-);
 
       {/* Replaced Burst badge with a responsive PNG that stays attached to the card */}
       <div className="absolute right-3 top-3 sm:right-6 sm:top-6 pointer-events-none">

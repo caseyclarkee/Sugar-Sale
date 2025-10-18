@@ -477,9 +477,6 @@ export default function SugarSaleSite() {
             
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
             <div className="w-full flex flex-col items-center justify-center gap-3 md:flex-row">
-              <p className="text-center text-sm font-medium md:text-left">
-                © {new Date().getFullYear()} Long White X Zero Sugar.
-              </p>
               <div className="flex items-center gap-3">
                 <a
                   href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
@@ -513,6 +510,9 @@ export default function SugarSaleSite() {
                 >
                   Privacy Policy
                 </a>
+                <p className="text-center text-sm font-medium md:text-left">
+                © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
+              </p>
               </div>
             </div>
           </footer>

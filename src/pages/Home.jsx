@@ -12,18 +12,6 @@ const Burst = ({ children, className = "" }) => (
   </div>
 );
 
-/* Page */
-const Home = () => (
-  <section className="py-10 px-4 sm:px-8">
-    <div className="relative w-full rounded-2xl border-[4px] border-grey bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-yellow text-center">
-      <h2 className="text-4xl sm:text-5xl font-black uppercase mb-6 drop-shadow-[2px_2px_0_#000]">
-        <img
-          src="/images/x_website_header.gif"
-          alt="Sugar Liquidation Sale!"
-          className="block mx-auto w-3/4 xl:w-1/2"
-        />
-      </h2>
-
       /* Page */
 const Home = () => (
   <section className="py-10 px-4 sm:px-8">

@@ -344,6 +344,19 @@ const DealCard = ({ deal }) => {
             </button>
           )}
         </div>
+        {/* Promo Terms link for Deal of the Week only */}
+{deal.dotw && (
+  <p className="mt-3 text-[11px] text-gray-600 text-center">
+    <a
+      href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-black"
+    >
+     Click here for the Promotional Terms &amp; Conditions
+    </a>
+  </p>
+)}
       </div>
 
       {/* Modal with Netlify AJAX submit */}

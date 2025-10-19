@@ -507,6 +507,20 @@ function Deals() {
       ribbon: { text: "Replenishing soon", tone: "purple" },
       waitlist: true,
     },
+    {
+      id: "officechair",
+      title: "Office Chair (Lightly Used)",
+      image: "/images/deals/Chair",
+      ribbon: { text: "Sold Out", tone: "red" },
+      disabled: true,
+    },
+     {
+      id: "sugarcup",
+      title: "Cup of Sugar",
+      image: "/images/deals/Cup",
+      ribbon: { text: "Sold Out", tone: "red" },
+      disabled: true,
+    },
   ];
 
   const weeklyDeals = dotwTemplates.map((t, i) => {

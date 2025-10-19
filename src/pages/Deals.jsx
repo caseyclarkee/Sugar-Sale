@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, Netlify forms fixed)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, Netlify forms: fixed names)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -113,6 +113,10 @@ const encode = (data) =>
     )
     .join("&");
 
+// We will post to fixed, pre-registered form names:
+const DRAW_FORM_NAME = "deal-entry";
+const WAITLIST_FORM_NAME = "waitlist-entry";
+
 /* ----------------------------- UI ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
@@ -196,7 +200,7 @@ const WeekCountdown = ({ start, end }) => {
 };
 
 /* ------------------------------ Frames ------------------------------ */
-// Glow moved outside media container so it's visible
+// Glow on outer frame so it's visible
 const MediaFrame = ({ children, dotw = false }) => (
   <div
     className={
@@ -229,40 +233,6 @@ const ImageWithFallback = ({ src, alt, className }) => {
   );
 };
 
-/* ----------------------- Netlify hidden registrations ---------------------- */
-// Netlify needs to "see" each form name at build to enable them.
-const NetlifyFormRegistrations = ({ deals }) => {
-  const formNames = deals.flatMap((d) => [
-    `deal-entry-${d.id}`,
-    `waitlist-entry-${d.id}`,
-  ]);
-
-  return (
-    <div className="hidden">
-      {formNames.map((name) => (
-        <form
-          key={name}
-          name={name}
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-        >
-          <input type="hidden" name="form-name" value={name} />
-          <p className="hidden">
-            <label>
-              Don’t fill this out: <input name="bot-field" />
-            </label>
-          </p>
-          <input name="name" />
-          <input name="email" />
-          <input name="deal" />
-          <input name="kind" />
-        </form>
-      ))}
-    </div>
-  );
-};
-
 /* ------------------------------- Deal Card ------------------------------- */
 const DealCard = ({ deal }) => {
   const [open, setOpen] = React.useState(false);
@@ -273,20 +243,16 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Unique Netlify form per deal (your request)
-  const formName = deal.waitlist
-    ? `waitlist-entry-${deal.id}`
-    : `deal-entry-${deal.id}`;
+  // Fixed, pre-registered form names (Netlify parses in static HTML)
+  const formName = deal.waitlist ? WAITLIST_FORM_NAME : DRAW_FORM_NAME;
 
-  // Submit to Netlify via AJAX (so we keep the modal UX)
+  // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-
     try {
       const form = e.currentTarget;
       const data = new FormData(form);
-      // Ensure form-name exists and matches the form's name attribute
       if (!data.get("form-name")) data.set("form-name", formName);
 
       const payload = {};
@@ -391,7 +357,6 @@ const DealCard = ({ deal }) => {
                   className="grid gap-3"
                   onSubmit={onSubmitNetlify}
                 >
-                  {/* Netlify requires this hidden field */}
                   <input type="hidden" name="form-name" value={formName} />
                   <input type="hidden" name="deal" value={deal.title} />
                   <input
@@ -399,6 +364,7 @@ const DealCard = ({ deal }) => {
                     name="kind"
                     value={deal.waitlist ? "waitlist" : "draw"}
                   />
+                  <input type="hidden" name="deal_id" value={deal.id} />
 
                   <p className="hidden">
                     <label>
@@ -447,9 +413,7 @@ const DealCard = ({ deal }) => {
               </>
             ) : (
               <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">
-                  You’re in the draw! 🎉
-                </div>
+                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
                 <button
                   onClick={() => setOpen(false)}
                   className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
@@ -539,9 +503,6 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-      {/* Hidden forms so Netlify detects all dynamic form names at build time */}
-      <NetlifyFormRegistrations deals={deals} />
-
       <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {deals.map((d) => (
           <div key={d.id}>
@@ -554,5 +515,6 @@ function Deals() {
 }
 
 export default Deals;
+
 
 

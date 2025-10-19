@@ -130,7 +130,7 @@ const DealCard = ({ deal }) => {
                 setOpen(true);
                 setDone(false);
               }}
-              className="rounded-xl border-[4px] border-black bg-yellow px-4 py-2 font-black uppercase text-black shadow-[4px_4px_0_#000]"
+              className="rounded-xl border-[4px] border-black bg-gray-300 px-4 py-2 font-black uppercase text-black shadow-[4px_4px_0_#000]"
             >
               Join Waitlist
             </button>

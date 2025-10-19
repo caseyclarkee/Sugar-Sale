@@ -10,7 +10,7 @@ const About = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left column: text */}
         <div>
-          <h3 className="text-4xl sm:text-6xl font-black text-white mb-4">Meet Gary</h3>
+          <h3 className="text-6xl sm:text-8xl font-black text-white mb-4">Meet Gary</h3>
           <p className="max-w-4xl text-white">
             I’m Gary. You might know me as the ninth runner-up in Central Auckland’s
             Salesman of the Year Awards, 2004. I’m also the guy who sells sugar. Steady
@@ -42,14 +42,14 @@ const About = () => (
           <img
             src="/images/placeholder.png"
             alt="Gary"
-            className="max-w-full md:max-w-md rounded-2xl border-[4px] border-grey shadow-[6px_6px_0_#000]"
+            className="max-w-full md:max-w-md rounded-2xl border-[4px] border-grey shadow-[6px_6px_0_#fff]"
           />
         </div>
       </div>
 
       {/* FAQ below both columns */}
       <div className="mt-12">
-        <h2 className="font-black uppercase text-xl mb-3">
+        <h2 className="font-black text-white uppercase text-xl mb-3">
           FAQ (Frequently Asked Quibbles)
         </h2>
 
@@ -62,13 +62,13 @@ const About = () => (
           </div>
         </details>
 
-        <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
+        <details className="rounded-xl border-[4px] border-grey text-white bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
           <summary className="cursor-pointer font-black">
             Is the sugar good quality?
           </summary>
           <div className="mt-2 text-sm">
-            Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary)
-            will.)
+            Yes. It’s the good stuff. Please do not build furniture out of it. (I, Gary,
+            will build it for you.)
           </div>
         </details>
 

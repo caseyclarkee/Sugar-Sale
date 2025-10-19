@@ -11,7 +11,7 @@ const About = () => (
         {/* Left column: text */}
         <div>
           <h3 className="text-6xl sm:text-8xl font-black text-white mb-4">Meet Gary</h3>
-          <p className="max-w-4xl text-white">
+          <p className="max-w-4xl text-white text-sm">
             I’m Gary. You might know me as the ninth runner-up in Central Auckland’s
             Salesman of the Year Awards, 2004. I’m also the guy who sells sugar. Steady
             hours, sweet perks, it’s a pretty good gig. Well, it was until the Long White
@@ -57,7 +57,7 @@ const About = () => (
           <summary className="cursor-pointer font-black">
             Is any of this sugar used in the drink?
           </summary>
-          <div className="mt-2 text-sm">
+          <div className="mt-2 text-m">
             Absolutely not. X by Long White is zero sugar. Hence… this website.
           </div>
         </details>
@@ -66,7 +66,7 @@ const About = () => (
           <summary className="cursor-pointer font-black">
             Is the sugar good quality?
           </summary>
-          <div className="mt-2 text-sm">
+          <div className="mt-2 text-m">
             Yes. It’s the good stuff. Please do not build furniture out of it. (I, Gary,
             will build it for you.)
           </div>
@@ -74,14 +74,14 @@ const About = () => (
 
         <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
           <summary className="cursor-pointer font-black">Can I haggle?</summary>
-          <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
+          <div className="mt-2 text-m">If you bring a wheelbarrow, we’ll talk.</div>
         </details>
 
          <details className="rounded-xl border-[4px] border-grey text-white bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
           <summary className="cursor-pointer font-black">
            Got a page with more stuff?
           </summary>
-          <div className="mt-2 text-sm">I've got three!
+          <div className="mt-2 text-m">I've got three!
 <style>
 {`
 @keyframes floaty {
@@ -110,7 +110,7 @@ const About = () => (
 `}
 </style>
 
-<div className="mt-12 flex justify-center gap-10">
+<div className="mt-6 flex justify-center gap-10">
   <a
     href="https://www.tiktok.com/@longwhite.nz"
     target="_blank"

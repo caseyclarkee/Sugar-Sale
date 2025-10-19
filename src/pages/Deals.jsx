@@ -1,43 +1,110 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware), countdown, CTA gating
+// src/pages/Deals.jsx — DOTW auto-schedule weekly from 9am Mon 27 Oct (NZ time)
 import React from "react";
 
 /* ----------------------------- Tiny helpers ------------------------------ */
 const cx = (...cs) => cs.filter(Boolean).join(" ");
 
-// Interpret a naive "YYYY-MM-DDTHH:mm:ss" as Pacific/Auckland, return a UTC Date
-const nzLocalStringToUtcDate = (naive) => {
-  if (!naive) return null;
-  const local = new Date(naive.replace(" ", "T"));
-  if (Number.isNaN(local.getTime())) return null;
-  const inNZLocal = new Date(
-    local.toLocaleString("en-NZ", { timeZone: "Pacific/Auckland" })
+/* Robust parsing/formatting for Pacific/Auckland (handles DST) */
+
+// Parse "YYYY-MM-DD" or "YYYY-MM-DDTHH:mm:ss" into numeric parts
+const parseNaiveParts = (str) => {
+  if (!str) return null;
+  const m = String(str).match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):?(\d{2}):?(\d{2})?)?$/
   );
-  const diff = local.getTime() - inNZLocal.getTime();
-  return new Date(local.getTime() - diff);
+  if (!m) return null;
+  const [, y, M, d, h = "00", mnt = "00", s = "00"] = m;
+  return { year: +y, month: +M, day: +d, hour: +h, minute: +mnt, second: +s };
 };
 
-// Parse value that can be ISO with offset or NZ-naive (no offset)
+// Convert a "wall clock" time in a given IANA zone into the correct UTC Date
+const zonedTimeToUtc = (parts, timeZone) => {
+  const { year, month, day, hour, minute, second } = parts;
+  // As-if UTC for the desired wall time:
+  const desiredUtcMs = Date.UTC(year, month - 1, day, hour, minute, second);
+  const desiredUtc = new Date(desiredUtcMs);
+  // How does that instant read in the target tz?
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour12: false,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const zoneParts = Object.fromEntries(
+    fmt
+      .formatToParts(desiredUtc)
+      .filter((p) => p.type !== "literal")
+      .map((p) => [p.type, p.value])
+  );
+  const zoneMsForDesiredUtc = Date.UTC(
+    +zoneParts.year,
+    +zoneParts.month - 1,
+    +zoneParts.day,
+    +zoneParts.hour,
+    +zoneParts.minute,
+    +zoneParts.second
+  );
+  const offset = zoneMsForDesiredUtc - desiredUtcMs;
+  return new Date(desiredUtcMs - offset);
+};
+
+// Interpret strings with offset/Z as-is; otherwise treat as Pacific/Auckland
 const parseMaybeNZ = (value) => {
   if (!value) return null;
   const hasOffset = /[zZ]|[+\-]\d{2}:\d{2}$/.test(value);
-  return hasOffset ? new Date(value) : nzLocalStringToUtcDate(value);
+  if (hasOffset) return new Date(value);
+  const parts = parseNaiveParts(value);
+  if (!parts) return null;
+  return zonedTimeToUtc(parts, "Pacific/Auckland");
 };
 
-// Given weekOf "YYYY-MM-DD", build NZ window [start 00:00:00, end +6d 23:59:59]
-const nzWeekWindowFromWeekOf = (weekOf) => {
-  if (!weekOf) return { startAt: null, endAt: null };
-  const startAt = parseMaybeNZ(`${weekOf}T00:00:00`);
-  if (!startAt) return { startAt: null, endAt: null };
-  const endAt = new Date(startAt.getTime() + 6 * 24 * 60 * 60 * 1000 + (23 * 60 * 60 + 59 * 60 + 59) * 1000);
-  return { startAt, endAt };
+// Format a UTC Date into a NZ "naive" wall-clock string "YYYY-MM-DDTHH:mm:ss"
+const nzFormatNaive = (utcDate) => {
+  const fmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Pacific/Auckland",
+    hour12: false,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const parts = Object.fromEntries(
+    fmt
+      .formatToParts(utcDate)
+      .filter((p) => p.type !== "literal")
+      .map((p) => [p.type, p.value])
+  );
+  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`;
+};
+
+// Auto: add N weeks to a NZ naive start and return NZ naive string
+const addWeeksNZ = (baseNZNaiveStr, weeks) => {
+  const baseUtc = parseMaybeNZ(baseNZNaiveStr);
+  const shiftedUtc = new Date(baseUtc.getTime() + weeks * 7 * 86400000);
+  return nzFormatNaive(shiftedUtc);
+};
+
+// Given a start (NZ naive), compute end = Sunday 23:59:59 of that week (NZ naive)
+const weekEndFromStartNZ = (startNZNaiveStr) => {
+  const startUtc = parseMaybeNZ(startNZNaiveStr);
+  const endUtc = new Date(
+    startUtc.getTime() + 6 * 86400000 + (23 * 3600000 + 59 * 60000 + 59 * 1000)
+  );
+  return nzFormatNaive(endUtc);
 };
 
 const fmtDuration = (ms) => {
-  const totalSec = Math.max(0, Math.floor(ms / 1000));
-  const d = Math.floor(totalSec / 86400);
-  const h = Math.floor((totalSec % 86400) / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const d = Math.floor(total / 86400);
+  const h = Math.floor((total % 86400) / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
   if (d >= 1) return `${d}d ${h}h ${m}m`;
   if (h >= 1) return `${h}h ${m}m ${s}s`;
   return `${m}m ${s}s`;
@@ -97,22 +164,13 @@ const Ribbon = ({ text, tone = "red" }) => {
 };
 
 /* ------------------------------- Countdown ------------------------------- */
-/* Switches between UPCOMING / LIVE (this week) / EXPIRED, NZ-aware.         */
-/* Accepts either explicit start/end or a weekOf date.                        */
-const WeekCountdown = ({ start, end, weekOf }) => {
-  const [state, setState] = React.useState("upcoming");
+const WeekCountdown = ({ start, end }) => {
+  const [state, setState] = React.useState("upcoming"); // upcoming | live | expired
   const [left, setLeft] = React.useState("");
 
   React.useEffect(() => {
-    // Resolve window
-    let startAt = parseMaybeNZ(start);
-    let endAt = parseMaybeNZ(end);
-
-    if (!startAt && !endAt && weekOf) {
-      const win = nzWeekWindowFromWeekOf(weekOf);
-      startAt = win.startAt;
-      endAt = win.endAt;
-    }
+    const startAt = parseMaybeNZ(start);
+    const endAt = parseMaybeNZ(end);
 
     const tick = () => {
       const now = new Date();
@@ -135,11 +193,11 @@ const WeekCountdown = ({ start, end, weekOf }) => {
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [start, end, weekOf]);
+  }, [start, end]);
 
   if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live")     return <Badge tone="red">LIVE THIS WEEK 🔥{left && ` • Ends in ${left}`}</Badge>;
-  if (state === "expired")  return <Badge tone="gray">Expired</Badge>;
+  if (state === "live") return <Badge tone="red">LIVE THIS WEEK 🔥{left && ` • Ends in ${left}`}</Badge>;
+  if (state === "expired") return <Badge tone="gray">Expired</Badge>;
   return null;
 };
 
@@ -190,24 +248,14 @@ const DealCard = ({ deal }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
 
-  // Resolve live window from start/end or weekOf
-  const { startAt, endAt } = React.useMemo(() => {
-    let s = parseMaybeNZ(deal.start);
-    let e = parseMaybeNZ(deal.end);
-    if (!s && !e && deal.weekOf) {
-      const win = nzWeekWindowFromWeekOf(deal.weekOf);
-      s = win.startAt;
-      e = win.endAt;
-    }
-    return { startAt: s, endAt: e };
-  }, [deal.start, deal.end, deal.weekOf]);
-
   const isLiveNow = React.useMemo(() => {
+    const startAt = parseMaybeNZ(deal.start);
+    const endAt = parseMaybeNZ(deal.end);
     const now = new Date();
     if (startAt && now < startAt) return false;
     if (endAt && now > endAt) return false;
     return true;
-  }, [startAt, endAt]);
+  }, [deal.start, deal.end]);
 
   React.useEffect(() => {
     document.body.classList.toggle("overflow-hidden", open);
@@ -258,9 +306,7 @@ const DealCard = ({ deal }) => {
               {b.text}
             </Badge>
           ))}
-          {deal.dotw && (
-            <WeekCountdown start={deal.start} end={deal.end} weekOf={deal.weekOf} />
-          )}
+          {deal.dotw && <WeekCountdown start={deal.start} end={deal.end} />}
         </div>
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
@@ -344,98 +390,4 @@ const DealCard = ({ deal }) => {
 
                   <label className="font-black">
                     Email
-                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
-                  </label>
-
-                  <div className="mt-4 flex justify-end gap-2">
-                    <button type="button" onClick={() => setOpen(false)} className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold">
-                      Cancel
-                    </button>
-                    <button type="submit" className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]">
-                      {submitting ? "Submitting…" : "Submit"}
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
-                <button onClick={() => setOpen(false)} className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]">
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-/* ------------------------------ Page Component ------------------------------ */
-function Deals() {
-  const deals = [
-    {
-      id: 1,
-      title: "Sugar Dentures",
-      image: "/images/deals/Sugar Dentures",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-      disabledLabel: "Sold Out",
-    },
-    {
-      id: 2,
-      title: "10kg of Sugar",
-      image: "/images/deals/Bag of Sugar",
-      ribbon: { text: "Replenishing soon", tone: "purple" },
-      waitlist: true,
-    },
-
-    // --- Deal of the Week tiles (flagged) ---
-    // Option A: explicit start/end (NZ-naive timestamps)
-    {
-      id: 3,
-      title: "Deal of the Week",
-      placeholder: true,
-      dotw: true,
-      start: "2025-10-20T09:00:00",
-      end:   "2025-10-26T23:59:59",
-      badges: [
-        { text: "FREE!", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-    // Option B: use a single 'weekOf' date (NZ midnight that date through +6 days)
-    {
-      id: 4,
-      title: "Deal of the Week",
-      placeholder: true,
-      dotw: true,
-      weekOf: "2025-10-27", // Mon 27 Oct → Sun 2 Nov (NZ time)
-      badges: [
-        { text: "Now $0.00", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-  ];
-
-  return (
-    <section className="space-y-8 px-4 py-12 sm:px-8">
-      <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-        Gary's Sweet Deals
-      </h2>
-
-      {/* DOTW spans 2 cols on large screens for emphasis */}
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {deals.map((d) => (
-          <div key={d.id} className={cx(d.dotw && "lg:col-span-2")}>
-            <DealCard deal={d} />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export default Deals;
-
+                    <input type="email" name="email" required className="mt-1

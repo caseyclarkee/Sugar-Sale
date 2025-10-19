@@ -230,7 +230,9 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  const formName = deal.waitlist ? "waitlist-entry" : "deal-entry";
+const formName = deal.waitlist
+  ? `waitlist-entry-${deal.id}`
+  : `deal-entry-${deal.id}`;
 
   return (
     <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">

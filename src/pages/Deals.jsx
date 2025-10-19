@@ -281,12 +281,14 @@ const DealCard = ({ deal }) => {
     <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">
       {/* Rotated top-right countdown badge */}
       {deal.dotw && (
-        <div className="absolute -top-3 -right-3 rotate-6 z-10">
-          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#000] rotate-[-6deg]">
-            <WeekCountdown start={deal.start} end={deal.end} />
-          </div>
-        </div>
-      )}
+  <div className="absolute -top-3 -right-3 rotate-6 z-10">
+    {/* only rotation + optional shadow wrapper — no bg/padding here */}
+    <div className="rotate-[-6deg]">
+      <WeekCountdown start={deal.start} end={deal.end} />
+    </div>
+  </div>
+)}
+
 
       <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}

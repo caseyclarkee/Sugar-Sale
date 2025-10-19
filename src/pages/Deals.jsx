@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, split grid L/R, Netlify forms)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, row-grouped layout, Netlify forms)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -200,7 +200,6 @@ const WeekCountdown = ({ start, end }) => {
 };
 
 /* ------------------------------ Frames ------------------------------ */
-// Glow on outer frame so it's visible
 const MediaFrame = ({ children, dotw = false }) => (
   <div
     className={
@@ -279,7 +278,7 @@ const DealCard = ({ deal }) => {
 
   return (
     <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-      {/* Rotated top-right countdown badge (no extra background wrapper) */}
+      {/* Rotated top-right countdown badge */}
       {deal.dotw && (
         <div className="absolute -top-3 -right-3 rotate-6 z-10">
           <div className="rotate-[-6deg]">
@@ -441,7 +440,7 @@ const DealCard = ({ deal }) => {
               </div>
             )}
 
-            {/* ✅ Promo Terms inside the popup (DOTW only), below form/success */}
+            {/* Promo Terms inside the popup (DOTW only), below form/success */}
             {deal.dotw && (
               <p className="mt-6 text-[11px] text-gray-600 text-center">
                 <a
@@ -545,42 +544,48 @@ function Deals() {
     return { ...t, dotw: true, start, end };
   });
 
-  {/* Responsive grid:
-    - Mobile: per row => [Static i | DOTW i], then [Static i+1 | DOTW i+1]
-    - Large:  per row => [Static i | Static i+1 | DOTW i | DOTW i+1]
-*/}
-<div className="space-y-6">
-  {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) })
-    .map((_, i) => i)                   // indices 0..max-1
-    .filter((i) => i % 2 === 0)         // step by 2: 0,2,4,...
-    .map((i) => {
-      const s1 = staticDeals[i];
-      const s2 = staticDeals[i + 1];
-      const d1 = weeklyDeals[i];
-      const d2 = weeklyDeals[i + 1];
+  /* ---------------- Layout: rows that pair static + DOTW ----------------
+     - Mobile (default): per row => [Static i | DOTW i] then [Static i+1 | DOTW i+1]
+     - Large (lg):      per row => [Static i | Static i+1 | DOTW i | DOTW i+1]
+  ---------------------------------------------------------------------- */
 
-      return (
-        <div key={`row-${i}`} className="w-full">
-          {/* Mobile layout (2 columns, two rows) */}
-          <div className="grid grid-cols-2 gap-6 lg:hidden">
-            {s1 && <DealCard deal={s1} />}
-            {d1 && <DealCard deal={d1} />}
-            {s2 && <DealCard deal={s2} />}
-            {d2 && <DealCard deal={d2} />}
-          </div>
+  return (
+    <section className="space-y-8 px-4 py-12 sm:px-8">
+      <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
+        Gary's Sweet Deals
+      </h2>
 
-          {/* Large layout (one row, 4 columns: 2 static left, 2 DOTW right) */}
-          <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
-            {s1 && <DealCard deal={s1} />}
-            {s2 && <DealCard deal={s2} />}
-            {d1 && <DealCard deal={d1} />}
-            {d2 && <DealCard deal={d2} />}
-          </div>
-        </div>
-      );
-    })}
-</div>
+      <div className="space-y-6">
+        {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) })
+          .map((_, i) => i)
+          .filter((i) => i % 2 === 0) // rows of 2-pairs
+          .map((i) => {
+            const s1 = staticDeals[i];
+            const s2 = staticDeals[i + 1];
+            const d1 = weeklyDeals[i];
+            const d2 = weeklyDeals[i + 1];
 
+            return (
+              <div key={`row-${i}`} className="w-full">
+                {/* Mobile: 2 columns, 2 rows (S1 D1 / S2 D2) */}
+                <div className="grid grid-cols-2 gap-6 lg:hidden">
+                  {s1 && <DealCard deal={s1} />}
+                  {d1 && <DealCard deal={d1} />}
+                  {s2 && <DealCard deal={s2} />}
+                  {d2 && <DealCard deal={d2} />}
+                </div>
+
+                {/* Large: 1 row, 4 columns (S1 S2 D1 D2) */}
+                <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+                  {s1 && <DealCard deal={s1} />}
+                  {s2 && <DealCard deal={s2} />}
+                  {d1 && <DealCard deal={d1} />}
+                  {d2 && <DealCard deal={d2} />}
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </section>
   );
 }

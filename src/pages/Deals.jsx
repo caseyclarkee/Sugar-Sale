@@ -344,25 +344,12 @@ const DealCard = ({ deal }) => {
             </button>
           )}
         </div>
-        {/* Promo Terms link for Deal of the Week only */}
-{deal.dotw && (
-  <p className="mt-3 text-[11px] text-gray-600 text-center">
-    <a
-      href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="underline hover:text-black"
-    >
-     Click here for the Promotional Terms &amp; Conditions
-    </a>
-  </p>
-)}
       </div>
 
       {/* Modal with Netlify AJAX submit */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
             {!done ? (
               <>
                 <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
@@ -452,6 +439,20 @@ const DealCard = ({ deal }) => {
                   Close
                 </button>
               </div>
+            )}
+
+            {/* ✅ Promo Terms inside the popup (DOTW only), below form/success */}
+            {deal.dotw && (
+              <p className="mt-6 text-[11px] text-gray-600 text-center">
+                <a
+                  href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-black"
+                >
+                  Promotional Terms &amp; Conditions
+                </a>
+              </p>
             )}
           </div>
         </div>
@@ -550,27 +551,26 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-{/* Alternating static + DOTW on mobile, split left/right on desktop */}
-<div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-  {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) }).map((_, i) => (
-    <React.Fragment key={i}>
-      {/* Static deal (left) */}
-      {staticDeals[i] && (
-        <div className="order-1 lg:order-none">
-          <DealCard deal={staticDeals[i]} />
-        </div>
-      )}
+      {/* Alternating static + DOTW on mobile, split left/right on desktop */}
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) }).map((_, i) => (
+          <React.Fragment key={i}>
+            {/* Static deal (left) */}
+            {staticDeals[i] && (
+              <div className="order-1 lg:order-none">
+                <DealCard deal={staticDeals[i]} />
+              </div>
+            )}
 
-      {/* DOTW deal (right) */}
-      {weeklyDeals[i] && (
-        <div className="order-2 lg:order-none">
-          <DealCard deal={weeklyDeals[i]} />
-        </div>
-      )}
-    </React.Fragment>
-  ))}
-</div>
-
+            {/* DOTW deal (right) */}
+            {weeklyDeals[i] && (
+              <div className="order-2 lg:order-none">
+                <DealCard deal={weeklyDeals[i]} />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
     </section>
   );
 }

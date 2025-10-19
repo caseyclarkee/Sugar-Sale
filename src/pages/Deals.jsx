@@ -1,13 +1,11 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware), compact single-col version
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, always show Enter Draw)
 import React from "react";
 
-/* ----------------------------- Tiny helpers ------------------------------ */
+/* ----------------------------- Helper utils ----------------------------- */
 const cx = (...cs) => cs.filter(Boolean).join(" ");
 
-// ---- Robust NZ date helpers ----
 const parseNaiveParts = (str) => {
-  if (!str) return null;
-  const m = String(str).match(
+  const m = String(str || "").match(
     /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):?(\d{2}):?(\d{2})?)?$/
   );
   if (!m) return null;
@@ -16,8 +14,14 @@ const parseNaiveParts = (str) => {
 };
 
 const zonedTimeToUtc = (parts, timeZone) => {
-  const { year, month, day, hour, minute, second } = parts;
-  const desiredUtcMs = Date.UTC(year, month - 1, day, hour, minute, second);
+  const desiredUtcMs = Date.UTC(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second
+  );
   const desiredUtc = new Date(desiredUtcMs);
   const fmt = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -52,8 +56,7 @@ const parseMaybeNZ = (value) => {
   const hasOffset = /[zZ]|[+\-]\d{2}:\d{2}$/.test(value);
   if (hasOffset) return new Date(value);
   const parts = parseNaiveParts(value);
-  if (!parts) return null;
-  return zonedTimeToUtc(parts, "Pacific/Auckland");
+  return parts ? zonedTimeToUtc(parts, "Pacific/Auckland") : null;
 };
 
 const nzFormatNaive = (utcDate) => {
@@ -96,12 +99,12 @@ const fmtDuration = (ms) => {
   const h = Math.floor((total % 86400) / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  if (d >= 1) return `${d}d ${h}h ${m}m`;
-  if (h >= 1) return `${h}h ${m}m ${s}s`;
+  if (d >= 1) return `${d}d ${h}h`;
+  if (h >= 1) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
 };
 
-/* ----------------------------- UI Primitives ----------------------------- */
+/* ----------------------------- UI bits ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -112,8 +115,6 @@ const Badge = ({ children, tone = "yellow" }) => {
       ? "bg-red text-white"
       : tone === "blue"
       ? "bg-blue-500 text-white"
-      : tone === "gray"
-      ? "bg-gray-300 text-black"
       : "bg-gray-300 text-black";
   return (
     <span
@@ -135,10 +136,6 @@ const Ribbon = ({ text, tone = "red" }) => {
       ? "bg-blue-500 text-white"
       : tone === "yellow"
       ? "bg-yellow text-black"
-      : tone === "pink"
-      ? "bg-pink-100 text-black"
-      : tone === "gray"
-      ? "bg-gray-300 text-black"
       : tone === "purple"
       ? "bg-purple text-white"
       : "";
@@ -177,7 +174,6 @@ const WeekCountdown = ({ start, end }) => {
       }
       setState("live");
       if (endAt) setLeft(fmtDuration(endAt - now));
-      else setLeft("");
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -185,25 +181,15 @@ const WeekCountdown = ({ start, end }) => {
   }, [start, end]);
 
   if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="red">LIVE THIS WEEK 🔥{left && ` • Ends in ${left}`}</Badge>;
+  if (state === "live") return <Badge tone="red">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
   if (state === "expired") return <Badge tone="gray">Expired</Badge>;
   return null;
 };
 
 /* ------------------------------ Card Frame ------------------------------ */
-const MediaFrame = ({ children, dotw = false }) => (
-  <div
-    className={cx(
-      "mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 relative",
-      dotw && "shadow-[8px_8px_0_#000]"
-    )}
-  >
-    <div
-      className={cx(
-        "relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200",
-        dotw && "bg-[repeating-linear-gradient(45deg,#fff_0_12px,#fcd34d_12px_24px)]"
-      )}
-    >
+const MediaFrame = ({ children }) => (
+  <div className="mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 relative">
+    <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
       <div className="pt-[125%]" />
       <div className="absolute inset-0">{children}</div>
     </div>
@@ -232,15 +218,6 @@ const DealCard = ({ deal }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
 
-  const isLiveNow = React.useMemo(() => {
-    const startAt = parseMaybeNZ(deal.start);
-    const endAt = parseMaybeNZ(deal.end);
-    const now = new Date();
-    if (startAt && now < startAt) return false;
-    if (endAt && now > endAt) return false;
-    return true;
-  }, [deal.start, deal.end]);
-
   React.useEffect(() => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
@@ -248,23 +225,17 @@ const DealCard = ({ deal }) => {
   const formName = deal.waitlist ? "waitlist-entry" : "deal-entry";
 
   return (
-    <div
-      className={cx(
-        "flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] transition-transform duration-200",
-        deal.dotw && "relative ring-2 ring-yellow/70 hover:scale-[1.005]"
-      )}
-    >
+    <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
       {deal.dotw && (
-        <div className="pointer-events-none absolute -top-3 -right-3 z-10 rotate-6">
-          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] sm:text-xs font-black uppercase shadow-[2px_2px_0_#000]">
+        <div className="absolute -top-3 -right-3 rotate-6">
+          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]">
             Deal of the Week
           </div>
         </div>
       )}
 
-      <MediaFrame dotw={!!deal.dotw}>
+      <MediaFrame>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
-        {/* Removed "This Week Only" badge */}
         {deal.placeholder ? (
           <div className="flex h-full w-full items-center justify-center bg-white/60">
             <span className="select-none text-lg font-black uppercase tracking-wide text-black/60">
@@ -279,10 +250,7 @@ const DealCard = ({ deal }) => {
       </MediaFrame>
 
       <div className="flex flex-1 flex-col gap-2">
-        <h3 className={cx("font-black", deal.dotw ? "text-xl sm:text-2xl -mb-0.5" : "text-lg")}>
-          {deal.title}
-        </h3>
-
+        <h3 className="text-lg font-black">{deal.title}</h3>
         <div className="flex flex-wrap items-center gap-2">
           {deal.badges?.map((b, i) => (
             <Badge key={i} tone={b.tone}>
@@ -293,47 +261,95 @@ const DealCard = ({ deal }) => {
         </div>
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
-          {deal.waitlist ? (
-            <button
-              onClick={() => {
-                setOpen(true);
-                setDone(false);
-              }}
-              className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-black uppercase text-black shadow-[3px_3px_0_#000]"
-            >
-              Join Waitlist
-            </button>
-          ) : deal.disabled ? (
-            <button
-              disabled
-              className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
-            >
-              {deal.disabledLabel || "Unavailable"}
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                if (!isLiveNow) return;
-                setOpen(true);
-                setDone(false);
-              }}
-              disabled={!isLiveNow}
-              className={cx(
-                "rounded-xl border-[3px] border-black px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]",
-                deal.dotw ? "bg-red" : "bg-purple",
-                !isLiveNow && "cursor-not-allowed opacity-60"
-              )}
-            >
-              {isLiveNow ? (deal.dotw ? "Claim This Week" : "Enter Draw") : "Opens Soon"}
-            </button>
-          )}
+          <button
+            onClick={() => {
+              setOpen(true);
+              setDone(false);
+            }}
+            className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+          >
+            Enter Draw
+          </button>
         </div>
       </div>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+            {!done ? (
+              <>
+                <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
+                <form
+                  name={formName}
+                  method="POST"
+                  data-netlify="true"
+                  netlify-honeypot="bot-field"
+                  className="grid gap-3"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSubmitting(true);
+                    setTimeout(() => {
+                      setSubmitting(false);
+                      setDone(true);
+                    }, 800);
+                  }}
+                >
+                  <input type="hidden" name="form-name" value={formName} />
+                  <input type="hidden" name="deal" value={deal.title} />
+                  <p className="hidden">
+                    <label>
+                      Don’t fill this out: <input name="bot-field" />
+                    </label>
+                  </p>
+
+                  <label className="font-black">
+                    Name
+                    <input type="text" name="name" required className="mt-1 w-full border-[3px] border-black p-2" />
+                  </label>
+
+                  <label className="font-black">
+                    Email
+                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
+                  </label>
+
+                  <div className="mt-4 flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold"
+                      disabled={submitting}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]"
+                      disabled={submitting}
+                    >
+                      {submitting ? "Submitting…" : "Enter Draw"}
+                    </button>
+                  </div>
+                </form>
+              </>
+            ) : (
+              <div className="grid gap-4 text-center">
+                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-/* ------------------------------ Page Component ------------------------------ */
+/* ------------------------------ Page ------------------------------ */
 function Deals() {
   const baseStartNZ = "2025-10-27T09:00:00";
 
@@ -375,3 +391,4 @@ function Deals() {
 }
 
 export default Deals;
+

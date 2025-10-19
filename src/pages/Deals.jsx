@@ -1,12 +1,10 @@
-// src/pages/Deals.jsx — DOTW auto-schedule weekly from 9am Mon 27 Oct (NZ time)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware), compact single-col version
 import React from "react";
 
 /* ----------------------------- Tiny helpers ------------------------------ */
 const cx = (...cs) => cs.filter(Boolean).join(" ");
 
-/* Robust parsing/formatting for Pacific/Auckland (handles DST) */
-
-// Parse "YYYY-MM-DD" or "YYYY-MM-DDTHH:mm:ss" into numeric parts
+// ---- Robust NZ date helpers ----
 const parseNaiveParts = (str) => {
   if (!str) return null;
   const m = String(str).match(
@@ -17,13 +15,10 @@ const parseNaiveParts = (str) => {
   return { year: +y, month: +M, day: +d, hour: +h, minute: +mnt, second: +s };
 };
 
-// Convert a "wall clock" time in a given IANA zone into the correct UTC Date
 const zonedTimeToUtc = (parts, timeZone) => {
   const { year, month, day, hour, minute, second } = parts;
-  // As-if UTC for the desired wall time:
   const desiredUtcMs = Date.UTC(year, month - 1, day, hour, minute, second);
   const desiredUtc = new Date(desiredUtcMs);
-  // How does that instant read in the target tz?
   const fmt = new Intl.DateTimeFormat("en-US", {
     timeZone,
     hour12: false,
@@ -40,7 +35,7 @@ const zonedTimeToUtc = (parts, timeZone) => {
       .filter((p) => p.type !== "literal")
       .map((p) => [p.type, p.value])
   );
-  const zoneMsForDesiredUtc = Date.UTC(
+  const zoneMs = Date.UTC(
     +zoneParts.year,
     +zoneParts.month - 1,
     +zoneParts.day,
@@ -48,11 +43,10 @@ const zonedTimeToUtc = (parts, timeZone) => {
     +zoneParts.minute,
     +zoneParts.second
   );
-  const offset = zoneMsForDesiredUtc - desiredUtcMs;
+  const offset = zoneMs - desiredUtcMs;
   return new Date(desiredUtcMs - offset);
 };
 
-// Interpret strings with offset/Z as-is; otherwise treat as Pacific/Auckland
 const parseMaybeNZ = (value) => {
   if (!value) return null;
   const hasOffset = /[zZ]|[+\-]\d{2}:\d{2}$/.test(value);
@@ -62,7 +56,6 @@ const parseMaybeNZ = (value) => {
   return zonedTimeToUtc(parts, "Pacific/Auckland");
 };
 
-// Format a UTC Date into a NZ "naive" wall-clock string "YYYY-MM-DDTHH:mm:ss"
 const nzFormatNaive = (utcDate) => {
   const fmt = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Pacific/Auckland",
@@ -83,14 +76,12 @@ const nzFormatNaive = (utcDate) => {
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`;
 };
 
-// Auto: add N weeks to a NZ naive start and return NZ naive string
 const addWeeksNZ = (baseNZNaiveStr, weeks) => {
   const baseUtc = parseMaybeNZ(baseNZNaiveStr);
   const shiftedUtc = new Date(baseUtc.getTime() + weeks * 7 * 86400000);
   return nzFormatNaive(shiftedUtc);
 };
 
-// Given a start (NZ naive), compute end = Sunday 23:59:59 of that week (NZ naive)
 const weekEndFromStartNZ = (startNZNaiveStr) => {
   const startUtc = parseMaybeNZ(startNZNaiveStr);
   const endUtc = new Date(
@@ -127,7 +118,7 @@ const Badge = ({ children, tone = "yellow" }) => {
   return (
     <span
       className={cx(
-        "rounded-full border-[3px] border-black px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0_#000]",
+        "rounded-full border-[2px] border-black px-2.5 py-0.5 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]",
         toneClasses
       )}
     >
@@ -154,7 +145,7 @@ const Ribbon = ({ text, tone = "red" }) => {
   return (
     <div
       className={cx(
-        "absolute left-[-8px] top-3 rotate-[-6deg] border-[3px] border-black px-3 py-1 text-xs lg:text-sm font-black uppercase shadow-[3px_3px_0_#000]",
+        "absolute left-[-6px] top-2 rotate-[-6deg] border-[2px] border-black px-2.5 py-0.5 text-[10px] lg:text-xs font-black uppercase shadow-[2px_2px_0_#000]",
         toneClasses
       )}
     >
@@ -165,7 +156,7 @@ const Ribbon = ({ text, tone = "red" }) => {
 
 /* ------------------------------- Countdown ------------------------------- */
 const WeekCountdown = ({ start, end }) => {
-  const [state, setState] = React.useState("upcoming"); // upcoming | live | expired
+  const [state, setState] = React.useState("upcoming");
   const [left, setLeft] = React.useState("");
 
   React.useEffect(() => {
@@ -174,7 +165,6 @@ const WeekCountdown = ({ start, end }) => {
 
     const tick = () => {
       const now = new Date();
-
       if (startAt && now < startAt) {
         setState("upcoming");
         setLeft(fmtDuration(startAt - now));
@@ -189,7 +179,6 @@ const WeekCountdown = ({ start, end }) => {
       if (endAt) setLeft(fmtDuration(endAt - now));
       else setLeft("");
     };
-
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
@@ -205,15 +194,10 @@ const WeekCountdown = ({ start, end }) => {
 const MediaFrame = ({ children, dotw = false }) => (
   <div
     className={cx(
-      "mb-4 rounded-lg border-[3px] border-black bg-gray-50 p-2 relative",
+      "mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 relative",
       dotw && "shadow-[8px_8px_0_#000]"
     )}
   >
-    {dotw && (
-      <div className="pointer-events-none absolute inset-0 -z-0 rounded-md mix-blend-screen">
-        <div className="absolute inset-[-8%] rounded-xl opacity-60 blur-2xl bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,0,0.6),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(168,85,247,0.6),transparent_45%)] animate-pulse" />
-      </div>
-    )}
     <div
       className={cx(
         "relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200",
@@ -266,13 +250,13 @@ const DealCard = ({ deal }) => {
   return (
     <div
       className={cx(
-        "flex h-full flex-col rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] transition-transform duration-200",
-        deal.dotw && "relative ring-4 ring-yellow hover:rotate-[-0.5deg] hover:scale-[1.01]"
+        "flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] transition-transform duration-200",
+        deal.dotw && "relative ring-2 ring-yellow/70 hover:scale-[1.005]"
       )}
     >
       {deal.dotw && (
         <div className="pointer-events-none absolute -top-3 -right-3 z-10 rotate-6">
-          <div className="rounded-full border-[3px] border-black bg-yellow px-4 py-2 text-xs sm:text-sm font-black uppercase shadow-[4px_4px_0_#000]">
+          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] sm:text-xs font-black uppercase shadow-[2px_2px_0_#000]">
             Deal of the Week
           </div>
         </div>
@@ -280,8 +264,7 @@ const DealCard = ({ deal }) => {
 
       <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
-        {deal.dotw && <Ribbon text="This Week Only" tone="pink" />}
-
+        {/* Removed "This Week Only" badge */}
         {deal.placeholder ? (
           <div className="flex h-full w-full items-center justify-center bg-white/60">
             <span className="select-none text-lg font-black uppercase tracking-wide text-black/60">
@@ -296,7 +279,7 @@ const DealCard = ({ deal }) => {
       </MediaFrame>
 
       <div className="flex flex-1 flex-col gap-2">
-        <h3 className={cx("font-black", deal.dotw ? "text-2xl sm:text-3xl -mb-1" : "text-xl")}>
+        <h3 className={cx("font-black", deal.dotw ? "text-xl sm:text-2xl -mb-0.5" : "text-lg")}>
           {deal.title}
         </h3>
 
@@ -316,17 +299,14 @@ const DealCard = ({ deal }) => {
                 setOpen(true);
                 setDone(false);
               }}
-              className={cx(
-                "rounded-xl border-[4px] border-black px-4 py-2 font-black uppercase shadow-[4px_4px_0_#000]",
-                deal.dotw ? "bg-yellow text-black" : "bg-gray-300 text-black"
-              )}
+              className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-black uppercase text-black shadow-[3px_3px_0_#000]"
             >
               Join Waitlist
             </button>
           ) : deal.disabled ? (
             <button
               disabled
-              className="cursor-not-allowed rounded-xl border-[4px] border-black bg-gray-300 px-4 py-2 font-black uppercase text-black/60 shadow-[4px_4px_0_#000]"
+              className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
             >
               {deal.disabledLabel || "Unavailable"}
             </button>
@@ -339,7 +319,7 @@ const DealCard = ({ deal }) => {
               }}
               disabled={!isLiveNow}
               className={cx(
-                "rounded-xl border-[4px] border-black px-4 py-2 font-black uppercase text-white shadow-[4px_4px_0_#000]",
+                "rounded-xl border-[3px] border-black px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]",
                 deal.dotw ? "bg-red" : "bg-purple",
                 !isLiveNow && "cursor-not-allowed opacity-60"
               )}
@@ -349,133 +329,30 @@ const DealCard = ({ deal }) => {
           )}
         </div>
       </div>
-
-      {/* Modal */}
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-            {!done ? (
-              <>
-                <h3 className="mb-4 text-xl font-black">
-                  {deal.waitlist ? `Join the ${deal.title} Waitlist` : deal.title}
-                </h3>
-                <form
-                  name={formName}
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
-                  className="grid gap-3"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitting(true);
-                    setTimeout(() => {
-                      setSubmitting(false);
-                      setDone(true);
-                    }, 800);
-                  }}
-                >
-                  <input type="hidden" name="form-name" value={formName} />
-                  <input type="hidden" name="deal" value={deal.title} />
-                  <input type="hidden" name="kind" value={deal.waitlist ? "waitlist" : "draw"} />
-                  <p className="hidden">
-                    <label>
-                      Don’t fill this out: <input name="bot-field" />
-                    </label>
-                  </p>
-
-                  <label className="font-black">
-                    Name
-                    <input type="text" name="name" required className="mt-1 w-full border-[3px] border-black p-2" />
-                  </label>
-
-                  <label className="font-black">
-                    Email
-                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
-                  </label>
-
-                  <div className="mt-4 flex justify-end gap-2">
-                    <button type="button" onClick={() => setOpen(false)} className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold">
-                      Cancel
-                    </button>
-                    <button type="submit" className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]">
-                      {submitting ? "Submitting…" : "Submit"}
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
-                <button onClick={() => setOpen(false)} className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]">
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
 /* ------------------------------ Page Component ------------------------------ */
 function Deals() {
-  // Base: first DOTW goes LIVE at 9:00 AM on Mon 27 Oct 2025 (NZ time)
   const baseStartNZ = "2025-10-27T09:00:00";
 
-  // Define your DOTW tiles here; timings auto-fill weekly from baseStartNZ
   const dotwTemplates = [
-    {
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
-    },
-    {
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
-    },
-    {
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
-    },
-    {
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
-    },
+    { title: "Deal of the Week", placeholder: true, badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { title: "Deal of the Week", placeholder: true, badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { title: "Deal of the Week", placeholder: true, badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { title: "Deal of the Week", placeholder: true, badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
   ];
 
-  // Build deals: non-weekly items + weekly items (auto-scheduled)
   const staticDeals = [
-    {
-      id: "dentures",
-      title: "Sugar Dentures",
-      image: "/images/deals/Sugar Dentures",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-      disabledLabel: "Sold Out",
-    },
-    {
-      id: "bag10kg",
-      title: "10kg of Sugar",
-      image: "/images/deals/Bag of Sugar",
-      ribbon: { text: "Replenishing soon", tone: "purple" },
-      waitlist: true,
-    },
+    { id: "dentures", title: "Sugar Dentures", image: "/images/deals/Sugar Dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true },
+    { id: "bag10kg", title: "10kg of Sugar", image: "/images/deals/Bag of Sugar", ribbon: { text: "Replenishing soon", tone: "purple" }, waitlist: true },
   ];
 
   const weeklyDeals = dotwTemplates.map((t, i) => {
-    const start = addWeeksNZ(baseStartNZ, i);           // 9:00 Mon each week (NZ)
-    const end = weekEndFromStartNZ(start);              // end Sun 23:59:59 (NZ)
-    return {
-      id: `dotw-${i}`,
-      ...t,
-      dotw: true,
-      start,
-      end,
-    };
+    const start = addWeeksNZ(baseStartNZ, i);
+    const end = weekEndFromStartNZ(start);
+    return { id: `dotw-${i}`, ...t, dotw: true, start, end };
   });
 
   const deals = [...staticDeals, ...weeklyDeals];
@@ -486,10 +363,9 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-      {/* DOTW spans 2 cols on large screens for emphasis */}
       <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {deals.map((d) => (
-          <div key={d.id} className={cx(d.dotw && "lg:col-span-2")}>
+          <div key={d.id}>
             <DealCard deal={d} />
           </div>
         ))}

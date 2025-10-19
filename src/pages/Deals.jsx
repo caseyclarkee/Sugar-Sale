@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, fixed buttons + yellow glow)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, yellow glow visible)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -104,7 +104,7 @@ const fmtDuration = (ms) => {
   return `${m}m ${s}s`;
 };
 
-/* ----------------------------- UI Bits ----------------------------- */
+/* ----------------------------- UI ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -187,14 +187,16 @@ const WeekCountdown = ({ start, end }) => {
 };
 
 /* ------------------------------ Frames ------------------------------ */
-// Yellow glow reinstated for weekly deals (dotw=true)
+// Glow moved outside media container so it's visible
 const MediaFrame = ({ children, dotw = false }) => (
-  <div className="mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 relative">
-    {dotw && (
-      <div className="pointer-events-none absolute inset-0 -z-0 rounded-md mix-blend-screen">
-        <div className="absolute inset-[-6%] rounded-xl opacity-40 blur-lg bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,0,0.6),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(253,224,71,0.55),transparent_45%)]" />
-      </div>
-    )}
+  <div
+    className={
+      "relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 transition-shadow " +
+      (dotw
+        ? "ring-4 ring-yellow/70 shadow-[0_0_25px_5px_rgba(250,204,21,0.6)]"
+        : "")
+    }
+  >
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
       <div className="pt-[125%]" />
       <div className="absolute inset-0">{children}</div>
@@ -268,7 +270,7 @@ const DealCard = ({ deal }) => {
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.waitlist ? (
-            // SAME GREY AS DISABLED, but clickable
+            // grey but clickable
             <button
               onClick={() => {
                 setOpen(true);

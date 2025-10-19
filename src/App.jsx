@@ -236,7 +236,7 @@ const LeftRail = () => {
 
   const panels = [
     { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
-    { src: "/images/left-rail/Left02.gif", alt: "phone" },
+    { src: "/images/lwlogo.png", alt: "lw logo" },
     { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
   ];
 

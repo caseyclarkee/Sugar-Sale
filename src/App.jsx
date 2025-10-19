@@ -235,8 +235,8 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
+    { src: "/images/Left-Rail/xbylw.png", alt: "lw logo" },
     { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
-    { src: "/images/left-rail/Left02.gif", alt: "phone" },
     { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
   ];
 
@@ -378,8 +378,8 @@ const RightRail = () => {
 const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
   const images = [
     // Left rail
+    { src: "/images/lwlogo.gif", alt: "lwlogogif" },
     { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
-    { src: "/images/left-rail/Left02.gif", alt: "Customer support phone" },
     { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
     { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
     { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
@@ -534,7 +534,7 @@ export default function SugarSaleSite() {
         <img
           src="/images/Cheers-logo-BLK-URL.png"
           alt="Cheers.org.nz"
-          className="h-5 w-auto"
+          className="h-6 w-auto"
         />
       </a>
     </div>

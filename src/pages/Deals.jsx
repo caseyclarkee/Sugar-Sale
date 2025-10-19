@@ -1,7 +1,7 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, always show Enter Draw)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, fixed buttons + yellow glow)
 import React from "react";
 
-/* ----------------------------- Helper utils ----------------------------- */
+/* ----------------------------- Helpers ----------------------------- */
 const cx = (...cs) => cs.filter(Boolean).join(" ");
 
 const parseNaiveParts = (str) => {
@@ -104,7 +104,7 @@ const fmtDuration = (ms) => {
   return `${m}m ${s}s`;
 };
 
-/* ----------------------------- UI bits ----------------------------- */
+/* ----------------------------- UI Bits ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -186,9 +186,15 @@ const WeekCountdown = ({ start, end }) => {
   return null;
 };
 
-/* ------------------------------ Card Frame ------------------------------ */
-const MediaFrame = ({ children }) => (
+/* ------------------------------ Frames ------------------------------ */
+// Yellow glow reinstated for weekly deals (dotw=true)
+const MediaFrame = ({ children, dotw = false }) => (
   <div className="mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 relative">
+    {dotw && (
+      <div className="pointer-events-none absolute inset-0 -z-0 rounded-md mix-blend-screen">
+        <div className="absolute inset-[-6%] rounded-xl opacity-40 blur-lg bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,0,0.6),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(253,224,71,0.55),transparent_45%)]" />
+      </div>
+    )}
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
       <div className="pt-[125%]" />
       <div className="absolute inset-0">{children}</div>
@@ -225,7 +231,7 @@ const DealCard = ({ deal }) => {
   const formName = deal.waitlist ? "waitlist-entry" : "deal-entry";
 
   return (
-    <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
+    <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">
       {deal.dotw && (
         <div className="absolute -top-3 -right-3 rotate-6">
           <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]">
@@ -234,7 +240,7 @@ const DealCard = ({ deal }) => {
         </div>
       )}
 
-      <MediaFrame>
+      <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
         {deal.placeholder ? (
           <div className="flex h-full w-full items-center justify-center bg-white/60">
@@ -261,15 +267,35 @@ const DealCard = ({ deal }) => {
         </div>
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
-          <button
-            onClick={() => {
-              setOpen(true);
-              setDone(false);
-            }}
-            className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-          >
-            Enter Draw
-          </button>
+          {deal.waitlist ? (
+            // SAME GREY AS DISABLED, but clickable
+            <button
+              onClick={() => {
+                setOpen(true);
+                setDone(false);
+              }}
+              className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
+            >
+              Join Waitlist
+            </button>
+          ) : deal.disabled ? (
+            <button
+              onClick={() => setOpen(true)}
+              className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
+            >
+              {deal.disabledLabel || "Sold Out"}
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setOpen(true);
+                setDone(false);
+              }}
+              className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+            >
+              Enter Draw
+            </button>
+          )}
         </div>
       </div>
 

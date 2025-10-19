@@ -537,22 +537,22 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-      {/* LEFT = 4 static, RIGHT = 4 DOTW (coming soon) */}
-      <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-        {/* Left side (col 1-2 on lg): Static */}
-        <div className="lg:col-span-2 grid grid-cols-2 gap-6">
-          {staticDeals.map((d) => (
-            <DealCard key={d.id} deal={d} />
-          ))}
-        </div>
+      {/* 2 columns on mobile, 4 total on desktop (2 left static, 2 right DOTW) */}
+<div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+  {/* Left (static) */}
+  <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-6">
+    {staticDeals.map((d) => (
+      <DealCard key={d.id} deal={d} />
+    ))}
+  </div>
 
-        {/* Right side (col 3-4 on lg): DOTW */}
-        <div className="lg:col-span-2 grid grid-cols-2 gap-6">
-          {weeklyDeals.map((d) => (
-            <DealCard key={d.id} deal={d} />
-          ))}
-        </div>
-      </div>
+  {/* Right (DOTW) */}
+  <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-6">
+    {weeklyDeals.map((d) => (
+      <DealCard key={d.id} deal={d} />
+    ))}
+  </div>
+</div>
     </section>
   );
 }

@@ -35,9 +35,12 @@ const Ribbon = ({ text, tone = "red" }) => {
       ? "bg-yellow text-black"
     : tone === "pink"
       ? "bg-pink-100 text-black"
-      : "bg-gray-300 text-black";
+      : tone === "gray"
+      ? "bg-gray-300 text-black"
+    : tone === "purple"
+      ? "bg-purple text-white";
   return (
-    <div className={`absolute left-[-8px] top-3 rotate-[-6deg] ${toneClasses} border-[3px] border-black px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0_#000]`}>
+    <div className={`absolute left-[-8px] top-3 rotate-[-6deg] ${toneClasses} border-[3px] border-black px-3 py-1 text-s font-black uppercase shadow-[3px_3px_0_#000]`}>
       {text}
     </div>
   );
@@ -230,8 +233,8 @@ const DealCard = ({ deal }) => {
 function Deals() {
   // Hard-coded tiles
   const deals = [
-    { id: 1, title: "Sugar Dentures", image: "/images/Sugar Dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true, disabledLabel: "Sold Out" },
-    { id: 2, title: "10kg of Sugar", image: "/images/deals/Bag of Sugar", ribbon: { text: "Replenishing soon", tone: "purple" }, waitlist: true },
+    { id: 1, title: "Sugar Dentures", image: "/images/deals/Sugar Dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true, disabledLabel: "Sold Out" },
+    { id: 2, title: "10kg of Sugar", image: "/images/deals/Bag of Sugar", ribbon: { text: "Replenishing soon", tone: "pink" }, waitlist: true },
     { id: 3, title: "Deal of the Day", placeholder: true, badges: [{ text: "FREE!", tone: "blue" },{ text: "Giveaway", tone: "yellow" }] },
     { id: 4, title: "Deal of the Day", placeholder: true, badges: [{ text: "Now $0.00", tone: "blue" },{ text: "Giveaway", tone: "yellow" }] },
     { id: 5, title: "Deal of the Day", placeholder: true, badges: [{ text: "WIN FOR FREEEEE!", tone: "blue" },{ text: "Giveaway", tone: "yellow" }] },
@@ -243,7 +246,7 @@ function Deals() {
        Gary's Sweet Deals
       </h2>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {deals.map((d) => (
           <DealCard key={d.id} deal={d} />
         ))}

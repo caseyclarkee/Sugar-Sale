@@ -243,8 +243,12 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Fixed, pre-registered form names (Netlify parses in static HTML)
-  const formName = deal.waitlist ? WAITLIST_FORM_NAME : DRAW_FORM_NAME;
+// Unique forms for DOTW draw only. Waitlist always uses the shared waitlist form.
+const formName = deal.waitlist
+  ? "waitlist-entry"
+  : (String(deal.id).startsWith("dotw-")
+      ? `deal-entry-${deal.id}`   // e.g. deal-entry-dotw-1
+      : "deal-entry");            // non-DOTW draw
 
   // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {

@@ -537,22 +537,27 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-      {/* 2 columns on mobile, 4 total on desktop (2 left static, 2 right DOTW) */}
+{/* Alternating static + DOTW on mobile, split left/right on desktop */}
 <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-  {/* Left (static) */}
-  <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-6">
-    {staticDeals.map((d) => (
-      <DealCard key={d.id} deal={d} />
-    ))}
-  </div>
+  {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) }).map((_, i) => (
+    <React.Fragment key={i}>
+      {/* Static deal (left) */}
+      {staticDeals[i] && (
+        <div className="order-1 lg:order-none">
+          <DealCard deal={staticDeals[i]} />
+        </div>
+      )}
 
-  {/* Right (DOTW) */}
-  <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-6">
-    {weeklyDeals.map((d) => (
-      <DealCard key={d.id} deal={d} />
-    ))}
-  </div>
+      {/* DOTW deal (right) */}
+      {weeklyDeals[i] && (
+        <div className="order-2 lg:order-none">
+          <DealCard deal={weeklyDeals[i]} />
+        </div>
+      )}
+    </React.Fragment>
+  ))}
 </div>
+
     </section>
   );
 }

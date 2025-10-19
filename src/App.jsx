@@ -66,7 +66,7 @@ const Header = () => {
 
   const lwClasses =
     "object-contain h-auto " +
-    "w-24 sm:w-24 md:w-32 lg:w-40";
+    "w-28 sm:w-28 md:w-32 lg:w-40";
 
   return (
     <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">

@@ -38,7 +38,7 @@ const About = () => (
         </div>
 
         {/* Right column: image */}
-        <div className="flex justify-center md:justify-end">
+        <div className="flex justify-center md:justify-center">
           <img
             src="/images/placeholder.png"
             alt="Gary"

@@ -40,7 +40,7 @@ const About = () => (
         {/* Right column: image */}
         <div className="flex justify-center md:justify-center">
           <img
-            src="/images/placeholder.png"
+            src="/images/about/garyabout.png"
             alt="Gary"
             className="max-w-full md:max-w-md rounded-2xl border-[4px] border-grey shadow-[6px_6px_0_#fff]"
           />

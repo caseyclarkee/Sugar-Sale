@@ -21,11 +21,11 @@ const X = () => {
             />
 
             {/* Small GIF lozenge, no border or shadow */}
-            <div className="absolute right-[-10px] bottom-[20px] sm:right-[-20px] sm:bottom-[40px] md:right-[-40px] md:bottom-[60px]">
+            <div className="absolute right-[-20px] bottom-[40px] md:right-[-40px] md:bottom-[60px]">
               <img
                 src={UnXpected}
                 alt="THAT’S UNXPECTED"
-                className="block w-[60px] sm:w-[80px] md:w-[100px] h-auto object-contain rounded-full"
+                className="block w-[80px] md:w-[100px] h-auto object-contain rounded-full"
               />
             </div>
           </div>

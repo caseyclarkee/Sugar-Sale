@@ -243,12 +243,12 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-// Unique forms for DOTW draw only. Waitlist always uses the shared waitlist form.
-const formName = deal.waitlist
-  ? "waitlist-entry"
-  : (String(deal.id).startsWith("dotw-")
-      ? `deal-entry-${deal.id}`   // e.g. deal-entry-dotw-1
-      : "deal-entry");            // non-DOTW draw
+  // Unique form name for DOTW draw; shared for others
+  const formName = deal.waitlist
+    ? "waitlist-entry"
+    : (String(deal.id).startsWith("dotw-")
+        ? `deal-entry-${deal.id}`
+        : "deal-entry");
 
   // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
@@ -279,10 +279,11 @@ const formName = deal.waitlist
 
   return (
     <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">
+      {/* Rotated top-right countdown badge */}
       {deal.dotw && (
-        <div className="absolute -top-3 -right-3 rotate-6">
-          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]">
-            Deal of the Week
+        <div className="absolute -top-3 -right-3 rotate-6 z-10">
+          <div className="rounded-full border-[2px] border-black bg-yellow px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_#000] rotate-[-6deg]">
+            <WeekCountdown start={deal.start} end={deal.end} />
           </div>
         </div>
       )}
@@ -310,7 +311,6 @@ const formName = deal.waitlist
               {b.text}
             </Badge>
           ))}
-          {deal.dotw && <WeekCountdown start={deal.start} end={deal.end} />}
         </div>
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
@@ -420,7 +420,7 @@ const formName = deal.waitlist
                 </form>
               </>
             ) : (
-              // ✅ Updated success message (waitlist vs draw)
+              // ✅ Success message (waitlist vs draw)
               <div className="grid gap-4 text-center">
                 {deal.waitlist ? (
                   <>

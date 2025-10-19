@@ -7,7 +7,7 @@ const About = () => (
   >
     <section className="px-4 sm:px-8 py-12 text-lg backdrop-blur-sm">
       {/* 2-column layout for text + image */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left column: text */}
         <div>
           <h3 className="text-6xl sm:text-8xl font-black text-white mb-4">Meet Gary</h3>

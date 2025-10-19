@@ -38,7 +38,8 @@ const Ribbon = ({ text, tone = "red" }) => {
       : tone === "gray"
       ? "bg-gray-300 text-black"
     : tone === "purple"
-      ? "bg-purple text-white";
+      ? "bg-purple text-white"
+    : "";
   return (
     <div className={`absolute left-[-8px] top-3 rotate-[-6deg] ${toneClasses} border-[3px] border-black px-3 py-1 text-s font-black uppercase shadow-[3px_3px_0_#000]`}>
       {text}

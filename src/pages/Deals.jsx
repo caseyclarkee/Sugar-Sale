@@ -545,32 +545,42 @@ function Deals() {
     return { ...t, dotw: true, start, end };
   });
 
-  return (
-    <section className="space-y-8 px-4 py-12 sm:px-8">
-      <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-        Gary's Sweet Deals
-      </h2>
+  {/* Responsive grid:
+    - Mobile: per row => [Static i | DOTW i], then [Static i+1 | DOTW i+1]
+    - Large:  per row => [Static i | Static i+1 | DOTW i | DOTW i+1]
+*/}
+<div className="space-y-6">
+  {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) })
+    .map((_, i) => i)                   // indices 0..max-1
+    .filter((i) => i % 2 === 0)         // step by 2: 0,2,4,...
+    .map((i) => {
+      const s1 = staticDeals[i];
+      const s2 = staticDeals[i + 1];
+      const d1 = weeklyDeals[i];
+      const d2 = weeklyDeals[i + 1];
 
-      {/* Alternating static + DOTW on mobile, split left/right on desktop */}
-      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-        {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) }).map((_, i) => (
-          <React.Fragment key={i}>
-            {/* Static deal (left) */}
-            {staticDeals[i] && (
-              <div className="order-1 lg:order-none">
-                <DealCard deal={staticDeals[i]} />
-              </div>
-            )}
+      return (
+        <div key={`row-${i}`} className="w-full">
+          {/* Mobile layout (2 columns, two rows) */}
+          <div className="grid grid-cols-2 gap-6 lg:hidden">
+            {s1 && <DealCard deal={s1} />}
+            {d1 && <DealCard deal={d1} />}
+            {s2 && <DealCard deal={s2} />}
+            {d2 && <DealCard deal={d2} />}
+          </div>
 
-            {/* DOTW deal (right) */}
-            {weeklyDeals[i] && (
-              <div className="order-2 lg:order-none">
-                <DealCard deal={weeklyDeals[i]} />
-              </div>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
+          {/* Large layout (one row, 4 columns: 2 static left, 2 DOTW right) */}
+          <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+            {s1 && <DealCard deal={s1} />}
+            {s2 && <DealCard deal={s2} />}
+            {d1 && <DealCard deal={d1} />}
+            {d2 && <DealCard deal={d2} />}
+          </div>
+        </div>
+      );
+    })}
+</div>
+
     </section>
   );
 }

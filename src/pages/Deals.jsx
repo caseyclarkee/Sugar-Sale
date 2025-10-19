@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, Netlify forms: fixed names)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, split grid L/R, Netlify forms)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -113,7 +113,7 @@ const encode = (data) =>
     )
     .join("&");
 
-// We will post to fixed, pre-registered form names:
+// Shared form names parsed at build:
 const DRAW_FORM_NAME = "deal-entry";
 const WAITLIST_FORM_NAME = "waitlist-entry";
 
@@ -243,12 +243,12 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Unique form name for DOTW draw; shared for others
+  // Waitlist uses shared form; DOTW draw uses unique form; other draws use shared draw form
   const formName = deal.waitlist
-    ? "waitlist-entry"
+    ? WAITLIST_FORM_NAME
     : (String(deal.id).startsWith("dotw-")
-        ? `deal-entry-${deal.id}`
-        : "deal-entry");
+        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1
+        : DRAW_FORM_NAME);
 
   // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
@@ -278,17 +278,15 @@ const DealCard = ({ deal }) => {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">
-      {/* Rotated top-right countdown badge */}
+    <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
+      {/* Rotated top-right countdown badge (no extra background wrapper) */}
       {deal.dotw && (
-  <div className="absolute -top-3 -right-3 rotate-6 z-10">
-    {/* only rotation + optional shadow wrapper — no bg/padding here */}
-    <div className="rotate-[-6deg]">
-      <WeekCountdown start={deal.start} end={deal.end} />
-    </div>
-  </div>
-)}
-
+        <div className="absolute -top-3 -right-3 rotate-6 z-10">
+          <div className="rotate-[-6deg]">
+            <WeekCountdown start={deal.start} end={deal.end} />
+          </div>
+        </div>
+      )}
 
       <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
@@ -422,7 +420,7 @@ const DealCard = ({ deal }) => {
                 </form>
               </>
             ) : (
-              // ✅ Success message (waitlist vs draw)
+              // Success message (waitlist vs draw)
               <div className="grid gap-4 text-center">
                 {deal.waitlist ? (
                   <>
@@ -451,8 +449,10 @@ const DealCard = ({ deal }) => {
 
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
+  // First DOTW goes live 9am 27th NZ, then weekly
   const baseStartNZ = "2025-10-27T09:00:00";
 
+  // DOTW placeholders (coming soon)
   const dotwTemplates = [
     {
       id: "dotw-1",
@@ -492,6 +492,7 @@ function Deals() {
     },
   ];
 
+  // Four static items (left)
   const staticDeals = [
     {
       id: "dentures",
@@ -514,7 +515,7 @@ function Deals() {
       ribbon: { text: "Sold Out", tone: "red" },
       disabled: true,
     },
-     {
+    {
       id: "sugarcup",
       title: "Cup of Sugar",
       image: "/images/deals/Cup",
@@ -523,13 +524,12 @@ function Deals() {
     },
   ];
 
+  // Compute weekly DOTW windows
   const weeklyDeals = dotwTemplates.map((t, i) => {
     const start = addWeeksNZ(baseStartNZ, i);
     const end = weekEndFromStartNZ(start);
     return { ...t, dotw: true, start, end };
   });
-
-  const deals = [...staticDeals, ...weeklyDeals];
 
   return (
     <section className="space-y-8 px-4 py-12 sm:px-8">
@@ -537,12 +537,21 @@ function Deals() {
         Gary's Sweet Deals
       </h2>
 
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {deals.map((d) => (
-          <div key={d.id}>
-            <DealCard deal={d} />
-          </div>
-        ))}
+      {/* LEFT = 4 static, RIGHT = 4 DOTW (coming soon) */}
+      <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        {/* Left side (col 1-2 on lg): Static */}
+        <div className="lg:col-span-2 grid grid-cols-2 gap-6">
+          {staticDeals.map((d) => (
+            <DealCard key={d.id} deal={d} />
+          ))}
+        </div>
+
+        {/* Right side (col 3-4 on lg): DOTW */}
+        <div className="lg:col-span-2 grid grid-cols-2 gap-6">
+          {weeklyDeals.map((d) => (
+            <DealCard key={d.id} deal={d} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -110,7 +110,7 @@ const About = () => (
 `}
 </style>
 
-<div className="mt-6 flex justify-center gap-10">
+<div className="mt-6 flex justify-left gap-10">
   <a
     href="https://www.tiktok.com/@longwhite.nz"
     target="_blank"

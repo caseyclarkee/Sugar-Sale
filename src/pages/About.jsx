@@ -129,7 +129,7 @@ const About = () => (
     rel="noopener noreferrer"
   >
     <img
-      src="/icons/instagram.png"
+      src="/icons/yellowinstagram.png"
       alt="Instagram"
       className="w-16 h-16 icon-float icon-delay-2"
     />

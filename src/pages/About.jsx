@@ -72,7 +72,7 @@ const About = () => (
           </div>
         </details>
 
-        <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
+        <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
           <summary className="cursor-pointer font-black">Can I haggle?</summary>
           <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
         </details>

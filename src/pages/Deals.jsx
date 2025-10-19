@@ -323,8 +323,8 @@ const DealCard = ({ deal }) => {
             </button>
           ) : deal.disabled ? (
             <button
-              onClick={() => setOpen(true)}
-              className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
+              disabled
+              className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
             >
               {deal.disabledLabel || "Sold Out"}
             </button>
@@ -406,14 +406,28 @@ const DealCard = ({ deal }) => {
                       className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]"
                       disabled={submitting}
                     >
-                      {submitting ? "Submitting…" : "Enter Draw"}
+                      {submitting
+                        ? "Submitting…"
+                        : deal.waitlist
+                        ? "Join Waitlist"
+                        : "Enter Draw"}
                     </button>
                   </div>
                 </form>
               </>
             ) : (
+              // ✅ Updated success message (waitlist vs draw)
               <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
+                {deal.waitlist ? (
+                  <>
+                    <div className="text-2xl font-black">You're on the waitlist! 🎉</div>
+                    <p className="text-sm text-gray-700">
+                      We'll email you when it's back in stock.
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-2xl font-black">You’re in the draw! 🎉</div>
+                )}
                 <button
                   onClick={() => setOpen(false)}
                   className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
@@ -435,7 +449,7 @@ function Deals() {
 
   const dotwTemplates = [
     {
-      id: "dotw-0",
+      id: "dotw-1",
       title: "Deal of the Week",
       placeholder: true,
       badges: [
@@ -444,7 +458,7 @@ function Deals() {
       ],
     },
     {
-      id: "dotw-1",
+      id: "dotw-2",
       title: "Deal of the Week",
       placeholder: true,
       badges: [
@@ -453,7 +467,7 @@ function Deals() {
       ],
     },
     {
-      id: "dotw-2",
+      id: "dotw-3",
       title: "Deal of the Week",
       placeholder: true,
       badges: [
@@ -462,7 +476,7 @@ function Deals() {
       ],
     },
     {
-      id: "dotw-3",
+      id: "dotw-4",
       title: "Deal of the Week",
       placeholder: true,
       badges: [
@@ -515,6 +529,3 @@ function Deals() {
 }
 
 export default Deals;
-
-
-

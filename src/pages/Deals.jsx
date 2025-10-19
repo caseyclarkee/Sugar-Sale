@@ -390,4 +390,112 @@ const DealCard = ({ deal }) => {
 
                   <label className="font-black">
                     Email
-                    <input type="email" name="email" required className="mt-1
+                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
+                  </label>
+
+                  <div className="mt-4 flex justify-end gap-2">
+                    <button type="button" onClick={() => setOpen(false)} className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold">
+                      Cancel
+                    </button>
+                    <button type="submit" className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]">
+                      {submitting ? "Submitting…" : "Submit"}
+                    </button>
+                  </div>
+                </form>
+              </>
+            ) : (
+              <div className="grid gap-4 text-center">
+                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
+                <button onClick={() => setOpen(false)} className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]">
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ------------------------------ Page Component ------------------------------ */
+function Deals() {
+  // Base: first DOTW goes LIVE at 9:00 AM on Mon 27 Oct 2025 (NZ time)
+  const baseStartNZ = "2025-10-27T09:00:00";
+
+  // Define your DOTW tiles here; timings auto-fill weekly from baseStartNZ
+  const dotwTemplates = [
+    {
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
+    },
+    {
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
+    },
+    {
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
+    },
+    {
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }],
+    },
+  ];
+
+  // Build deals: non-weekly items + weekly items (auto-scheduled)
+  const staticDeals = [
+    {
+      id: "dentures",
+      title: "Sugar Dentures",
+      image: "/images/deals/Sugar Dentures",
+      ribbon: { text: "Sold Out", tone: "red" },
+      disabled: true,
+      disabledLabel: "Sold Out",
+    },
+    {
+      id: "bag10kg",
+      title: "10kg of Sugar",
+      image: "/images/deals/Bag of Sugar",
+      ribbon: { text: "Replenishing soon", tone: "purple" },
+      waitlist: true,
+    },
+  ];
+
+  const weeklyDeals = dotwTemplates.map((t, i) => {
+    const start = addWeeksNZ(baseStartNZ, i);           // 9:00 Mon each week (NZ)
+    const end = weekEndFromStartNZ(start);              // end Sun 23:59:59 (NZ)
+    return {
+      id: `dotw-${i}`,
+      ...t,
+      dotw: true,
+      start,
+      end,
+    };
+  });
+
+  const deals = [...staticDeals, ...weeklyDeals];
+
+  return (
+    <section className="space-y-8 px-4 py-12 sm:px-8">
+      <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
+        Gary's Sweet Deals
+      </h2>
+
+      {/* DOTW spans 2 cols on large screens for emphasis */}
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {deals.map((d) => (
+          <div key={d.id} className={cx(d.dotw && "lg:col-span-2")}>
+            <DealCard deal={d} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default Deals;

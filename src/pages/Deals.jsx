@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, yellow glow visible)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, Netlify forms fixed)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -103,6 +103,15 @@ const fmtDuration = (ms) => {
   if (h >= 1) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
 };
+
+/* -------------------------- Netlify form utils -------------------------- */
+const encode = (data) =>
+  Object.keys(data)
+    .map(
+      (key) =>
+        encodeURIComponent(key) + "=" + encodeURIComponent(data[key] ?? "")
+    )
+    .join("&");
 
 /* ----------------------------- UI ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
@@ -220,6 +229,40 @@ const ImageWithFallback = ({ src, alt, className }) => {
   );
 };
 
+/* ----------------------- Netlify hidden registrations ---------------------- */
+// Netlify needs to "see" each form name at build to enable them.
+const NetlifyFormRegistrations = ({ deals }) => {
+  const formNames = deals.flatMap((d) => [
+    `deal-entry-${d.id}`,
+    `waitlist-entry-${d.id}`,
+  ]);
+
+  return (
+    <div className="hidden">
+      {formNames.map((name) => (
+        <form
+          key={name}
+          name={name}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+        >
+          <input type="hidden" name="form-name" value={name} />
+          <p className="hidden">
+            <label>
+              Don’t fill this out: <input name="bot-field" />
+            </label>
+          </p>
+          <input name="name" />
+          <input name="email" />
+          <input name="deal" />
+          <input name="kind" />
+        </form>
+      ))}
+    </div>
+  );
+};
+
 /* ------------------------------- Deal Card ------------------------------- */
 const DealCard = ({ deal }) => {
   const [open, setOpen] = React.useState(false);
@@ -230,9 +273,39 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-const formName = deal.waitlist
-  ? `waitlist-entry-${deal.id}`
-  : `deal-entry-${deal.id}`;
+  // Unique Netlify form per deal (your request)
+  const formName = deal.waitlist
+    ? `waitlist-entry-${deal.id}`
+    : `deal-entry-${deal.id}`;
+
+  // Submit to Netlify via AJAX (so we keep the modal UX)
+  const onSubmitNetlify = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const form = e.currentTarget;
+      const data = new FormData(form);
+      // Ensure form-name exists and matches the form's name attribute
+      if (!data.get("form-name")) data.set("form-name", formName);
+
+      const payload = {};
+      for (const [k, v] of data.entries()) payload[k] = v;
+
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode(payload),
+      });
+
+      setDone(true);
+    } catch (err) {
+      console.error("Netlify form submit failed:", err);
+      alert("Sorry — something went wrong submitting the form.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] relative">
@@ -303,6 +376,7 @@ const formName = deal.waitlist
         </div>
       </div>
 
+      {/* Modal with Netlify AJAX submit */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
@@ -315,17 +389,17 @@ const formName = deal.waitlist
                   data-netlify="true"
                   netlify-honeypot="bot-field"
                   className="grid gap-3"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitting(true);
-                    setTimeout(() => {
-                      setSubmitting(false);
-                      setDone(true);
-                    }, 800);
-                  }}
+                  onSubmit={onSubmitNetlify}
                 >
+                  {/* Netlify requires this hidden field */}
                   <input type="hidden" name="form-name" value={formName} />
                   <input type="hidden" name="deal" value={deal.title} />
+                  <input
+                    type="hidden"
+                    name="kind"
+                    value={deal.waitlist ? "waitlist" : "draw"}
+                  />
+
                   <p className="hidden">
                     <label>
                       Don’t fill this out: <input name="bot-field" />
@@ -334,12 +408,22 @@ const formName = deal.waitlist
 
                   <label className="font-black">
                     Name
-                    <input type="text" name="name" required className="mt-1 w-full border-[3px] border-black p-2" />
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
                   </label>
 
                   <label className="font-black">
                     Email
-                    <input type="email" name="email" required className="mt-1 w-full border-[3px] border-black p-2" />
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
                   </label>
 
                   <div className="mt-4 flex justify-end gap-2">
@@ -363,7 +447,9 @@ const formName = deal.waitlist
               </>
             ) : (
               <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
+                <div className="text-2xl font-black">
+                  You’re in the draw! 🎉
+                </div>
                 <button
                   onClick={() => setOpen(false)}
                   className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
@@ -384,21 +470,65 @@ function Deals() {
   const baseStartNZ = "2025-10-27T09:00:00";
 
   const dotwTemplates = [
-    { title: "Deal of the Week", placeholder: true, badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { title: "Deal of the Week", placeholder: true, badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { title: "Deal of the Week", placeholder: true, badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { title: "Deal of the Week", placeholder: true, badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    {
+      id: "dotw-0",
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [
+        { text: "FREE!", tone: "blue" },
+        { text: "Giveaway", tone: "yellow" },
+      ],
+    },
+    {
+      id: "dotw-1",
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [
+        { text: "Now $0.00", tone: "blue" },
+        { text: "Giveaway", tone: "yellow" },
+      ],
+    },
+    {
+      id: "dotw-2",
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [
+        { text: "100% OFF", tone: "blue" },
+        { text: "Giveaway", tone: "yellow" },
+      ],
+    },
+    {
+      id: "dotw-3",
+      title: "Deal of the Week",
+      placeholder: true,
+      badges: [
+        { text: "Win for Free!", tone: "blue" },
+        { text: "Giveaway", tone: "yellow" },
+      ],
+    },
   ];
 
   const staticDeals = [
-    { id: "dentures", title: "Sugar Dentures", image: "/images/deals/Sugar Dentures", ribbon: { text: "Sold Out", tone: "red" }, disabled: true },
-    { id: "bag10kg", title: "10kg of Sugar", image: "/images/deals/Bag of Sugar", ribbon: { text: "Replenishing soon", tone: "purple" }, waitlist: true },
+    {
+      id: "dentures",
+      title: "Sugar Dentures",
+      image: "/images/deals/Sugar Dentures",
+      ribbon: { text: "Sold Out", tone: "red" },
+      disabled: true,
+    },
+    {
+      id: "bag10kg",
+      title: "10kg of Sugar",
+      image: "/images/deals/Bag of Sugar",
+      ribbon: { text: "Replenishing soon", tone: "purple" },
+      waitlist: true,
+    },
   ];
 
   const weeklyDeals = dotwTemplates.map((t, i) => {
     const start = addWeeksNZ(baseStartNZ, i);
     const end = weekEndFromStartNZ(start);
-    return { id: `dotw-${i}`, ...t, dotw: true, start, end };
+    return { ...t, dotw: true, start, end };
   });
 
   const deals = [...staticDeals, ...weeklyDeals];
@@ -408,6 +538,9 @@ function Deals() {
       <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
         Gary's Sweet Deals
       </h2>
+
+      {/* Hidden forms so Netlify detects all dynamic form names at build time */}
+      <NetlifyFormRegistrations deals={deals} />
 
       <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {deals.map((d) => (
@@ -421,4 +554,5 @@ function Deals() {
 }
 
 export default Deals;
+
 

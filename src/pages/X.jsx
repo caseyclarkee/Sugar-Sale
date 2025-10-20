@@ -56,7 +56,7 @@ const X = () => {
               src={Can}
               alt="X by Long White cans"
               loading="lazy"
-              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain lg:translate-y-4"
+              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain"
             />
           </div>
         </div>

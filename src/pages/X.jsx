@@ -12,23 +12,22 @@ const X = () => {
       <section className="px-6 sm:px-12 py-0 text-lg">
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
-          {/* LEFT: Gary with minimal GIF lozenge */}
-          <div className="col-span-12 md:col-span-4 order-last md:order-1 relative flex justify-center md:justify-end">
-            <img
-              src={Gary}
-              alt="Gary holding a can of X"
-              className="block w-auto max-h-[460px] sm:max-h-[520px] md:max-h-[560px] object-contain md:absolute md:bottom-0 md:left-0"
-            />
+          {/* LEFT: Gary and GIF together in a scalable container */}
+<div className="col-span-12 md:col-span-4 order-last md:order-1 flex justify-center md:justify-end">
+  <div className="relative w-[60vw] max-w-[420px]">
+    <img
+      src={Gary}
+      alt="Gary holding a can of X"
+      className="block w-full h-auto object-contain"
+    />
 
-            {/* Small GIF lozenge, no border or shadow */}
-            <div className="absolute right-[-20px] bottom-[40px] md:right-[-40px] md:bottom-[60px]">
-              <img
-                src={UnXpected}
-                alt="THAT’S UNXPECTED"
-                className="block w-[80px] md:w-[100px] h-auto object-contain rounded-full"
-              />
-            </div>
-          </div>
+    <img
+      src={UnXpected}
+      alt="THAT’S UNXPECTED"
+      className="absolute right-[-6%] bottom-[10%] w-[20%] h-auto object-contain"
+    />
+  </div>
+</div>
 
           {/* MIDDLE: Vertically centered header + text only */}
           <div className="col-span-12 md:col-span-4 order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">

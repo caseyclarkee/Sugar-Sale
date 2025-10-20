@@ -36,7 +36,7 @@ const X = () => {
               <h1 className="font-black tracking-tight leading-tight text-white md:text-clamp(50px, 5.8vw, 80px)] text-[clamp(56px,6.4vw,88px)]">
                 Introducing
               </h1>
-              <p className="font-black tracking-tight leading-none text-white text-clamp(40px, 3.6vw, 48px)] -mt-1">
+              <p className="font-black tracking-tight leading-none text-white md:text-clamp(40px, 3.6vw, 48px)] text-[clamp(48px, 4.6vw, 56px)] -mt-1">
                 X by Long White
               </p>
             </div>

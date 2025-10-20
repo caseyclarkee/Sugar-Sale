@@ -33,7 +33,7 @@ const X = () => {
           {/* MIDDLE: Vertically centered header + text only */}
           <div className="col-span-12 md:col-span-4 order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 md:my-auto">
             <div className="flex flex-col items-center justify-center mb-1">
-              <h1 className="font-black tracking-tight leading-tight text-white text-[clamp(56px,6.4vw,88px)]">
+              <h1 className="font-black tracking-tight leading-tight text-white md:text-clamp(50px, 5.8vw, 80px)] text-[clamp(56px,6.4vw,88px)]">
                 Introducing
               </h1>
               <p className="font-black tracking-tight leading-none text-white text-[clamp(48px,4.6vw,56px)] -mt-1">

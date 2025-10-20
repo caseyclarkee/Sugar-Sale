@@ -36,10 +36,10 @@ const X = () => {
           {/* MIDDLE: Vertically centered header + text only */}
           <div className="col-span-12 lg:col-span-4 order-2 flex flex-col justify-center items-center text-center gap-4 md:gap-6 h-full">
             <div className="flex flex-col items-center justify-center mb-1">
-              <h1 className="font-black tracking-tight leading-tight text-white text-[36px] sm:text-[44px] md:text-[56px] lg:text-[80px] xl:text-[88px]">
+              <h1 className="font-black tracking-tight leading-tight text-white text-[36px] sm:text-[44px] md:text-[56px] lg:text-[56px] xl:text-[88px]">
                 Introducing
               </h1>
-              <p className="font-black tracking-tight leading-none text-white text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] xl:text-[56px] -mt-1">
+              <p className="font-black tracking-tight leading-none text-white text-[28px] sm:text-[36px] md:text-[44px] lg:text-[44px] xl:text-[56px] -mt-1">
                 X by Long White
               </p>
             </div>

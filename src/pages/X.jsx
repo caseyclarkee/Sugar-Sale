@@ -12,22 +12,23 @@ const X = () => {
       <section className="px-6 sm:px-12 py-0 text-lg">
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
-          {/* LEFT: Gary with minimal GIF lozenge */}
-          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 relative flex justify-center lg:justify-end">
-            <img
-              src={Gary}
-              alt="Gary holding a can of X"
-              className="block w-auto max-h-[460px] sm:max-h-[520px] md:max-h-[560px] object-contain md:absolute md:bottom-0 md:left-0"
-            />
+          {/* LEFT: Gary + GIF stay attached */}
+          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center md:justify-end lg:min-h-[560px] lg:items-end">
+            <div className="relative inline-block">
+              <img
+                src={Gary}
+                alt="Gary holding a can of X"
+                className="block w-auto max-h-[460px] sm:max-h-[520px] md:max-h-[560px] object-contain"
+              />
 
-            {/* Small GIF lozenge, no border or shadow */}
-            <div className="absolute right-[-20px] bottom-[40px] md:right-[-40px] md:bottom-[60px]">
+              {/* GIF badge anchored to Gary */}
               <img
                 src={UnXpected}
                 alt="THAT’S UNXPECTED"
-                className="block w-[100px] h-auto object-contain rounded-full"
+                className="absolute -right-5 bottom-10 md:-right-10 md:bottom-14 w-[84px] md:w-[100px] h-auto object-contain rounded-full"
               />
             </div>
+          </div>
           </div>
 
           {/* MIDDLE: Vertically centered header + text only */}
@@ -49,11 +50,11 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center lg:justify-start">
+          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center md:justify-start">
             <img
               src={Can}
               alt="X by Long White cans"
-              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain md:translate-y-4"
+              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain lg:translate-y-4"
             />
           </div>
         </div>

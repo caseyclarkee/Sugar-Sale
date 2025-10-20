@@ -13,7 +13,7 @@ const X = () => {
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
           {/* LEFT: Gary + GIF stay attached */}
-          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center lg:justify-end lg:min-h-[560px] lg:items-end">
+          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center md:justify-end lg:min-h-[560px] lg:items-end">
             {/* Wrapper keeps the GIF anchored to Gary at all sizes */}
             <div className="relative inline-block">
               <img
@@ -51,12 +51,12 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center lg:justify-start">
+          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center md:justify-start lg:items-end">
             <img
               src={Can}
               alt="X by Long White cans"
               loading="lazy"
-              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain"
+              className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain lg:translate-y-4"
             />
           </div>
         </div>

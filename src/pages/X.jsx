@@ -14,21 +14,22 @@ const X = () => {
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
           {/* LEFT: Gary + GIF stay attached */}
           <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center md:justify-end lg:min-h-[560px] lg:items-end">
+            {/* Wrapper keeps the GIF anchored to Gary at all sizes */}
             <div className="relative inline-block">
               <img
                 src={Gary}
                 alt="Gary holding a can of X"
+                loading="lazy"
                 className="block w-auto max-h-[460px] sm:max-h-[520px] md:max-h-[560px] object-contain"
               />
-
-              {/* GIF badge anchored to Gary */}
+              {/* GIF badge anchored inside the same wrapper */}
               <img
                 src={UnXpected}
                 alt="THAT’S UNXPECTED"
-                className="absolute -right-5 bottom-10 md:-right-10 md:bottom-14 w-[84px] md:w-[100px] h-auto object-contain rounded-full"
+                loading="lazy"
+                className="absolute -right-5 bottom-10 md:-right-10 md:bottom-14 w-[84px] md:w-[100px] h-auto object-contain rounded-full z-10 pointer-events-none"
               />
             </div>
-          </div>
           </div>
 
           {/* MIDDLE: Vertically centered header + text only */}
@@ -54,6 +55,7 @@ const X = () => {
             <img
               src={Can}
               alt="X by Long White cans"
+              loading="lazy"
               className="block w-auto max-h-[520px] sm:max-h-[580px] md:max-h-[700px] object-contain lg:translate-y-4"
             />
           </div>

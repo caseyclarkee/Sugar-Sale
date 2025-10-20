@@ -51,7 +51,7 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center md:justify-start">
+          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center lg:justify-end">
             <img
               src={Can}
               alt="X by Long White cans"

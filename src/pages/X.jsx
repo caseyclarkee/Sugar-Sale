@@ -14,7 +14,7 @@ const X = () => {
         {/* Stretch all columns to the tallest column; bottom-align images; center the text vertically */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-stretch">
           {/* LEFT: Gary + GIF stay attached, bottom-aligned */}
-          <div className="col-span-12 xl:col-span-4 order-last lg:order-1 flex justify-center md:justify-end items-end lg:h-full">
+          <div className="col-span-12 xl:col-span-4 order-last xl:order-1 flex justify-center md:justify-end items-end lg:h-full">
             {/* Wrapper keeps the GIF anchored to Gary at all sizes */}
             <div className="relative inline-block">
               <img
@@ -52,7 +52,7 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image, bottom-aligned */}
-          <div className="col-span-12 xl:col-span-4 order-1 lg:order-3 flex justify-center md:justify-start items-end lg:h-full">
+          <div className="col-span-12 xl:col-span-4 order-1 xl:order-3 flex justify-center md:justify-start items-end lg:h-full">
             <img
               src={Can}
               alt="X by Long White cans"

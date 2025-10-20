@@ -13,7 +13,7 @@ const X = () => {
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
           {/* LEFT: Gary with minimal GIF lozenge */}
-          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 relative flex justify-center md:justify-end">
+          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 relative flex justify-center lg:justify-end">
             <img
               src={Gary}
               alt="Gary holding a can of X"
@@ -49,7 +49,7 @@ const X = () => {
           </div>
 
           {/* RIGHT: Can image */}
-          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center md:justify-start">
+          <div className="col-span-12 lg:col-span-4 order-1 lg:order-3 flex justify-center lg:justify-start">
             <img
               src={Can}
               alt="X by Long White cans"

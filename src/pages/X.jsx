@@ -13,7 +13,7 @@ const X = () => {
         {/* 3-column layout: Gary | Text | Cans */}
         <div className="grid grid-cols-12 gap-6 md:gap-10 items-end md:items-stretch">
           {/* LEFT: Gary + GIF stay attached */}
-          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center md:justify-end lg:min-h-[560px] lg:items-end">
+          <div className="col-span-12 lg:col-span-4 order-last lg:order-1 flex justify-center lg:justify-end lg:min-h-[560px] lg:items-end">
             {/* Wrapper keeps the GIF anchored to Gary at all sizes */}
             <div className="relative inline-block">
               <img

@@ -255,8 +255,8 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/Left-Rail/xbylw.png", alt: "lw logo" },
     { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
+    { src: "/images/Left-Rail/Left02.gif", alt: "hotline" },
     { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
   ];
 

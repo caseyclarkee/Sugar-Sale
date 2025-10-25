@@ -26,15 +26,8 @@ const Home = () => (
 
       {/* VIDEO/GIF WRAPPER */}
       <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-visible rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
-  {/* TEMP GIF delete from here down */}
-  <img
-    src="/images/home/homepage.gif"
-    alt="Temporary Hero GIF"
-    className="w-full h-full object-cover"
-  />
-          {/* delete the bit here and at the end to get back
         <iframe
-          src="vimeolinkgoeshere"
+          src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
           width="100%"
           height="100%"
           frameBorder="0"
@@ -42,7 +35,7 @@ const Home = () => (
           allowFullScreen
           title="Hero Video"
         ></iframe>
-        */}
+
 
   {/* BURST — slightly above the media */}
   <img

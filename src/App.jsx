@@ -255,9 +255,9 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/Left-Rail/xbylw.png", alt: "lw logo" },
     { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
-    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
+    { src: "/images/Left-Rail/Left02.gif", alt: "hotline" },
+    { src: "/images/left-rail/Left03lw.png", alt: "All sugar must go" },
   ];
 
   const recalc = React.useCallback(() => {
@@ -396,6 +396,7 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
     // Left rail
     { src: "/images/lwlogo.gif", alt: "lwlogogif" },
     { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
+    { src: "/images/Left-Rail/Left02.gif", alt: "Sale On Now badge" },
     { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
     { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
     { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },

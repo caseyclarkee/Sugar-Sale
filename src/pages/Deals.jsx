@@ -194,7 +194,7 @@ const WeekCountdown = ({ start, end }) => {
   }, [start, end]);
 
   if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="red">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
+  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
   if (state === "expired") return <Badge tone="gray">Expired</Badge>;
   return null;
 };

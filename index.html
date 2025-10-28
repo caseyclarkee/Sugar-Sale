@@ -218,21 +218,48 @@
     <script src="/scripts/sugar-cursor.js"></script>
     <script defer src="/scripts/sugar-cursor-after-agegate.js"></script>
 
-    <!-- Netlify hidden forms -->
-    <form
-      name="waitlist-entry"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      hidden
-    >
-      <input type="hidden" name="form-name" value="waitlist-entry" />
-      <p class="hidden">
-        <label>Don’t fill this out: <input name="bot-field" /></label>
-      </p>
-      <input name="name" /><input name="email" /><input name="deal" /><input
-        name="deal_id"
-      /><input name="kind" />
-    </form>
+  <!-- Netlify hidden forms (register all fields & buckets at build time) -->
+<!-- Shared Draw form -->
+<form name="deal-entry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="name" />
+  <input name="email" />
+  <input name="phone" />
+  <input name="postcode" />
+  <input name="deal" />
+  <input name="deal_id" />
+  <input name="kind" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+</form>
+
+<!-- Waitlist form -->
+<form name="waitlist-entry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="name" />
+  <input name="email" />
+  <input name="phone" />
+  <input name="postcode" />
+  <input name="deal" />
+  <input name="deal_id" />
+  <input name="kind" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+</form>
+
+<!-- Per-DOTW form buckets (so they show separately in the dashboard) -->
+<form name="deal-entry-dotw-1" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-2" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-3" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-4" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+
   </body>
 </html>

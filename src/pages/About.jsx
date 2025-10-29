@@ -1,5 +1,4 @@
 // src/pages/About.jsx
-
 import React, { useState } from "react";
 
 const About = () => {
@@ -138,21 +137,24 @@ const About = () => {
           </details>
 
           {/* Fanmail */}
-<details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
-        <summary className="cursor-pointer font-black">
-          Gary, do you accept fanmail?
-        </summary>
-        <div className="mt-2 text-m">
-          Wow. Aren’t you sweet? Leave me a voicemail on 0800-4SUGAR or{" "}
-          <button
-            onClick={() => setOpen(true)}
-            className="underline font-black hover:text-purple"
-          >
-            HERE
-          </button>
+          <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
+            <summary className="cursor-pointer font-black">
+              Gary, do you accept fanmail?
+            </summary>
+            <div className="mt-2 text-m">
+              Wow. Aren’t you sweet? Dial 0800-4SUGAR to leave me a voicemail or slide into my electronic mail box {" "}
+              <button
+                onClick={() => setOpen(true)}
+                className="underline font-black hover:text-purple"
+              >
+                HERE
+              </button>
+            </div>
+          </details>
         </div>
-      </details>
+      </section>
 
+      {/* Modal */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="bg-white border-[4px] border-black rounded-xl p-6 shadow-[6px_6px_0_#000] w-full max-w-md">
@@ -225,7 +227,10 @@ const About = () => {
                   Message sent! 🎉 Gary thanks you.
                 </p>
                 <button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    setDone(false);
+                  }}
                   className="rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
                 >
                   Close
@@ -235,10 +240,9 @@ const About = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
-
 
 export default About;
 

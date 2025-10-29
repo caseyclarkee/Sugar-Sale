@@ -104,7 +104,6 @@ const fmtDuration = (ms) => {
   return `${m}m ${s}s`;
 };
 
-/* Live window check (NZ) */
 const isLiveNowNZ = (start, end) => {
   const s = parseMaybeNZ(start);
   const e = parseMaybeNZ(end);
@@ -121,7 +120,6 @@ const encode = (data) =>
     )
     .join("&");
 
-// Shared form names parsed at build:
 const DRAW_FORM_NAME = "deal-entry";
 const WAITLIST_FORM_NAME = "waitlist-entry";
 
@@ -172,6 +170,41 @@ const Ribbon = ({ text, tone = "red" }) => {
   );
 };
 
+/* ------------------------------- Countdown ------------------------------- */
+const WeekCountdown = ({ start, end }) => {
+  const [state, setState] = React.useState("upcoming");
+  const [left, setLeft] = React.useState("");
+
+  React.useEffect(() => {
+    const startAt = parseMaybeNZ(start);
+    const endAt = parseMaybeNZ(end);
+
+    const tick = () => {
+      const now = new Date();
+      if (startAt && now < startAt) {
+        setState("upcoming");
+        setLeft(fmtDuration(startAt - now));
+        return;
+      }
+      if (endAt && now > endAt) {
+        setState("expired");
+        setLeft("");
+        return;
+      }
+      setState("live");
+      if (endAt) setLeft(fmtDuration(endAt - now));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [start, end]);
+
+  if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
+  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
+  if (state === "expired") return <Badge tone="gray">Expired</Badge>;
+  return null;
+};
+
 /* ------------------------------ Frames ------------------------------ */
 const MediaFrame = ({ children, dotw = false }) => (
   <div
@@ -215,30 +248,23 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Waitlist uses shared form; DOTW draw can use shared or unique per your setup
+  // Waitlist uses shared form; DOTW draw can be separate per-id or shared
   const formName = deal.waitlist
     ? WAITLIST_FORM_NAME
-    : (String(deal.id).startsWith("dotw-")
-        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1 (separate buckets)
-        : DRAW_FORM_NAME);
+    : String(deal.id).startsWith("dotw-")
+    ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1
+    : DRAW_FORM_NAME;
 
-  // SAFE Vimeo URL builder (supports vimeoEmbed OR vimeoId(+vimeoHash))
+  // Vimeo builder (supports full embed or id/hash)
   const vimeoSrc = React.useMemo(() => {
     if (!deal) return null;
-
-    // Option A: full embed URL from deals.json
     let src = deal.vimeoEmbed || null;
-
-    // Option B: id (+ optional hash) from deals.json
     if (!src && deal.vimeoId) {
       src = `https://player.vimeo.com/video/${deal.vimeoId}${
         deal.vimeoHash ? `?h=${deal.vimeoHash}` : ""
       }`;
     }
-
     if (!src) return null;
-
-    // Append standard player params
     return src + (src.includes("?") ? "&" : "?") + "title=0&byline=0&portrait=0&pip=1";
   }, [deal]);
 
@@ -301,7 +327,11 @@ const DealCard = ({ deal }) => {
             />
           </div>
         ) : deal.image ? (
-          <ImageWithFallback src={deal.image} alt={deal.title} className="h-full w-full object-cover" />
+          <ImageWithFallback
+            src={deal.image}
+            alt={deal.title}
+            className="h-full w-full object-cover"
+          />
         ) : (
           <div className="grid h-full place-items-center text-gray-500">No media</div>
         )}
@@ -319,6 +349,7 @@ const DealCard = ({ deal }) => {
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.waitlist ? (
+            // grey but clickable
             <button
               onClick={() => {
                 setOpen(true);
@@ -587,11 +618,11 @@ function Deals() {
             placeholder: false,
             title: content.title || t.title,
             // Vimeo fields from deals.json:
-            vimeoEmbed: content.vimeoEmbed,
-            vimeoId: content.vimeoId,
-            vimeoHash: content.vimeoHash,
+            vimeoEmbed: content.vimeoEmbed, // full embed URL OK
+            vimeoId: content.vimeoId,       // or numeric ID as string
+            vimeoHash: content.vimeoHash,   // optional, for private link
             poster: content.poster,
-            image: content.image, // optional fallback
+            image: content.image,           // optional fallback image
           }
         : {}),
     };
@@ -620,7 +651,7 @@ function Deals() {
 
             return (
               <div key={`row-${i}`} className="w-full">
-                {/* Mobile: 2 columns, 2 rows (S1 D1 / S2 D2) */}
+                {/* Mobile: 2 cols, 2 rows (S1 D1 / S2 D2) */}
                 <div className="grid grid-cols-2 gap-6 lg:hidden">
                   {s1 && <DealCard deal={s1} />}
                   {d1 && <DealCard deal={d1} />}
@@ -628,7 +659,7 @@ function Deals() {
                   {d2 && <DealCard deal={d2} />}
                 </div>
 
-                {/* Large: 1 row, 4 columns (S1 S2 D1 D2) */}
+                {/* Large: 1 row, 4 cols (S1 S2 D1 D2) */}
                 <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
                   {s1 && <DealCard deal={s1} />}
                   {s2 && <DealCard deal={s2} />}

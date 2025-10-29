@@ -57,23 +57,28 @@ const Home = () => {
           />
         </h2>
 
-        {/* VIDEO WRAPPER */}
-        <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000] bg-black">
-          <iframe
-            ref={vimeoRef}
-            src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-            title="Hero Video"
-            className="absolute inset-0 w-full h-full block"
-          ></iframe>
+        {/* OUTER wrapper: allows badge to overflow */}
+        <div className="relative mx-auto mt-6 w-full max-w-6xl">
+          {/* INNER wrapper: clips video to rounded edges */}
+          <div className="relative aspect-video overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000] bg-black">
+            <iframe
+              ref={vimeoRef}
+              src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title="Hero Video"
+              className="absolute inset-0 w-full h-full block"
+            ></iframe>
+          </div>
 
-          {/* BURST — slightly above the media */}
+          {/* BADGE stays on top now */}
           <img
             src="/images/saleonnow.png"
             alt="On Now"
-            className="absolute -right-8 -top-8 sm:-right-10 sm:-top-10 pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto drop-shadow-[4px_4px_0_#000]"
+            className="absolute -right-8 -top-8 sm:-right-10 sm:-top-10 z-10
+                       pointer-events-none block w-[clamp(80px,12vw,140px)] h-auto
+                       drop-shadow-[4px_4px_0_#000]"
             aria-hidden
           />
         </div>
@@ -117,4 +122,5 @@ const Home = () => {
 };
 
 export default Home;
+
 

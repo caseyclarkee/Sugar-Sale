@@ -673,15 +673,36 @@ function Deals() {
                   {s2 && <DealCard deal={s2} />}
                   {d2 && <DealCard deal={d2} />}
                 </div>
+                
+{/* Large: 4 columns; 3 statics per static column, 2 DOTWs per DOTW column */}
+<div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+  {/* Build column 1: S1, S3, S5 */}
+  <div className="flex flex-col gap-6">
+    {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
+    {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
+    {staticDeals[4] && <DealCard deal={staticDeals[4]} />}
+  </div>
 
-                {/* Large: 1 row, 4 cols (S1 S2 D1 D2) */}
-                <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
-                  {s1 && <DealCard deal={s1} />}
-                  {s2 && <DealCard deal={s2} />}
-                  {d1 && <DealCard deal={d1} />}
-                  {d2 && <DealCard deal={d2} />}
-                </div>
-              </div>
+  {/* Build column 2: S2, S4, S6 */}
+  <div className="flex flex-col gap-6">
+    {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
+    {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
+    {staticDeals[5] && <DealCard deal={staticDeals[5]} />}
+  </div>
+
+  {/* Build column 3: D1, D3 */}
+  <div className="flex flex-col gap-6">
+    {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
+    {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
+  </div>
+
+  {/* Build column 4: D2, D4 */}
+  <div className="flex flex-col gap-6">
+    {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
+    {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
+  </div>
+</div>
+
             );
           })}
       </div>

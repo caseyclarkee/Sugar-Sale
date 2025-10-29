@@ -1,4 +1,6 @@
 import React from "react";
+import Player from "@vimeo/player";
+
 
 /* Keeping Burst around in case it's used elsewhere */
 const Burst = ({ children, className = "" }) => (
@@ -25,16 +27,52 @@ const Home = () => (
       </h2>
 
       {/* VIDEO/GIF WRAPPER */}
-      <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-visible rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
-        <iframe
-          src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          title="Hero Video"
-        ></iframe>
+    const Home = () => {
+  const vimeoRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!vimeoRef.current) return;
+    const player = new Player(vimeoRef.current);
+
+    player.on("play", () => {
+      if (window.gtag) {
+        window.gtag("event", "video_play", {
+          video_platform: "vimeo",
+          video_id: "1129405293",
+          page_location: window.location.href,
+        });
+      }
+    });
+
+    player.on("ended", () => {
+      if (window.gtag) {
+        window.gtag("event", "video_complete", {
+          video_platform: "vimeo",
+          video_id: "1129405293",
+          page_location: window.location.href,
+        });
+      }
+    });
+
+    return () => player.destroy();
+  }, []);
+
+  return (
+    <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-visible rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]">
+      <iframe
+        ref={vimeoRef}
+        src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+        title="Hero Video"
+      ></iframe>
+    </div>
+  );
+};
+
 
 
   {/* BURST — slightly above the media */}

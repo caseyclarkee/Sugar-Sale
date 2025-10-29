@@ -172,41 +172,6 @@ const Ribbon = ({ text, tone = "red" }) => {
   );
 };
 
-/* ------------------------------- Countdown ------------------------------- */
-const WeekCountdown = ({ start, end }) => {
-  const [state, setState] = React.useState("upcoming");
-  const [left, setLeft] = React.useState("");
-
-  React.useEffect(() => {
-    const startAt = parseMaybeNZ(start);
-    const endAt = parseMaybeNZ(end);
-
-    const tick = () => {
-      const now = new Date();
-      if (startAt && now < startAt) {
-        setState("upcoming");
-        setLeft(fmtDuration(startAt - now));
-        return;
-      }
-      if (endAt && now > endAt) {
-        setState("expired");
-        setLeft("");
-        return;
-      }
-      setState("live");
-      if (endAt) setLeft(fmtDuration(endAt - now));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [start, end]);
-
-  if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
-  if (state === "expired") return <Badge tone="gray">Expired</Badge>;
-  return null;
-};
-
 /* ------------------------------ Frames ------------------------------ */
 const MediaFrame = ({ children, dotw = false }) => (
   <div
@@ -254,8 +219,25 @@ const DealCard = ({ deal }) => {
   const formName = deal.waitlist
     ? WAITLIST_FORM_NAME
     : (String(deal.id).startsWith("dotw-")
-        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1 (keep if you want separate buckets)
+        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1 (separate buckets)
         : DRAW_FORM_NAME);
+
+  // Build a Vimeo src from either a full embed URL or id(+hash)
+  const withParams = (base, params) =>
+    base && (base.includes("?") ? `${base}&${params}` : `${base}?${params}`);
+
+  const vimeoSrc = React.useMemo(() => {
+    if (!deal) return null;
+    if (deal.vimeoEmbed) {
+      return withParams(deal.vimeoEmbed, "title=0&byline=0&portrait=0&pip=1");
+    }
+    if (deal.vimeoId) {
+      let url = `https://player.vimeo.com/video/${deal.vimeoId}`;
+      if (deal.vimeoHash) url = withParams(url, `h=${deal.vimeoHash}`);
+      return withParams(url, "title=0&byline=0&portrait=0&pip=1");
+    }
+    return null;
+  }, [deal]);
 
   // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
@@ -304,14 +286,16 @@ const DealCard = ({ deal }) => {
               Coming soon…
             </span>
           </div>
-        ) : deal.vimeoId ? (
+        ) : vimeoSrc ? (
           <div className="h-full w-full">
             <iframe
-              src={`https://player.vimeo.com/video/${deal.vimeoId}?title=0&byline=0&portrait=0&pip=1`}
+              src={vimeoSrc}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               className="h-full w-full"
               loading="lazy"
+              title={deal.title}
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         ) : deal.image ? (
@@ -600,9 +584,12 @@ function Deals() {
         ? {
             placeholder: false,
             title: content.title || t.title,
-            vimeoId: content.vimeoId, // prefer Vimeo when live
+            // Vimeo fields from deals.json:
+            vimeoEmbed: content.vimeoEmbed,
+            vimeoId: content.vimeoId,
+            vimeoHash: content.vimeoHash,
             poster: content.poster,
-            image: content.image, // optional fallback if you ever use images
+            image: content.image, // optional fallback
           }
         : {}),
     };

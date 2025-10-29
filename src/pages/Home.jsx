@@ -23,7 +23,6 @@ const Home = () => {
     if (!vimeoRef.current) return;
     const player = new Player(vimeoRef.current);
 
-    // Track when video plays
     player.on("play", () => {
       if (window.gtag) {
         window.gtag("event", "video_play", {
@@ -34,7 +33,6 @@ const Home = () => {
       }
     });
 
-    // Track when video finishes
     player.on("ended", () => {
       if (window.gtag) {
         window.gtag("event", "video_complete", {
@@ -96,13 +94,8 @@ const Home = () => {
             60% { transform: translateY(-6px) rotate(-3deg) scale(1.15); }
             80% { transform: translateY(2px) rotate(3deg) scale(1.1); }
           }
-          .icon-float {
-            animation: floaty 3s ease-in-out infinite;
-            transition: transform 0.3s ease-out;
-          }
-          .icon-float:hover {
-            animation: bounceWiggle 0.8s ease-in-out;
-          }
+          .icon-float { animation: floaty 3s ease-in-out infinite; transition: transform 0.3s ease-out; }
+          .icon-float:hover { animation: bounceWiggle 0.8s ease-in-out; }
           .icon-delay-1 { animation-delay: 0s; }
           .icon-delay-2 { animation-delay: 0.8s; }
           .icon-delay-3 { animation-delay: 1.6s; }
@@ -123,10 +116,5 @@ const Home = () => {
     </section>
   );
 };
-
-export default Home;
-
-
-
 
 export default Home;

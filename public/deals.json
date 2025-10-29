@@ -1,8 +1,10 @@
 {
   "dotw-1": {
-    "title": "DOTW #1 – Sugar Sculpture of Grandma",
-    "vimeoEmbed": "https://player.vimeo.com/video/1131590662?h=95b90608b7&badge=0&autopause=0&player_id=0&app_id=58479",
-  },
+    "title": "Deal of the Week #1 — Sugar Sculpture of Grandma",
+    "vimeoId": "1131590662",
+    "vimeoHash": "95b90608b7",
+    "poster": "/images/deals/dotw1-poster.jpg"
+  }
   "dotw-2": {
     "title": "10kg of Sugar – Free!",
     "vimeoId": "987654321",

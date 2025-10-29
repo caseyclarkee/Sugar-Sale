@@ -105,23 +105,28 @@ const isLiveNowNZ = (start, end) => {
   return !!(s && e && now >= s && now <= e);
 };
 
-/* ----------------------------- UI bits ----------------------------- */
-const MediaFrame = ({ children, dotw }) => (
-  <div
-    className={cx(
-      "relative overflow-hidden border-[4px] border-black rounded-xl bg-white shadow-[6px_6px_0_#000]",
-      dotw ? "aspect-[9/16]" : "aspect-[4/5]"
-    )}
-  >
-    {children}
-  </div>
-);
+/* ----------------------------- layout bits ----------------------------- */
+/** AspectBox: safe aspect without Tailwind aspect plugin */
+const AspectBox = ({ ratio = 1, children }) => {
+  const pt = `${ratio * 100}%`; // ratio = height/width
+  return (
+    <div className="relative w-full overflow-hidden rounded-xl border-[4px] border-black bg-white shadow-[6px_6px_0_#000]">
+      <div style={{ paddingTop: pt }} />
+      <div className="absolute inset-0">{children}</div>
+    </div>
+  );
+};
+
+const MediaFrame = ({ dotw, children }) => {
+  // 9:16 (height/width = 16/9 ≈ 1.7778) for DOTW, 4:5 (1.25) for static
+  return <AspectBox ratio={dotw ? 16 / 9 : 5 / 4}>{children}</AspectBox>;
+};
 
 const DealCard = ({ deal }) => {
   const isVideo = !!deal.vimeoId;
   return (
     <div className="flex flex-col gap-3">
-      <MediaFrame dotw={deal.dotw}>
+      <MediaFrame dotw={!!deal.dotw}>
         {deal.placeholder ? (
           <div className="absolute inset-0 grid place-items-center bg-white/70">
             <span className="font-black uppercase tracking-wide text-black/60">
@@ -134,14 +139,14 @@ const DealCard = ({ deal }) => {
               deal.vimeoHash ? `?h=${deal.vimeoHash}` : ""
             }`}
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 h-full w-full"
             title={deal.title}
           />
         ) : (
           <img
             src={deal.image}
             alt={deal.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         )}
       </MediaFrame>
@@ -159,7 +164,7 @@ const DealCard = ({ deal }) => {
             {deal.disabledLabel || "Sold Out"}
           </button>
         ) : deal.waitlist ? (
-          <button className="mt-2 w-full border-[3px] border-black bg-gray-300 px-3 py-2 font-black shadow-[3px_3px_0_#000] text-black/70">
+          <button className="mt-2 w-full border-[3px] border-black bg-gray-300 px-3 py-2 font-black text-black/70 shadow-[3px_3px_0_#000]">
             Join Waitlist
           </button>
         ) : (
@@ -172,33 +177,116 @@ const DealCard = ({ deal }) => {
   );
 };
 
-/* ----------------------------- page ----------------------------- */
+/* ------------------------------ page ------------------------------ */
 export default function Deals() {
-  // ⏱️ Set the FIRST go-live (NZ) and it will roll weekly
-  // e.g. 9:00am Wed 29 Oct NZ time
+  // Set the FIRST go-live (NZ). Rolls weekly.
   const baseStartNZ = "2025-10-29T09:00:00";
 
-  const [staticDeals, setStatic] = React.useState([]);
-  const [dotwData, setDotw] = React.useState([]);
+  const [staticDeals, setStaticDeals] = React.useState([]);
+  const [dotwData, setDotwData] = React.useState([]);
 
-  // load content (no dates in JSON needed)
+  // super-safe default data so nothing crashes if JSON missing/invalid
+  const DEFAULT_STATIC = React.useMemo(
+    () => [
+      {
+        id: "dentures",
+        title: "Sugar Dentures",
+        image: "/images/deals/Sugar-Dentures.jpg",
+        disabled: true,
+        disabledLabel: "Sold Out",
+      },
+      {
+        id: "bag10kg",
+        title: "10kg of Sugar",
+        image: "/images/deals/Bag-of-Sugar.jpg",
+        waitlist: true,
+      },
+      {
+        id: "officechair",
+        title: "Office Chair (Lightly Used)",
+        image: "/images/deals/Chair.jpg",
+        disabled: true,
+        disabledLabel: "Sold Out",
+      },
+      {
+        id: "sugarcup",
+        title: "Cup of Sugar",
+        image: "/images/deals/Cup.jpg",
+        disabled: true,
+        disabledLabel: "Sold Out",
+      },
+      {
+        id: "fridge",
+        title: "Fridge (With Magnets)",
+        image: "/images/deals/Fridge.jpg",
+        disabled: true,
+        disabledLabel: "Sold Out",
+      },
+      {
+        id: "whiteboard",
+        title: "Sales Whiteboard",
+        image: "/images/deals/Whiteboard.jpg",
+        disabled: true,
+        disabledLabel: "Sold Out",
+      },
+    ],
+    []
+  );
+
+  const DEFAULT_DOTW = React.useMemo(
+    () => [
+      {
+        id: "dotw-1",
+        title: "Deal of the Week #1 — Sugar Sculpture of Grandma",
+        vimeoId: "1131590662",
+        vimeoHash: "95b90608b7",
+        poster: "/images/deals/dotw1-poster.jpg",
+      },
+      {
+        id: "dotw-2",
+        title: "Deal of the Week #2 — 10kg of Sugar (Free!)",
+        vimeoId: "987654321",
+        poster: "/images/deals/dotw-2.jpg",
+      },
+      {
+        id: "dotw-3",
+        title: "Deal of the Week #3 — Office Chair (Lightly Used)",
+        vimeoId: "192837465",
+        poster: "/images/deals/dotw-3.jpg",
+      },
+      {
+        id: "dotw-4",
+        title: "Deal of the Week #4 — Cup of Sugar",
+        vimeoId: "564738291",
+        poster: "/images/deals/dotw-4.jpg",
+      },
+    ],
+    []
+  );
+
+  // load JSON content, but never crash if it 404s or is invalid
   React.useEffect(() => {
-    fetch("/data/deals.json")
-      .then((r) => (r.ok ? r.json() : { static: [], dotw: [] }))
-      .then((json) => {
-        setStatic(json.static || []);
-        setDotw(json.dotw || []);
-      })
-      .catch(() => {});
-  }, []);
+    (async () => {
+      try {
+        const res = await fetch("/data/deals.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        setStaticDeals(Array.isArray(json.static) ? json.static : DEFAULT_STATIC);
+        setDotwData(Array.isArray(json.dotw) ? json.dotw : DEFAULT_DOTW);
+      } catch (e) {
+        console.warn("[deals] using defaults:", e?.message || e);
+        setStaticDeals(DEFAULT_STATIC);
+        setDotwData(DEFAULT_DOTW);
+      }
+    })();
+  }, [DEFAULT_STATIC, DEFAULT_DOTW]);
 
-  // build the 4 weekly DOTWs with NZ live windows
+  // build 4 weekly DOTWs with NZ live windows
   const weekly = React.useMemo(() => {
-    // exactly 4 weekly windows based on baseStartNZ
-    const templates = Array.from({ length: 4 }).map((_, i) => {
+    return Array.from({ length: 4 }).map((_, i) => {
       const start = addWeeksNZ(baseStartNZ, i);
       const end = weekEndFromStartNZ(start);
-      const src = dotwData[i] || {}; // content from JSON aligned by index
+      const src = dotwData[i] || {};
       const live = isLiveNowNZ(start, end);
 
       return {
@@ -206,21 +294,18 @@ export default function Deals() {
         dotw: true,
         start,
         end,
-        // while not live → keep placeholder title
         title: live ? src.title || `Deal of the Week #${i + 1}` : "Deal of the Week",
-        // media swaps only when live
         placeholder: !live,
         vimeoId: live ? src.vimeoId : undefined,
         vimeoHash: live ? src.vimeoHash : undefined,
         image: live ? undefined : src.poster || "/images/deals/placeholder-9x16.jpg",
       };
     });
-    return templates;
   }, [dotwData, baseStartNZ]);
 
   return (
     <section className="bg-yellow min-h-screen px-4 sm:px-8 py-12">
-      <h1 className="text-6xl sm:text-8xl font-black text-center mb-12 text-black">
+      <h1 className="mb-12 text-center text-6xl sm:text-8xl font-black text-black">
         Gary’s Sweet Deals
       </h1>
 
@@ -228,7 +313,7 @@ export default function Deals() {
       <div className="grid gap-12">
         {Array.from({ length: 4 }).map((_, i) =>
           weekly[i] && staticDeals[i] ? (
-            <div key={i} className="grid md:grid-cols-2 gap-8 items-stretch">
+            <div key={i} className="grid items-stretch gap-8 md:grid-cols-2">
               <DealCard deal={staticDeals[i]} />
               <DealCard deal={weekly[i]} />
             </div>
@@ -238,7 +323,7 @@ export default function Deals() {
 
       {/* remaining two statics below */}
       {staticDeals.length > 4 && (
-        <div className="grid md:grid-cols-2 gap-8 mt-16">
+        <div className="mt-16 grid gap-8 md:grid-cols-2">
           {staticDeals.slice(4, 6).map((d) => (
             <DealCard key={d.id} deal={d} />
           ))}

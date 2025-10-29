@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, row-grouped layout, Netlify forms)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, row-grouped layout, Netlify forms, Vimeo-ready)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -102,6 +102,14 @@ const fmtDuration = (ms) => {
   if (d >= 1) return `${d}d ${h}h`;
   if (h >= 1) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
+};
+
+/* Live window check (NZ) */
+const isLiveNowNZ = (start, end) => {
+  const s = parseMaybeNZ(start);
+  const e = parseMaybeNZ(end);
+  const now = new Date();
+  return !!(s && e && now >= s && now <= e);
 };
 
 /* -------------------------- Netlify form utils -------------------------- */
@@ -242,11 +250,11 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Waitlist uses shared form; DOTW draw uses unique form; other draws use shared draw form
+  // Waitlist uses shared form; DOTW draw can use shared or unique per your setup
   const formName = deal.waitlist
     ? WAITLIST_FORM_NAME
     : (String(deal.id).startsWith("dotw-")
-        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1
+        ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1 (keep if you want separate buckets)
         : DRAW_FORM_NAME);
 
   // Submit via AJAX to keep modal UX
@@ -289,11 +297,22 @@ const DealCard = ({ deal }) => {
 
       <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
+
         {deal.placeholder ? (
           <div className="flex h-full w-full items-center justify-center bg-white/60">
             <span className="select-none text-lg font-black uppercase tracking-wide text-black/60">
               Coming soon…
             </span>
+          </div>
+        ) : deal.vimeoId ? (
+          <div className="h-full w-full">
+            <iframe
+              src={`https://player.vimeo.com/video/${deal.vimeoId}?title=0&byline=0&portrait=0&pip=1`}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="h-full w-full"
+              loading="lazy"
+            />
           </div>
         ) : deal.image ? (
           <ImageWithFallback src={deal.image} alt={deal.title} className="h-full w-full object-cover" />
@@ -314,7 +333,6 @@ const DealCard = ({ deal }) => {
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.waitlist ? (
-            // grey but clickable
             <button
               onClick={() => {
                 setOpen(true);
@@ -395,7 +413,7 @@ const DealCard = ({ deal }) => {
                     />
                   </label>
 
-                  {/* Added fields */}
+                  {/* Added fields - unrestricted */}
                   <label className="font-black">
                     Phone
                     <input
@@ -483,8 +501,8 @@ const DealCard = ({ deal }) => {
 
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
-  // First DOTW goes live 9am 27th NZ, then weekly
-  const baseStartNZ = "2025-10-31T09:00:00";
+  // First DOTW goes live 9am 29th Oct NZ, then weekly
+  const baseStartNZ = "2025-10-29T09:00:00";
 
   // DOTW placeholders (coming soon)
   const dotwTemplates = [
@@ -558,11 +576,36 @@ function Deals() {
     },
   ];
 
-  // Compute weekly DOTW windows
+  /* --------- Load live DOTW content from /public/deals.json ---------- */
+  const [dotwContent, setDotwContent] = React.useState({});
+  React.useEffect(() => {
+    fetch("/deals.json")
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((json) => setDotwContent(json || {}))
+      .catch(() => {});
+  }, []);
+
+  // Compute weekly DOTW windows and merge live content when in window
   const weeklyDeals = dotwTemplates.map((t, i) => {
     const start = addWeeksNZ(baseStartNZ, i);
     const end = weekEndFromStartNZ(start);
-    return { ...t, dotw: true, start, end };
+    const live = isLiveNowNZ(start, end);
+    const content = dotwContent[t.id] || {};
+    return {
+      ...t,
+      dotw: true,
+      start,
+      end,
+      ...(live
+        ? {
+            placeholder: false,
+            title: content.title || t.title,
+            vimeoId: content.vimeoId, // prefer Vimeo when live
+            poster: content.poster,
+            image: content.image, // optional fallback if you ever use images
+          }
+        : {}),
+    };
   });
 
   /* ---------------- Layout: rows that pair static + DOTW ----------------
@@ -612,3 +655,4 @@ function Deals() {
 }
 
 export default Deals;
+

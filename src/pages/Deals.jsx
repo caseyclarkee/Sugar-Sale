@@ -562,7 +562,7 @@ function Deals() {
     },
   ];
 
-  // Four static items (left)
+  // six static items (left)
   const staticDeals = [
     {
       id: "dentures",
@@ -607,8 +607,6 @@ function Deals() {
     disabled: true,
   },
 ];
-
-  ];
 
   /* --------- Load live DOTW content from /public/deals.json ---------- */
   const [dotwContent, setDotwContent] = React.useState({});

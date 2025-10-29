@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, row-grouped layout, Netlify forms, Vimeo-ready)
+// src/pages/Deals.jsx — Dynamic grid, aspect-aware, Vimeo-ready, Netlify forms
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -120,10 +120,11 @@ const encode = (data) =>
     )
     .join("&");
 
+// Shared form names parsed at build:
 const DRAW_FORM_NAME = "deal-entry";
 const WAITLIST_FORM_NAME = "waitlist-entry";
 
-/* ----------------------------- UI ----------------------------- */
+/* ----------------------------- UI bits ----------------------------- */
 const Badge = ({ children, tone = "yellow" }) => {
   const toneClasses =
     tone === "yellow"
@@ -170,7 +171,6 @@ const Ribbon = ({ text, tone = "red" }) => {
   );
 };
 
-/* ------------------------------- Countdown ------------------------------- */
 const WeekCountdown = ({ start, end }) => {
   const [state, setState] = React.useState("upcoming");
   const [left, setLeft] = React.useState("");
@@ -200,7 +200,7 @@ const WeekCountdown = ({ start, end }) => {
   }, [start, end]);
 
   if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="blue">DEAL OF THE WEEK 🔥 Ends in {left}</Badge>;
+  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
   if (state === "expired") return <Badge tone="gray">Expired</Badge>;
   return null;
 };
@@ -215,9 +215,13 @@ const MediaFrame = ({ children, dotw = false }) => (
         : "")
     }
   >
-    <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      {/* DOTW = 9:16 (tall), static = 1:1.25 */}
-      <div className={dotw ? "pt-[177.78%]" : "pt-[125%]"} />
+    {/* Aspect-ratio box: DOTW 9:16, Static 4:5 */}
+    <div
+      className={cx(
+        "relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200",
+        dotw ? "aspect-[9/16]" : "aspect-[4/5]"
+      )}
+    >
       <div className="absolute inset-0">{children}</div>
     </div>
   </div>
@@ -249,27 +253,13 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Waitlist uses shared form; DOTW draw can be separate per-id or shared
+  // Waitlist uses shared form; DOTW draw can be per-id bucket if you registered them
   const formName = deal.waitlist
     ? WAITLIST_FORM_NAME
-    : String(deal.id).startsWith("dotw-")
-    ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1
-    : DRAW_FORM_NAME;
+    : (String(deal.id).startsWith("dotw-")
+        ? `deal-entry-${deal.id}` // e.g., "deal-entry-dotw-1"
+        : DRAW_FORM_NAME);
 
-  // Vimeo builder (supports full embed or id/hash)
-  const vimeoSrc = React.useMemo(() => {
-    if (!deal) return null;
-    let src = deal.vimeoEmbed || null;
-    if (!src && deal.vimeoId) {
-      src = `https://player.vimeo.com/video/${deal.vimeoId}${
-        deal.vimeoHash ? `?h=${deal.vimeoHash}` : ""
-      }`;
-    }
-    if (!src) return null;
-    return src + (src.includes("?") ? "&" : "?") + "title=0&byline=0&portrait=0&pip=1";
-  }, [deal]);
-
-  // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -296,10 +286,12 @@ const DealCard = ({ deal }) => {
     }
   };
 
+  const isDotw = !!deal.dotw;
+
   return (
     <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-      {/* Rotated top-right countdown badge */}
-      {deal.dotw && (
+      {/* Rotated top-right countdown badge for DOTW */}
+      {isDotw && (
         <div className="absolute -top-3 -right-3 rotate-6 z-10">
           <div className="rotate-[-6deg]">
             <WeekCountdown start={deal.start} end={deal.end} />
@@ -307,7 +299,7 @@ const DealCard = ({ deal }) => {
         </div>
       )}
 
-      <MediaFrame dotw={!!deal.dotw}>
+      <MediaFrame dotw={isDotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
 
         {deal.placeholder ? (
@@ -316,30 +308,28 @@ const DealCard = ({ deal }) => {
               Coming soon…
             </span>
           </div>
-        ) : vimeoSrc ? (
-          <div className="h-full w-full">
-            <iframe
-              src={vimeoSrc}
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              className="h-full w-full"
-              loading="lazy"
-              title={deal.title}
-            />
-          </div>
-        ) : deal.image ? (
-          <ImageWithFallback
-            src={deal.image}
-            alt={deal.title}
-            className="h-full w-full object-cover"
+        ) : deal.vimeoId ? (
+          <iframe
+            src={
+              deal.vimeoHash
+                ? `https://player.vimeo.com/video/${deal.vimeoId}?h=${deal.vimeoHash}&title=0&byline=0&portrait=0&pip=1`
+                : `https://player.vimeo.com/video/${deal.vimeoId}?title=0&byline=0&portrait=0&pip=1`
+            }
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowFullScreen
+            className="h-full w-full"
+            loading="lazy"
+            title={deal.title}
           />
+        ) : deal.image ? (
+          <ImageWithFallback src={deal.image} alt={deal.title} className="h-full w-full object-cover" />
         ) : (
           <div className="grid h-full place-items-center text-gray-500">No media</div>
         )}
       </MediaFrame>
 
       <div className="flex flex-1 flex-col gap-2">
-        <h3 className="text-lg font-black">{deal.title}</h3>
+        <h3 className="font-black text-[clamp(1rem,2vw,1.25rem)]">{deal.title}</h3>
         <div className="flex flex-wrap items-center gap-2">
           {deal.badges?.map((b, i) => (
             <Badge key={i} tone={b.tone}>
@@ -350,7 +340,6 @@ const DealCard = ({ deal }) => {
 
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.waitlist ? (
-            // grey but clickable
             <button
               onClick={() => {
                 setOpen(true);
@@ -385,6 +374,18 @@ const DealCard = ({ deal }) => {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+            {/* Close (X) */}
+            <button
+              onClick={() => {
+                setOpen(false);
+                setDone(false);
+              }}
+              className="absolute top-2 right-3 text-black text-xl font-black hover:text-purple"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
             {!done ? (
               <>
                 <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
@@ -431,7 +432,7 @@ const DealCard = ({ deal }) => {
                     />
                   </label>
 
-                  {/* Added fields - unrestricted */}
+                  {/* Unrestricted fields per your ask */}
                   <label className="font-black">
                     Phone
                     <input
@@ -455,7 +456,10 @@ const DealCard = ({ deal }) => {
                   <div className="mt-4 flex justify-end gap-2">
                     <button
                       type="button"
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        setOpen(false);
+                        setDone(false);
+                      }}
                       className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold"
                       disabled={submitting}
                     >
@@ -489,7 +493,10 @@ const DealCard = ({ deal }) => {
                   <div className="text-2xl font-black">You’re in the draw! 🎉</div>
                 )}
                 <button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    setDone(false);
+                  }}
                   className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
                 >
                   Close
@@ -497,7 +504,7 @@ const DealCard = ({ deal }) => {
               </div>
             )}
 
-            {/* Promo Terms inside the popup (DOTW only), below form/success */}
+            {/* Promo Terms inside the popup (DOTW only) */}
             {deal.dotw && (
               <p className="mt-6 text-[11px] text-gray-600 text-center">
                 <a
@@ -522,47 +529,7 @@ function Deals() {
   // First DOTW goes live 9am 29th Oct NZ, then weekly
   const baseStartNZ = "2025-10-29T09:00:00";
 
-  // DOTW placeholders (coming soon)
-  const dotwTemplates = [
-    {
-      id: "dotw-1",
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [
-        { text: "FREE!", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-    {
-      id: "dotw-2",
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [
-        { text: "Now $0.00", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-    {
-      id: "dotw-3",
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [
-        { text: "100% OFF", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-    {
-      id: "dotw-4",
-      title: "Deal of the Week",
-      placeholder: true,
-      badges: [
-        { text: "Win for Free!", tone: "blue" },
-        { text: "Giveaway", tone: "yellow" },
-      ],
-    },
-  ];
-
-  // six static items (left)
+  // Your static items (4:5)
   const staticDeals = [
     {
       id: "dentures",
@@ -592,32 +559,33 @@ function Deals() {
       ribbon: { text: "Sold Out", tone: "red" },
       disabled: true,
     },
-  {
-    id: "sugar-pillow",
-    title: "Sugar Pillow",
-    image: "/images/deals/Sugar-Pillow.jpg",
-    ribbon: { text: "Sold Out", tone: "red" },
-    disabled: true,
-  },
-  {
-    id: "sugar-sculpture",
-    title: "Sugar Sculpture (Mini)",
-    image: "/images/deals/Sugar-Sculpture.jpg",
-    ribbon: { text: "Coming soon", tone: "purple" },
-    disabled: true,
-  },
-];
+    // You can add two more if you want 6 static:
+    // { id: "static-5", title: "...", image: "..."},
+    // { id: "static-6", title: "...", image: "..."},
+  ];
+
+  // DOTW placeholders (will swap to live when their window is active)
+  const dotwTemplates = [
+    { id: "dotw-1", title: "Deal of the Week", placeholder: true, dotw: true,
+      badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { id: "dotw-2", title: "Deal of the Week", placeholder: true, dotw: true,
+      badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { id: "dotw-3", title: "Deal of the Week", placeholder: true, dotw: true,
+      badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+    { id: "dotw-4", title: "Deal of the Week", placeholder: true, dotw: true,
+      badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
+  ];
 
   /* --------- Load live DOTW content from /public/deals.json ---------- */
   const [dotwContent, setDotwContent] = React.useState({});
   React.useEffect(() => {
-    fetch("/deals.json")
+    fetch("/deals.json", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : {}))
       .then((json) => setDotwContent(json || {}))
       .catch(() => {});
   }, []);
 
-  // Compute weekly DOTW windows and merge live content when in window
+  // Build weekly DOTW windows and merge live content when in window
   const weeklyDeals = dotwTemplates.map((t, i) => {
     const start = addWeeksNZ(baseStartNZ, i);
     const end = weekEndFromStartNZ(start);
@@ -625,72 +593,35 @@ function Deals() {
     const content = dotwContent[t.id] || {};
     return {
       ...t,
-      dotw: true,
       start,
       end,
       ...(live
         ? {
             placeholder: false,
             title: content.title || t.title,
-            // Vimeo fields from deals.json:
-            vimeoEmbed: content.vimeoEmbed, // full embed URL OK
-            vimeoId: content.vimeoId,       // or numeric ID as string
-            vimeoHash: content.vimeoHash,   // optional, for private link
+            vimeoId: content.vimeoId,
+            vimeoHash: content.vimeoHash,
             poster: content.poster,
-            image: content.image,           // optional fallback image
+            image: content.image,
           }
         : {}),
     };
   });
 
-  /* ---------------- Layout: rows that pair static + DOTW ----------------
-     - Mobile (default): per row => [Static i | DOTW i] then [Static i+1 | DOTW i+1]
-     - Large (lg):      per row => [Static i | Static i+1 | DOTW i | DOTW i+1]
-  ---------------------------------------------------------------------- */
+  // Combine: static first, then DOTW — grid will flow responsively
+  const allDeals = [...staticDeals, ...weeklyDeals];
 
-return (
+  return (
     <section className="space-y-8 px-4 py-12 sm:px-8">
       <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
         Gary's Sweet Deals
       </h2>
 
-      {/* Mobile grid (unchanged) */}
-      <div className="space-y-6 lg:hidden">
-        {staticDeals.map((s, i) => (
-          <React.Fragment key={s.id}>
-            <DealCard deal={s} />
-            {weeklyDeals[i] && <DealCard deal={weeklyDeals[i]} />}
-          </React.Fragment>
+      {/* Dynamic responsive grid */}
+      <div className="grid gap-6 sm:gap-8 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {allDeals.map((deal) => (
+          <DealCard key={deal.id} deal={deal} />
         ))}
-      </div>
-
-      {/* Desktop grid: 4 columns balanced */}
-      <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
-        {/* Column 1: S1, S3, S5 */}
-        <div className="flex flex-col gap-6">
-          {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
-          {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
-          {staticDeals[4] && <DealCard deal={staticDeals[4]} />}
-        </div>
-
-        {/* Column 2: S2, S4, S6 */}
-        <div className="flex flex-col gap-6">
-          {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
-          {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
-          {staticDeals[5] && <DealCard deal={staticDeals[5]} />}
-        </div>
-
-        {/* Column 3: D1, D3 */}
-        <div className="flex flex-col gap-6">
-          {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
-          {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
-        </div>
-
-        {/* Column 4: D2, D4 */}
-        <div className="flex flex-col gap-6">
-          {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
-          {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
-        </div>
       </div>
     </section>
   );

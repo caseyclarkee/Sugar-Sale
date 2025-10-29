@@ -1,9 +1,10 @@
-// src/pages/Deals.jsx — Dynamic grid, aspect-aware, Vimeo-ready, Netlify forms
+// src/pages/Deals.jsx
 import React from "react";
 
-/* ----------------------------- Helpers ----------------------------- */
+/* ----------------------------- helpers ----------------------------- */
 const cx = (...cs) => cs.filter(Boolean).join(" ");
 
+// parse "YYYY-MM-DDTHH:mm:ss" (no tz)
 const parseNaiveParts = (str) => {
   const m = String(str || "").match(
     /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):?(\d{2}):?(\d{2})?)?$/
@@ -13,6 +14,7 @@ const parseNaiveParts = (str) => {
   return { year: +y, month: +M, day: +d, hour: +h, minute: +mnt, second: +s };
 };
 
+// convert a naive NZ time to UTC Date by reversing the zone offset
 const zonedTimeToUtc = (parts, timeZone) => {
   const desiredUtcMs = Date.UTC(
     parts.year,
@@ -23,6 +25,7 @@ const zonedTimeToUtc = (parts, timeZone) => {
     parts.second
   );
   const desiredUtc = new Date(desiredUtcMs);
+
   const fmt = new Intl.DateTimeFormat("en-US", {
     timeZone,
     hour12: false,
@@ -33,12 +36,14 @@ const zonedTimeToUtc = (parts, timeZone) => {
     minute: "2-digit",
     second: "2-digit",
   });
+
   const zoneParts = Object.fromEntries(
     fmt
       .formatToParts(desiredUtc)
       .filter((p) => p.type !== "literal")
       .map((p) => [p.type, p.value])
   );
+
   const zoneMs = Date.UTC(
     +zoneParts.year,
     +zoneParts.month - 1,
@@ -93,17 +98,6 @@ const weekEndFromStartNZ = (startNZNaiveStr) => {
   return nzFormatNaive(endUtc);
 };
 
-const fmtDuration = (ms) => {
-  const total = Math.max(0, Math.floor(ms / 1000));
-  const d = Math.floor(total / 86400);
-  const h = Math.floor((total % 86400) / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  if (d >= 1) return `${d}d ${h}h`;
-  if (h >= 1) return `${h}h ${m}m`;
-  return `${m}m ${s}s`;
-};
-
 const isLiveNowNZ = (start, end) => {
   const s = parseMaybeNZ(start);
   const e = parseMaybeNZ(end);
@@ -111,520 +105,146 @@ const isLiveNowNZ = (start, end) => {
   return !!(s && e && now >= s && now <= e);
 };
 
-/* -------------------------- Netlify form utils -------------------------- */
-const encode = (data) =>
-  Object.keys(data)
-    .map(
-      (key) =>
-        encodeURIComponent(key) + "=" + encodeURIComponent(data[key] ?? "")
-    )
-    .join("&");
-
-// Shared form names parsed at build:
-const DRAW_FORM_NAME = "deal-entry";
-const WAITLIST_FORM_NAME = "waitlist-entry";
-
 /* ----------------------------- UI bits ----------------------------- */
-const Badge = ({ children, tone = "yellow" }) => {
-  const toneClasses =
-    tone === "yellow"
-      ? "bg-yellow text-black"
-      : tone === "purple"
-      ? "bg-purple text-white"
-      : tone === "red"
-      ? "bg-red text-white"
-      : tone === "blue"
-      ? "bg-blue-500 text-white"
-      : "bg-gray-300 text-black";
-  return (
-    <span
-      className={cx(
-        "rounded-full border-[2px] border-black px-2.5 py-0.5 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]",
-        toneClasses
-      )}
-    >
-      {children}
-    </span>
-  );
-};
-
-const Ribbon = ({ text, tone = "red" }) => {
-  const toneClasses =
-    tone === "red"
-      ? "bg-red-500 text-white"
-      : tone === "blue"
-      ? "bg-blue-500 text-white"
-      : tone === "yellow"
-      ? "bg-yellow text-black"
-      : tone === "purple"
-      ? "bg-purple text-white"
-      : "";
-  return (
-    <div
-      className={cx(
-        "absolute left-[-6px] top-2 rotate-[-6deg] border-[2px] border-black px-2.5 py-0.5 text-[10px] lg:text-xs font-black uppercase shadow-[2px_2px_0_#000]",
-        toneClasses
-      )}
-    >
-      {text}
-    </div>
-  );
-};
-
-const WeekCountdown = ({ start, end }) => {
-  const [state, setState] = React.useState("upcoming");
-  const [left, setLeft] = React.useState("");
-
-  React.useEffect(() => {
-    const startAt = parseMaybeNZ(start);
-    const endAt = parseMaybeNZ(end);
-
-    const tick = () => {
-      const now = new Date();
-      if (startAt && now < startAt) {
-        setState("upcoming");
-        setLeft(fmtDuration(startAt - now));
-        return;
-      }
-      if (endAt && now > endAt) {
-        setState("expired");
-        setLeft("");
-        return;
-      }
-      setState("live");
-      if (endAt) setLeft(fmtDuration(endAt - now));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [start, end]);
-
-  if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
-  if (state === "expired") return <Badge tone="gray">Expired</Badge>;
-  return null;
-};
-
-/* ------------------------------ Frames ------------------------------ */
-const MediaFrame = ({ children, dotw = false }) => (
+const MediaFrame = ({ children, dotw }) => (
   <div
-    className={
-      "relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 transition-shadow " +
-      (dotw
-        ? "ring-4 ring-yellow/70 shadow-[0_0_25px_5px_rgba(250,204,21,0.6)]"
-        : "")
-    }
+    className={cx(
+      "relative overflow-hidden border-[4px] border-black rounded-xl bg-white shadow-[6px_6px_0_#000]",
+      dotw ? "aspect-[9/16]" : "aspect-[4/5]"
+    )}
   >
-    {/* Aspect-ratio box: DOTW 9:16, Static 4:5 */}
-    <div
-      className={cx(
-        "relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200",
-        dotw ? "aspect-[9/16]" : "aspect-[4/5]"
-      )}
-    >
-      <div className="absolute inset-0">{children}</div>
-    </div>
+    {children}
   </div>
 );
 
-const ImageWithFallback = ({ src, alt, className }) => {
-  const [source, setSource] = React.useState(
-    /\.[a-zA-Z0-9]{3,4}$/.test(src || "") ? src : `${src}.png`
-  );
-  return (
-    <img
-      src={source}
-      alt={alt}
-      className={className}
-      onError={() => {
-        if (source.endsWith(".png")) setSource(source.replace(/\.png$/, ".jpg"));
-      }}
-    />
-  );
-};
-
-/* ------------------------------- Deal Card ------------------------------- */
 const DealCard = ({ deal }) => {
-  const [open, setOpen] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const [done, setDone] = React.useState(false);
-
-  React.useEffect(() => {
-    document.body.classList.toggle("overflow-hidden", open);
-  }, [open]);
-
-  // Waitlist uses shared form; DOTW draw can be per-id bucket if you registered them
-  const formName = deal.waitlist
-    ? WAITLIST_FORM_NAME
-    : (String(deal.id).startsWith("dotw-")
-        ? `deal-entry-${deal.id}` // e.g., "deal-entry-dotw-1"
-        : DRAW_FORM_NAME);
-
-  const onSubmitNetlify = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const form = e.currentTarget;
-      const data = new FormData(form);
-      if (!data.get("form-name")) data.set("form-name", formName);
-
-      const payload = {};
-      for (const [k, v] of data.entries()) payload[k] = v;
-
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode(payload),
-      });
-
-      setDone(true);
-    } catch (err) {
-      console.error("Netlify form submit failed:", err);
-      alert("Sorry — something went wrong submitting the form.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const isDotw = !!deal.dotw;
-
+  const isVideo = !!deal.vimeoId;
   return (
-    <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-      {/* Rotated top-right countdown badge for DOTW */}
-      {isDotw && (
-        <div className="absolute -top-3 -right-3 rotate-6 z-10">
-          <div className="rotate-[-6deg]">
-            <WeekCountdown start={deal.start} end={deal.end} />
-          </div>
-        </div>
-      )}
-
-      <MediaFrame dotw={isDotw}>
-        {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
-
+    <div className="flex flex-col gap-3">
+      <MediaFrame dotw={deal.dotw}>
         {deal.placeholder ? (
-          <div className="flex h-full w-full items-center justify-center bg-white/60">
-            <span className="select-none text-lg font-black uppercase tracking-wide text-black/60">
+          <div className="absolute inset-0 grid place-items-center bg-white/70">
+            <span className="font-black uppercase tracking-wide text-black/60">
               Coming soon…
             </span>
           </div>
-        ) : deal.vimeoId ? (
+        ) : isVideo ? (
           <iframe
-            src={
-              deal.vimeoHash
-                ? `https://player.vimeo.com/video/${deal.vimeoId}?h=${deal.vimeoHash}&title=0&byline=0&portrait=0&pip=1`
-                : `https://player.vimeo.com/video/${deal.vimeoId}?title=0&byline=0&portrait=0&pip=1`
-            }
+            src={`https://player.vimeo.com/video/${deal.vimeoId}${
+              deal.vimeoHash ? `?h=${deal.vimeoHash}` : ""
+            }`}
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            allowFullScreen
-            className="h-full w-full"
-            loading="lazy"
+            className="absolute inset-0 w-full h-full"
             title={deal.title}
           />
-        ) : deal.image ? (
-          <ImageWithFallback src={deal.image} alt={deal.title} className="h-full w-full object-cover" />
         ) : (
-          <div className="grid h-full place-items-center text-gray-500">No media</div>
+          <img
+            src={deal.image}
+            alt={deal.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         )}
       </MediaFrame>
 
-      <div className="flex flex-1 flex-col gap-2">
-        <h3 className="font-black text-[clamp(1rem,2vw,1.25rem)]">{deal.title}</h3>
-        <div className="flex flex-wrap items-center gap-2">
-          {deal.badges?.map((b, i) => (
-            <Badge key={i} tone={b.tone}>
-              {b.text}
-            </Badge>
-          ))}
-        </div>
+      <div>
+        <h3 className="font-black text-[clamp(1rem,2vw,1.5rem)] leading-tight">
+          {deal.title}
+        </h3>
 
-        <div className="mt-auto flex flex-wrap gap-3 pt-4">
-          {deal.waitlist ? (
-            <button
-              onClick={() => {
-                setOpen(true);
-                setDone(false);
-              }}
-              className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
-            >
-              Join Waitlist
-            </button>
-          ) : deal.disabled ? (
-            <button
-              disabled
-              className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
-            >
-              {deal.disabledLabel || "Sold Out"}
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                setOpen(true);
-                setDone(false);
-              }}
-              className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-            >
-              Enter Draw
-            </button>
-          )}
-        </div>
+        {deal.disabled ? (
+          <button
+            disabled
+            className="mt-2 w-full cursor-not-allowed border-[3px] border-black bg-gray-300 px-3 py-2 font-black shadow-[3px_3px_0_#000]"
+          >
+            {deal.disabledLabel || "Sold Out"}
+          </button>
+        ) : deal.waitlist ? (
+          <button className="mt-2 w-full border-[3px] border-black bg-gray-300 px-3 py-2 font-black shadow-[3px_3px_0_#000] text-black/70">
+            Join Waitlist
+          </button>
+        ) : (
+          <button className="mt-2 w-full border-[3px] border-black bg-yellow px-3 py-2 font-black shadow-[3px_3px_0_#000] hover:bg-purple hover:text-white transition">
+            Enter Draw
+          </button>
+        )}
       </div>
-
-      {/* Modal with Netlify AJAX submit */}
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-            {/* Close (X) */}
-            <button
-              onClick={() => {
-                setOpen(false);
-                setDone(false);
-              }}
-              className="absolute top-2 right-3 text-black text-xl font-black hover:text-purple"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-
-            {!done ? (
-              <>
-                <h3 className="mb-4 text-xl font-black">{deal.title}</h3>
-                <form
-                  name={formName}
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
-                  className="grid gap-3"
-                  onSubmit={onSubmitNetlify}
-                >
-                  <input type="hidden" name="form-name" value={formName} />
-                  <input type="hidden" name="deal" value={deal.title} />
-                  <input
-                    type="hidden"
-                    name="kind"
-                    value={deal.waitlist ? "waitlist" : "draw"}
-                  />
-                  <input type="hidden" name="deal_id" value={deal.id} />
-
-                  <p className="hidden">
-                    <label>
-                      Don’t fill this out: <input name="bot-field" />
-                    </label>
-                  </p>
-
-                  <label className="font-black">
-                    Name
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <label className="font-black">
-                    Email
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  {/* Unrestricted fields per your ask */}
-                  <label className="font-black">
-                    Phone
-                    <input
-                      type="text"
-                      name="phone"
-                      placeholder="e.g. 021 234 5678"
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <label className="font-black">
-                    Post code
-                    <input
-                      type="text"
-                      name="postcode"
-                      placeholder="e.g. 1011"
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <div className="mt-4 flex justify-end gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpen(false);
-                        setDone(false);
-                      }}
-                      className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold"
-                      disabled={submitting}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]"
-                      disabled={submitting}
-                    >
-                      {submitting
-                        ? "Submitting…"
-                        : deal.waitlist
-                        ? "Join Waitlist"
-                        : "Enter Draw"}
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              // Success message (waitlist vs draw)
-              <div className="grid gap-4 text-center">
-                {deal.waitlist ? (
-                  <>
-                    <div className="text-2xl font-black">You're on the waitlist! 🎉</div>
-                    <p className="text-sm text-gray-700">
-                      We'll email you when it's back in stock.
-                    </p>
-                  </>
-                ) : (
-                  <div className="text-2xl font-black">You’re in the draw! 🎉</div>
-                )}
-                <button
-                  onClick={() => {
-                    setOpen(false);
-                    setDone(false);
-                  }}
-                  className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-
-            {/* Promo Terms inside the popup (DOTW only) */}
-            {deal.dotw && (
-              <p className="mt-6 text-[11px] text-gray-600 text-center">
-                <a
-                  href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-black"
-                >
-                  Promotional Terms &amp; Conditions
-                </a>
-              </p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-/* ------------------------------ Page ------------------------------ */
-function Deals() {
-  // First DOTW goes live 9am 29th Oct NZ, then weekly
+/* ----------------------------- page ----------------------------- */
+export default function Deals() {
+  // ⏱️ Set the FIRST go-live (NZ) and it will roll weekly
+  // e.g. 9:00am Wed 29 Oct NZ time
   const baseStartNZ = "2025-10-29T09:00:00";
 
-  // Your static items (4:5)
-  const staticDeals = [
-    {
-      id: "dentures",
-      title: "Sugar Dentures",
-      image: "/images/deals/Sugar-Dentures.jpg",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-    },
-    {
-      id: "bag10kg",
-      title: "10kg of Sugar",
-      image: "/images/deals/Bag-of-Sugar.jpg",
-      ribbon: { text: "Replenishing soon", tone: "purple" },
-      waitlist: true,
-    },
-    {
-      id: "officechair",
-      title: "Office Chair (Lightly Used)",
-      image: "/images/deals/Chair.jpg",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-    },
-    {
-      id: "sugarcup",
-      title: "Cup of Sugar",
-      image: "/images/deals/Cup.jpg",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-    },
-    // You can add two more if you want 6 static:
-    // { id: "static-5", title: "...", image: "..."},
-    // { id: "static-6", title: "...", image: "..."},
-  ];
+  const [staticDeals, setStatic] = React.useState([]);
+  const [dotwData, setDotw] = React.useState([]);
 
-  // DOTW placeholders (will swap to live when their window is active)
-  const dotwTemplates = [
-    { id: "dotw-1", title: "Deal of the Week", placeholder: true, dotw: true,
-      badges: [{ text: "FREE!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { id: "dotw-2", title: "Deal of the Week", placeholder: true, dotw: true,
-      badges: [{ text: "Now $0.00", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { id: "dotw-3", title: "Deal of the Week", placeholder: true, dotw: true,
-      badges: [{ text: "100% OFF", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-    { id: "dotw-4", title: "Deal of the Week", placeholder: true, dotw: true,
-      badges: [{ text: "Win for Free!", tone: "blue" }, { text: "Giveaway", tone: "yellow" }] },
-  ];
-
-  /* --------- Load live DOTW content from /public/deals.json ---------- */
-  const [dotwContent, setDotwContent] = React.useState({});
+  // load content (no dates in JSON needed)
   React.useEffect(() => {
-    fetch("/deals.json", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((json) => setDotwContent(json || {}))
+    fetch("/data/deals.json")
+      .then((r) => (r.ok ? r.json() : { static: [], dotw: [] }))
+      .then((json) => {
+        setStatic(json.static || []);
+        setDotw(json.dotw || []);
+      })
       .catch(() => {});
   }, []);
 
-  // Build weekly DOTW windows and merge live content when in window
-  const weeklyDeals = dotwTemplates.map((t, i) => {
-    const start = addWeeksNZ(baseStartNZ, i);
-    const end = weekEndFromStartNZ(start);
-    const live = isLiveNowNZ(start, end);
-    const content = dotwContent[t.id] || {};
-    return {
-      ...t,
-      start,
-      end,
-      ...(live
-        ? {
-            placeholder: false,
-            title: content.title || t.title,
-            vimeoId: content.vimeoId,
-            vimeoHash: content.vimeoHash,
-            poster: content.poster,
-            image: content.image,
-          }
-        : {}),
-    };
-  });
+  // build the 4 weekly DOTWs with NZ live windows
+  const weekly = React.useMemo(() => {
+    // exactly 4 weekly windows based on baseStartNZ
+    const templates = Array.from({ length: 4 }).map((_, i) => {
+      const start = addWeeksNZ(baseStartNZ, i);
+      const end = weekEndFromStartNZ(start);
+      const src = dotwData[i] || {}; // content from JSON aligned by index
+      const live = isLiveNowNZ(start, end);
 
-  // Combine: static first, then DOTW — grid will flow responsively
-  const allDeals = [...staticDeals, ...weeklyDeals];
+      return {
+        id: src.id || `dotw-${i + 1}`,
+        dotw: true,
+        start,
+        end,
+        // while not live → keep placeholder title
+        title: live ? src.title || `Deal of the Week #${i + 1}` : "Deal of the Week",
+        // media swaps only when live
+        placeholder: !live,
+        vimeoId: live ? src.vimeoId : undefined,
+        vimeoHash: live ? src.vimeoHash : undefined,
+        image: live ? undefined : src.poster || "/images/deals/placeholder-9x16.jpg",
+      };
+    });
+    return templates;
+  }, [dotwData, baseStartNZ]);
 
   return (
-    <section className="space-y-8 px-4 py-12 sm:px-8">
-      <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-        Gary's Sweet Deals
-      </h2>
+    <section className="bg-yellow min-h-screen px-4 sm:px-8 py-12">
+      <h1 className="text-6xl sm:text-8xl font-black text-center mb-12 text-black">
+        Gary’s Sweet Deals
+      </h1>
 
-      {/* Dynamic responsive grid */}
-      <div className="grid gap-6 sm:gap-8 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {allDeals.map((deal) => (
-          <DealCard key={deal.id} deal={deal} />
-        ))}
+      {/* four paired rows: static + dotw */}
+      <div className="grid gap-12">
+        {Array.from({ length: 4 }).map((_, i) =>
+          weekly[i] && staticDeals[i] ? (
+            <div key={i} className="grid md:grid-cols-2 gap-8 items-stretch">
+              <DealCard deal={staticDeals[i]} />
+              <DealCard deal={weekly[i]} />
+            </div>
+          ) : null
+        )}
       </div>
+
+      {/* remaining two statics below */}
+      {staticDeals.length > 4 && (
+        <div className="grid md:grid-cols-2 gap-8 mt-16">
+          {staticDeals.slice(4, 6).map((d) => (
+            <DealCard key={d.id} deal={d} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
 
-export default Deals;

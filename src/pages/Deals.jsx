@@ -592,6 +592,22 @@ function Deals() {
       ribbon: { text: "Sold Out", tone: "red" },
       disabled: true,
     },
+  {
+    id: "sugar-pillow",
+    title: "Sugar Pillow",
+    image: "/images/deals/Sugar-Pillow.jpg",
+    ribbon: { text: "Sold Out", tone: "red" },
+    disabled: true,
+  },
+  {
+    id: "sugar-sculpture",
+    title: "Sugar Sculpture (Mini)",
+    image: "/images/deals/Sugar-Sculpture.jpg",
+    ribbon: { text: "Coming soon", tone: "purple" },
+    disabled: true,
+  },
+];
+
   ];
 
   /* --------- Load live DOTW content from /public/deals.json ---------- */

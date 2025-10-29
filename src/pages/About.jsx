@@ -142,7 +142,7 @@ const About = () => {
               Gary, do you accept fanmail?
             </summary>
             <div className="mt-2 text-m">
-              Wow. Aren’t you sweet? Dial 0800-4SUGAR to leave me a voicemail or slide into my electronic mail box {" "}
+               Wow. Aren’t you sweet? Dial 0800-4SUGAR to leave me a voicemail or slide into my electronic mail box {" "}
               <button
                 onClick={() => setOpen(true)}
                 className="underline font-black hover:text-purple"
@@ -157,7 +157,19 @@ const About = () => {
       {/* Modal */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-white border-[4px] border-black rounded-xl p-6 shadow-[6px_6px_0_#000] w-full max-w-md">
+          <div className="relative bg-white border-[4px] border-black rounded-xl p-6 shadow-[6px_6px_0_#000] w-full max-w-md">
+            {/* Close (X) Button */}
+            <button
+              onClick={() => {
+                setOpen(false);
+                setDone(false);
+              }}
+              className="absolute top-2 right-3 text-black text-xl font-black hover:text-purple"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
             {!done ? (
               <>
                 <h3 className="text-xl font-black mb-4">Send Gary a Message</h3>
@@ -245,4 +257,3 @@ const About = () => {
 };
 
 export default About;
-

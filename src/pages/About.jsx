@@ -1,8 +1,22 @@
 // src/pages/About.jsx
+
 import React, { useState } from "react";
 
 const About = () => {
-  const [showForm, setShowForm] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(data).toString(),
+    });
+    setDone(true);
+  };
 
   return (
     <div
@@ -124,92 +138,107 @@ const About = () => {
           </details>
 
           {/* Fanmail */}
-          <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
-            <summary className="cursor-pointer font-black">
-              Gary, do you accept fanmail?
-            </summary>
-            <div className="mt-2 text-m text-black">
-              Wow. Aren’t you sweet? Leave me a voicemail on 0800-4SUGAR or slide into my
-              electronic mail box{" "}
-              <button
-                onClick={() => setShowForm(!showForm)}
-                className="underline font-black text-purple hover:text-yellow transition-colors"
-              >
-                HERE
-              </button>
-            </div>
-
-            {showForm && (
-              <form
-                name="gary-fanmail"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                className="mt-4 grid gap-3"
-              >
-                <input type="hidden" name="form-name" value="gary-fanmail" />
-                <p hidden>
-                  <label>
-                    Don’t fill this out: <input name="bot-field" />
-                  </label>
-                </p>
-
-                <label className="font-black">
-                  Name
-                  <input
-                    name="name"
-                    type="text"
-                    required
-                    className="w-full mt-1 rounded-md border-[3px] border-black p-2"
-                  />
-                </label>
-
-                <label className="font-black">
-                  Email
-                  <input
-                    name="email"
-                    type="email"
-                    required
-                    className="w-full mt-1 rounded-md border-[3px] border-black p-2"
-                  />
-                </label>
-
-                <label className="font-black">
-                  Message
-                  <textarea
-                    name="message"
-                    rows="4"
-                    required
-                    className="w-full mt-1 rounded-md border-[3px] border-black p-2"
-                  ></textarea>
-                </label>
-
-                <button
-                  type="submit"
-                  className="mt-2 w-fit rounded-full bg-purple px-4 py-2 text-white font-black uppercase border-[3px] border-black shadow-[3px_3px_0_#000] hover:bg-yellow hover:text-black transition-all"
-                >
-                  Send to Gary
-                </button>
-
-                <p className="text-xs mt-2 text-black">
-  By submitting, you agree to our{" "}
-  <a
-    href="https://www.asahibeverages.com/privacy-collection-notice"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="underline font-bold"
-  >
-    privacy collection notice
-  </a>
-  .
-</p>              </form>
-            )}
-          </details>
+<details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
+        <summary className="cursor-pointer font-black">
+          Gary, do you accept fanmail?
+        </summary>
+        <div className="mt-2 text-m">
+          Wow. Aren’t you sweet? Leave me a voicemail on 0800-4SUGAR or{" "}
+          <button
+            onClick={() => setOpen(true)}
+            className="underline font-black hover:text-purple"
+          >
+            HERE
+          </button>
         </div>
-      </section>
-    </div>
+      </details>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white border-[4px] border-black rounded-xl p-6 shadow-[6px_6px_0_#000] w-full max-w-md">
+            {!done ? (
+              <>
+                <h3 className="text-xl font-black mb-4">Send Gary a Message</h3>
+                <form
+                  name="gary-fanmail"
+                  method="POST"
+                  data-netlify="true"
+                  onSubmit={handleSubmit}
+                  className="grid gap-3"
+                >
+                  <input type="hidden" name="form-name" value="gary-fanmail" />
+
+                  <label className="font-black">
+                    Name
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
+                  </label>
+
+                  <label className="font-black">
+                    Email
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
+                  </label>
+
+                  <label className="font-black">
+                    Message
+                    <textarea
+                      name="message"
+                      required
+                      rows="4"
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    ></textarea>
+                  </label>
+
+                  <button
+                    type="submit"
+                    className="rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
+                  >
+                    Send
+                  </button>
+
+                  <p className="text-xs mt-2 text-black">
+                    By submitting, you agree to our{" "}
+                    <a
+                      href="https://www.asahibeverages.com/privacy-collection-notice"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline font-bold"
+                    >
+                      privacy collection notice
+                    </a>
+                    .
+                  </p>
+                </form>
+              </>
+            ) : (
+              <div className="text-center">
+                <p className="text-2xl font-black mb-4">
+                  Message sent! 🎉 Gary thanks you.
+                </p>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
+
 
 export default About;
 

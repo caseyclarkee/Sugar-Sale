@@ -222,21 +222,24 @@ const DealCard = ({ deal }) => {
         ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1 (separate buckets)
         : DRAW_FORM_NAME);
 
-  // Build a Vimeo src from either a full embed URL or id(+hash)
-  const withParams = (base, params) =>
-    base && (base.includes("?") ? `${base}&${params}` : `${base}?${params}`);
-
+  // SAFE Vimeo URL builder (supports vimeoEmbed OR vimeoId(+vimeoHash))
   const vimeoSrc = React.useMemo(() => {
     if (!deal) return null;
-    if (deal.vimeoEmbed) {
-      return withParams(deal.vimeoEmbed, "title=0&byline=0&portrait=0&pip=1");
+
+    // Option A: full embed URL from deals.json
+    let src = deal.vimeoEmbed || null;
+
+    // Option B: id (+ optional hash) from deals.json
+    if (!src && deal.vimeoId) {
+      src = `https://player.vimeo.com/video/${deal.vimeoId}${
+        deal.vimeoHash ? `?h=${deal.vimeoHash}` : ""
+      }`;
     }
-    if (deal.vimeoId) {
-      let url = `https://player.vimeo.com/video/${deal.vimeoId}`;
-      if (deal.vimeoHash) url = withParams(url, `h=${deal.vimeoHash}`);
-      return withParams(url, "title=0&byline=0&portrait=0&pip=1");
-    }
-    return null;
+
+    if (!src) return null;
+
+    // Append standard player params
+    return src + (src.includes("?") ? "&" : "?") + "title=0&byline=0&portrait=0&pip=1";
   }, [deal]);
 
   // Submit via AJAX to keep modal UX
@@ -295,7 +298,6 @@ const DealCard = ({ deal }) => {
               className="h-full w-full"
               loading="lazy"
               title={deal.title}
-              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         ) : deal.image ? (

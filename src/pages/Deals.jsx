@@ -648,63 +648,49 @@ function Deals() {
      - Large (lg):      per row => [Static i | Static i+1 | DOTW i | DOTW i+1]
   ---------------------------------------------------------------------- */
 
-  return (
+return (
     <section className="space-y-8 px-4 py-12 sm:px-8">
       <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
         Gary's Sweet Deals
       </h2>
 
-      <div className="space-y-6">
-        {Array.from({ length: Math.max(staticDeals.length, weeklyDeals.length) })
-          .map((_, i) => i)
-          .filter((i) => i % 2 === 0) // rows of 2-pairs
-          .map((i) => {
-            const s1 = staticDeals[i];
-            const s2 = staticDeals[i + 1];
-            const d1 = weeklyDeals[i];
-            const d2 = weeklyDeals[i + 1];
+      {/* Mobile grid (unchanged) */}
+      <div className="space-y-6 lg:hidden">
+        {staticDeals.map((s, i) => (
+          <React.Fragment key={s.id}>
+            <DealCard deal={s} />
+            {weeklyDeals[i] && <DealCard deal={weeklyDeals[i]} />}
+          </React.Fragment>
+        ))}
+      </div>
 
-            return (
-              <div key={`row-${i}`} className="w-full">
-                {/* Mobile: 2 cols, 2 rows (S1 D1 / S2 D2) */}
-                <div className="grid grid-cols-2 gap-6 lg:hidden">
-                  {s1 && <DealCard deal={s1} />}
-                  {d1 && <DealCard deal={d1} />}
-                  {s2 && <DealCard deal={s2} />}
-                  {d2 && <DealCard deal={d2} />}
-                </div>
-                
-{/* Large: 4 columns; 3 statics per static column, 2 DOTWs per DOTW column */}
-<div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
-  {/* Build column 1: S1, S3, S5 */}
-  <div className="flex flex-col gap-6">
-    {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
-    {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
-    {staticDeals[4] && <DealCard deal={staticDeals[4]} />}
-  </div>
+      {/* Desktop grid: 4 columns balanced */}
+      <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+        {/* Column 1: S1, S3, S5 */}
+        <div className="flex flex-col gap-6">
+          {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
+          {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
+          {staticDeals[4] && <DealCard deal={staticDeals[4]} />}
+        </div>
 
-  {/* Build column 2: S2, S4, S6 */}
-  <div className="flex flex-col gap-6">
-    {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
-    {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
-    {staticDeals[5] && <DealCard deal={staticDeals[5]} />}
-  </div>
+        {/* Column 2: S2, S4, S6 */}
+        <div className="flex flex-col gap-6">
+          {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
+          {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
+          {staticDeals[5] && <DealCard deal={staticDeals[5]} />}
+        </div>
 
-  {/* Build column 3: D1, D3 */}
-  <div className="flex flex-col gap-6">
-    {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
-    {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
-  </div>
+        {/* Column 3: D1, D3 */}
+        <div className="flex flex-col gap-6">
+          {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
+          {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
+        </div>
 
-  {/* Build column 4: D2, D4 */}
-  <div className="flex flex-col gap-6">
-    {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
-    {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
-  </div>
-</div>
-
-            );
-          })}
+        {/* Column 4: D2, D4 */}
+        <div className="flex flex-col gap-6">
+          {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
+          {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
+        </div>
       </div>
     </section>
   );

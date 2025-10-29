@@ -57,27 +57,17 @@ const Home = () => {
           />
         </h2>
 
-
         {/* VIDEO WRAPPER */}
-<div
-  className="
-    relative mx-auto mt-6 aspect-video w-full max-w-6xl
-    rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000]
-    overflow-hidden bg-black            /* ← was overflow-visible; add bg-black */
-  "
->
-  <iframe
-    ref={vimeoRef}
-    src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
-    title="Hero Video"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowFullScreen
-    frameBorder="0"
-    className="absolute inset-0 h-full w-full block"  /* ← fill & remove baseline gap */
-  />
-</div>
-
-      
+        <div className="relative mx-auto mt-6 aspect-video w-full max-w-6xl overflow-hidden rounded-xl border-[4px] border-grey shadow-[4px_4px_0_#000] bg-black">
+          <iframe
+            ref={vimeoRef}
+            src="https://player.vimeo.com/video/1129405293?h=a946fa6fc4"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title="Hero Video"
+            className="absolute inset-0 w-full h-full block"
+          ></iframe>
 
           {/* BURST — slightly above the media */}
           <img
@@ -127,3 +117,4 @@ const Home = () => {
 };
 
 export default Home;
+

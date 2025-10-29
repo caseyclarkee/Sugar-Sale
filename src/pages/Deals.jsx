@@ -216,12 +216,13 @@ const MediaFrame = ({ children, dotw = false }) => (
     }
   >
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      {/* DOTW = 9:16 tall; static = 5:4 */}
-      <div className={dotw ? "pt-[177.78%]" : "pt-[80%]"} />
-      <div className="absolute inset-0">{children}</div>
+      {/* Hard-lock aspect ratios at all breakpoints */}
+      <div className={dotw ? "pt-[177.78%]" : "pt-[125%]"} />
+      <div className="absolute inset-0 min-h-0 min-w-0">{children}</div>
     </div>
   </div>
 );
+
 
 const ImageWithFallback = ({ src, alt, className }) => {
   const [source, setSource] = React.useState(

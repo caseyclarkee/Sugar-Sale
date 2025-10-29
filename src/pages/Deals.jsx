@@ -216,9 +216,18 @@ const MediaFrame = ({ children, dotw = false }) => (
     }
   >
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      {/* 9:16 for DOTW, 4:5 for static */}
+      {/* Aspect ratio: 9:16 for DOTW, 4:5 for static */}
       <div className={dotw ? "pt-[177.78%]" : "pt-[125%]"} />
-      <div className="absolute inset-0">{children}</div>
+      <div
+        className={
+          "absolute inset-0 flex items-center justify-center " +
+          (dotw ? "bg-black p-[3%] rounded-lg" : "")
+        }
+      >
+        <div className={dotw ? "h-full w-full rounded-md overflow-hidden" : "h-full w-full"}>
+          {children}
+        </div>
+      </div>
     </div>
   </div>
 );

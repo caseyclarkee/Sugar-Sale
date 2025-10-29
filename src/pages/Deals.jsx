@@ -216,7 +216,8 @@ const MediaFrame = ({ children, dotw = false }) => (
     }
   >
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      <div className="pt-[177.78%]" />
+      {/* 9:16 for DOTW, 4:5 for static */}
+      <div className={dotw ? "pt-[177.78%]" : "pt-[125%]"} />
       <div className="absolute inset-0">{children}</div>
     </div>
   </div>

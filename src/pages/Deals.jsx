@@ -484,7 +484,7 @@ const DealCard = ({ deal }) => {
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
   // First DOTW goes live 9am 27th NZ, then weekly
-  const baseStartNZ = "2025-10-31T09:00:00";
+  const baseStartNZ = "2025-11-10T09:00:00";
 
   // DOTW placeholders (coming soon)
   const dotwTemplates = [

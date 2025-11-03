@@ -47,8 +47,8 @@ const X = () => {
             <p className="max-w-md leading-snug text-white">
   
               If you know Long White, you won’t be Xpecting X. The unXpected new RTD available in two refreshing flavours. Zero Sugar. Zero Carb. 94 Calories. Because why go for the expected, when you can have the zero-sugar RTD hosting a sugar sale?
-              
-              <b>“X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.”</b>
+              <br>
+              <b>“X skipped the sugar, but Gary’s got a plan. Grab a sweet deal, crack open a can.”</b></br>
               </p>
           </div>
 

@@ -138,7 +138,7 @@ const Badge = ({ children, tone = "yellow" }) => {
   return (
     <span
       className={cx(
-        "rounded-full border-[2px] border-black px-2.5 py-0.5 text-[10px] font-black uppercase shadow-[2px_2px_0_#000]",
+        "rounded-full border-[2px] border-black px-3 py-1 text-[12px] sm:text-[13px] font-black uppercase shadow-[2px_2px_0_#000]",
         toneClasses
       )}
     >

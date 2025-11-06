@@ -206,6 +206,7 @@ const WeekCountdown = ({ start, end }) => {
 };
 
 /* ------------------------------ Frames ------------------------------ */
+// All tiles use the SAME 4:5 aspect (padding-top: 125%).
 const MediaFrame = ({ children, dotw = false }) => (
   <div
     className={
@@ -216,13 +217,12 @@ const MediaFrame = ({ children, dotw = false }) => (
     }
   >
     <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      {/* Hard-lock aspect ratios at all breakpoints */}
-      <div className={dotw ? "pt-[177.78%]" : "pt-[125%]"} />
+      {/* Hard-lock aspect ratio to 4:5 everywhere */}
+      <div className="pt-[125%]" />
       <div className="absolute inset-0 min-h-0 min-w-0">{children}</div>
     </div>
   </div>
 );
-
 
 const ImageWithFallback = ({ src, alt, className }) => {
   const [source, setSource] = React.useState(
@@ -250,14 +250,12 @@ const DealCard = ({ deal }) => {
     document.body.classList.toggle("overflow-hidden", open);
   }, [open]);
 
-  // Waitlist uses shared form; DOTW draw can be separate per-id or shared
   const formName = deal.waitlist
     ? WAITLIST_FORM_NAME
     : String(deal.id).startsWith("dotw-")
-    ? `deal-entry-${deal.id}` // e.g. deal-entry-dotw-1
+    ? `deal-entry-${deal.id}`
     : DRAW_FORM_NAME;
 
-  // Vimeo builder (supports full embed or id/hash)
   const vimeoSrc = React.useMemo(() => {
     if (!deal) return null;
     let src = deal.vimeoEmbed || null;
@@ -270,7 +268,6 @@ const DealCard = ({ deal }) => {
     return src + (src.includes("?") ? "&" : "?") + "title=0&byline=0&portrait=0&pip=1";
   }, [deal]);
 
-  // Submit via AJAX to keep modal UX
   const onSubmitNetlify = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -299,7 +296,6 @@ const DealCard = ({ deal }) => {
 
   return (
     <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-      {/* Rotated top-right countdown badge */}
       {deal.dotw && (
         <div className="absolute -top-3 -right-3 rotate-6 z-10">
           <div className="rotate-[-6deg]">
@@ -349,39 +345,38 @@ const DealCard = ({ deal }) => {
           ))}
         </div>
 
-      <div className="mt-auto flex flex-wrap gap-3 pt-4">
-        {deal.waitlist ? (
-          <button
-            onClick={() => {
-              setOpen(true);
-              setDone(false);
-            }}
-            className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
-          >
-            Join Waitlist
-          </button>
-        ) : deal.disabled ? (
-          <button
-            disabled
-            className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
-          >
-            {deal.disabledLabel || "Sold Out"}
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setOpen(true);
-              setDone(false);
-            }}
-            className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-          >
-            Enter Draw
-          </button>
-        )}
+        <div className="mt-auto flex flex-wrap gap-3 pt-4">
+          {deal.waitlist ? (
+            <button
+              onClick={() => {
+                setOpen(true);
+                setDone(false);
+              }}
+              className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
+            >
+              Join Waitlist
+            </button>
+          ) : deal.disabled ? (
+            <button
+              disabled
+              className="cursor-not-allowed rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-black uppercase text-black/60 shadow-[3px_3px_0_#000]"
+            >
+              {deal.disabledLabel || "Sold Out"}
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setOpen(true);
+                setDone(false);
+              }}
+              className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+            >
+              Enter Draw
+            </button>
+          )}
+        </div>
       </div>
-    </div>
 
-      {/* Modal with Netlify AJAX submit */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
@@ -476,7 +471,6 @@ const DealCard = ({ deal }) => {
                 </form>
               </>
             ) : (
-              // Success message (waitlist vs draw)
               <div className="grid gap-4 text-center">
                 {deal.waitlist ? (
                   <>
@@ -497,7 +491,6 @@ const DealCard = ({ deal }) => {
               </div>
             )}
 
-            {/* Promo Terms inside the popup (DOTW only), below form/success */}
             {deal.dotw && (
               <p className="mt-6 text-[11px] text-gray-600 text-center">
                 <a
@@ -522,7 +515,7 @@ function Deals() {
   // First DOTW goes live 9am 29th Oct NZ, then weekly
   const baseStartNZ = "2025-10-29T09:00:00";
 
-  // DOTW placeholders (coming soon)
+  // DOTW placeholders (coming soon) — 4 only
   const dotwTemplates = [
     {
       id: "dotw-1",
@@ -562,7 +555,7 @@ function Deals() {
     },
   ];
 
-  // six static items (left)
+  // FOUR static items only
   const staticDeals = [
     {
       id: "dentures",
@@ -592,20 +585,6 @@ function Deals() {
       ribbon: { text: "Sold Out", tone: "red" },
       disabled: true,
     },
-    {
-      id: "sugar-pillow",
-      title: "Sugar Pillow",
-      image: "/images/deals/Sugar-Pillow.jpg",
-      ribbon: { text: "Sold Out", tone: "red" },
-      disabled: true,
-    },
-    {
-      id: "sugar-sculpture",
-      title: "Sugar Sculpture (Mini)",
-      image: "/images/deals/Sugar-Sculpture.jpg",
-      ribbon: { text: "Coming soon", tone: "purple" },
-      disabled: true,
-    },
   ];
 
   /* --------- Load live DOTW content from /public/deals.json ---------- */
@@ -632,20 +611,19 @@ function Deals() {
         ? {
             placeholder: false,
             title: content.title || t.title,
-            vimeoEmbed: content.vimeoEmbed, // full embed URL OK
-            vimeoId: content.vimeoId,       // or numeric ID as string
-            vimeoHash: content.vimeoHash,   // optional, for private link
-            poster: content.poster,
-            image: content.image,           // optional fallback image
+            vimeoEmbed: content.vimeoEmbed,
+            vimeoId: content.vimeoId,
+            vimeoHash: content.vimeoHash,
+            image: content.image,
           }
         : {}),
     };
   });
 
   /* ---------------- Layouts ----------------
-     - Mobile (< md): single column, alternating Static -> DOTW entries
+     - Mobile (< md): single column, alternating Static -> DOTW
      - Medium (md.. < lg): 2 columns (all Statics left, all DOTWs right)
-     - Large (>= lg): 4 columns balanced
+     - Large (>= lg): 4 columns (2 Statics + 2 Statics + 2 DOTW + 2 DOTW)
   ----------------------------------------- */
 
   return (
@@ -666,44 +644,42 @@ function Deals() {
 
       {/* Medium (md): 2 columns — all Statics left, all DOTWs right */}
       <div className="hidden md:grid lg:hidden md:grid-cols-2 md:gap-6">
-        {/* Left column: all statics */}
+        {/* Left column: 4 statics */}
         <div className="flex flex-col gap-6">
           {staticDeals.map((s) => (
             <DealCard key={s.id} deal={s} />
           ))}
         </div>
 
-        {/* Right column: all 4 DOTWs */}
+        {/* Right column: 4 DOTWs */}
         <div className="flex flex-col gap-6">
           {weeklyDeals.map((d, idx) => d && <DealCard key={d.id || idx} deal={d} />)}
         </div>
       </div>
 
-      {/* Large (lg): 4 columns balanced */}
+      {/* Large (lg): 4 columns (2 statics | 2 statics | 2 dotw | 2 dotw) */}
       <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
-        {/* Column 1: S1, S3, S5 */}
+        {/* Column 1: S1, S2 */}
         <div className="flex flex-col gap-6">
           {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
-          {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
-          {staticDeals[4] && <DealCard deal={staticDeals[4]} />}
-        </div>
-
-        {/* Column 2: S2, S4, S6 */}
-        <div className="flex flex-col gap-6">
           {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
-          {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
-          {staticDeals[5] && <DealCard deal={staticDeals[5]} />}
         </div>
 
-        {/* Column 3: D1, D3 */}
+        {/* Column 2: S3, S4 */}
+        <div className="flex flex-col gap-6">
+          {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
+          {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
+        </div>
+
+        {/* Column 3: D1, D2 */}
         <div className="flex flex-col gap-6">
           {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
-          {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
+          {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
         </div>
 
-        {/* Column 4: D2, D4 */}
+        {/* Column 4: D3, D4 */}
         <div className="flex flex-col gap-6">
-          {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
+          {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
           {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
         </div>
       </div>
@@ -712,5 +688,4 @@ function Deals() {
 }
 
 export default Deals;
-
 

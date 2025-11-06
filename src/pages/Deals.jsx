@@ -354,7 +354,7 @@ const DealCard = ({ deal }) => {
         </div>
 
         {/* Buttons pinned to bottom */}
-        <div className="mt-auto flex flex-wrap gap-3 pt-4">
+        <div className="mt-auto flex flex-wrap gap-3 pt-2 pb-1">
           {deal.waitlist ? (
             <button
               onClick={() => {

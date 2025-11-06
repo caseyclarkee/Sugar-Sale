@@ -338,7 +338,7 @@ const DealCard = ({ deal }) => {
       </MediaFrame>
 
       {/* ✅ Equal-height meta block (no line-clamp plugin needed) */}
-      <div className="flex flex-1 flex-col gap-2 min-h-[180px]">
+      <div className="flex flex-1 flex-col gap-2 min-h-[140px]">
         {/* Title clamped visually to ~2 lines */}
         <h3 className="text-lg font-black leading-tight max-h-[3.2rem] overflow-hidden">
           {deal.title}

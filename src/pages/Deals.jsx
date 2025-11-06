@@ -158,10 +158,13 @@ const Ribbon = ({ text, tone = "red" }) => {
       : tone === "purple"
       ? "bg-purple text-white"
       : "";
+
   return (
     <div
       className={cx(
-        "absolute left-[-6px] top-2 rotate-[-6deg] border-[2px] border-black px-2.5 py-0.5 text-[10px] lg:text-xs font-black uppercase shadow-[2px_2px_0_#000]",
+        "absolute left-[-6px] top-2 rotate-[-6deg] border-[2px] border-black px-3 py-1",
+        // bigger text, scales down gracefully
+        "text-[12px] sm:text-[13px] md:text-[14px] font-black uppercase shadow-[2px_2px_0_#000]",
         toneClasses
       )}
     >

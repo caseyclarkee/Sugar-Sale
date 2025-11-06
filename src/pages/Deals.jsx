@@ -187,23 +187,27 @@ const WeekCountdown = ({ start, end }) => {
         return;
       }
       if (endAt && now > endAt) {
-        setState("expired");
+        setState("past");
         setLeft("");
         return;
       }
       setState("live");
-      if (endAt) setLeft(fmtDuration(endAt - now));
     };
+
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [start, end]);
 
-  if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="blue">DEAL OF THE WEEK 🔥 Ends in {left}</Badge>;
-  if (state === "expired") return <Badge tone="gray">Expired</Badge>;
+  if (state === "upcoming")
+    return <Badge tone="yellow">Goes live in {left}</Badge>;
+  if (state === "live")
+    return <Badge tone="blue">Deal of the Week 🔥</Badge>;
+  if (state === "past")
+    return <Badge tone="gray">Previous Deal of the Week</Badge>;
   return null;
 };
+
 
 /* ------------------------------ Frames ------------------------------ */
 // All tiles use the SAME 4:5 aspect (padding-top: 125%).

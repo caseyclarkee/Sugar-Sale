@@ -1,4 +1,4 @@
-// src/pages/Deals.jsx — Deal of the Week (NZ-aware, md=2cols, Netlify forms, Vimeo-ready)
+// src/pages/Deals.jsx — Deal of the Week (NZ-aware, mobile=1, md..<xl=2 cols, xl=4 cols, Netlify forms, Vimeo-ready)
 import React from "react";
 
 /* ----------------------------- Helpers ----------------------------- */
@@ -512,7 +512,7 @@ const DealCard = ({ deal }) => {
 
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
-  // First DOTW goes live 9am 29th Oct NZ, then weekly
+  // First DOTW goes live 9am 6 Nov 2025 NZ, then weekly
   const baseStartNZ = "2025-11-06T09:00:00";
 
   // DOTW placeholders (coming soon) — 4 only
@@ -621,9 +621,9 @@ function Deals() {
   });
 
   /* ---------------- Layouts ----------------
-     - Mobile (< md): single column, alternating Static -> DOTW
-     - Medium (md.. < lg): 2 columns (all Statics left, all DOTWs right)
-     - Large (>= lg): 4 columns (2 Statics + 2 Statics + 2 DOTW + 2 DOTW)
+     - Mobile (< md): 1 column, alternating Static -> DOTW
+     - md.. < xl: 2 columns (all Statics left, all DOTWs right)
+     - xl (>= 1280): 4 columns (2 Statics | 2 Statics | 2 DOTW | 2 DOTW)
   ----------------------------------------- */
 
   return (
@@ -642,8 +642,8 @@ function Deals() {
         ))}
       </div>
 
-      {/* Medium (md): 2 columns — all Statics left, all DOTWs right */}
-      <div className="hidden md:grid lg:hidden md:grid-cols-2 md:gap-6">
+      {/* md.. < xl: 2 columns — Statics left, DOTWs right */}
+      <div className="hidden md:grid xl:hidden md:grid-cols-2 md:gap-6">
         {/* Left column: 4 statics */}
         <div className="flex flex-col gap-6">
           {staticDeals.map((s) => (
@@ -657,8 +657,8 @@ function Deals() {
         </div>
       </div>
 
-      {/* Large (lg): 4 columns (2 statics | 2 statics | 2 dotw | 2 dotw) */}
-      <div className="hidden lg:grid lg:grid-cols-4 lg:gap-6">
+      {/* xl and up: 4 columns */}
+      <div className="hidden xl:grid xl:grid-cols-4 xl:gap-6">
         {/* Column 1: S1, S2 */}
         <div className="flex flex-col gap-6">
           {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
@@ -688,4 +688,3 @@ function Deals() {
 }
 
 export default Deals;
-

@@ -296,6 +296,7 @@ const DealCard = ({ deal }) => {
 
   return (
     <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
+      {/* Rotated countdown (DOTW only) */}
       {deal.dotw && (
         <div className="absolute -top-3 -right-3 rotate-6 z-10">
           <div className="rotate-[-6deg]">
@@ -304,6 +305,7 @@ const DealCard = ({ deal }) => {
         </div>
       )}
 
+      {/* Media area (locked 4:5 via MediaFrame) */}
       <MediaFrame dotw={!!deal.dotw}>
         {deal.ribbon && <Ribbon text={deal.ribbon.text} tone={deal.ribbon.tone} />}
 
@@ -335,9 +337,15 @@ const DealCard = ({ deal }) => {
         )}
       </MediaFrame>
 
-      <div className="flex flex-1 flex-col gap-2">
-        <h3 className="text-lg font-black">{deal.title}</h3>
-        <div className="flex flex-wrap items-center gap-2">
+      {/* ✅ Equal-height meta block (no line-clamp plugin needed) */}
+      <div className="flex flex-1 flex-col gap-2 min-h-[180px]">
+        {/* Title clamped visually to ~2 lines */}
+        <h3 className="text-lg font-black leading-tight max-h-[3.2rem] overflow-hidden">
+          {deal.title}
+        </h3>
+
+        {/* Reserve consistent space for badges */}
+        <div className="flex flex-wrap items-center gap-2 min-h-[28px]">
           {deal.badges?.map((b, i) => (
             <Badge key={i} tone={b.tone}>
               {b.text}
@@ -345,6 +353,7 @@ const DealCard = ({ deal }) => {
           ))}
         </div>
 
+        {/* Buttons pinned to bottom */}
         <div className="mt-auto flex flex-wrap gap-3 pt-4">
           {deal.waitlist ? (
             <button
@@ -377,6 +386,7 @@ const DealCard = ({ deal }) => {
         </div>
       </div>
 
+      {/* Modal with Netlify AJAX submit */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
@@ -426,7 +436,7 @@ const DealCard = ({ deal }) => {
                     />
                   </label>
 
-                  {/* Optional fields (unrestricted as requested) */}
+                  {/* Optional fields */}
                   <label className="font-black">
                     Phone
                     <input
@@ -509,6 +519,7 @@ const DealCard = ({ deal }) => {
     </div>
   );
 };
+
 
 /* ------------------------------ Page ------------------------------ */
 function Deals() {

@@ -115,7 +115,7 @@ const About = () => {
                 }
               `}</style>
               <div className="mt-6 flex justify-left gap-10">
-                <a href="https://www.tiktok.com/@longwhite.nz" target="_blank">
+                <a href="https://www.tiktok.com/@longwhite_nz" target="_blank">
                   <img src="/icons/tiktok.png" alt="TikTok" className="w-16 h-16 icon-float" />
                 </a>
                 <a href="https://www.instagram.com/longwhite.nz" target="_blank">

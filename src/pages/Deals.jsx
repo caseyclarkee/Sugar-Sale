@@ -424,10 +424,10 @@ const DealCard = ({ deal }) => {
                   </p>
 
                   <label className="font-black">
-                    Name
+                    Full Name
                     <input
                       type="text"
-                      name="full name"
+                      name="name"
                       required
                       className="mt-1 w-full border-[3px] border-black p-2"
                     />

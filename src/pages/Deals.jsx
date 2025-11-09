@@ -638,6 +638,17 @@ function Deals() {
     };
   });
 
+  // Move whichever deal is live this week to the front automatically
+const liveIndex = weeklyDeals.findIndex((d) => d.live);
+const weeklyDealsOrdered =
+  liveIndex > 0
+    ? [
+        weeklyDeals[liveIndex],
+        ...weeklyDeals.slice(0, liveIndex),
+        ...weeklyDeals.slice(liveIndex + 1),
+      ]
+    : weeklyDeals;
+
 /* ---------------- Layouts ----------------
    - Mobile (< md): 1 column, alternating DOTW -> Static
    - md.. < xl: 2 columns (DOTWs left, Statics right)
@@ -652,7 +663,7 @@ return (
 
     {/* Mobile: single column, alternating DOTW then Static */}
     <div className="space-y-6 md:hidden">
-      {weeklyDeals.map((d, i) => (
+      {weeklyDealsOrdered.map((d, i) => (
         <React.Fragment key={d.id || i}>
           <DealCard deal={d} />
           {staticDeals[i] && <DealCard deal={staticDeals[i]} />}
@@ -664,7 +675,7 @@ return (
     <div className="hidden md:grid xl:hidden md:grid-cols-2 md:gap-6">
       {/* Left column: DOTWs */}
       <div className="flex flex-col gap-6">
-        {weeklyDeals.map((d, i) => d && <DealCard key={d.id || i} deal={d} />)}
+        {weeklyDealsOrdered.map((d, i) => d && <DealCard key={d.id || i} deal={d} />)}
       </div>
 
       {/* Right column: Statics */}

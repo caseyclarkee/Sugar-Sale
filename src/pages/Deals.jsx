@@ -644,59 +644,65 @@ function Deals() {
    - xl (>=1280): 4 columns (DOTWs left | DOTWs | Statics | Statics)
 ----------------------------------------- */
 
-{/* Mobile: single column, alternating DOTW then Static */}
-<div className="space-y-6 md:hidden">
-  {weeklyDeals.map((d, i) => (
-    <React.Fragment key={d.id || i}>
-      <DealCard deal={d} />
-      {staticDeals[i] && <DealCard deal={staticDeals[i]} />}
-    </React.Fragment>
-  ))}
-</div>
+return (
+  <section className="space-y-8 px-4 py-12 sm:px-8">
+    <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
+      Gary's Sweet Deals
+    </h2>
 
-{/* md.. < xl: 2 columns — DOTWs left, Statics right */}
-<div className="hidden md:grid xl:hidden md:grid-cols-2 md:gap-6">
-  {/* Left column: DOTWs */}
-  <div className="flex flex-col gap-6">
-    {weeklyDeals.map((d, i) => d && <DealCard key={d.id || i} deal={d} />)}
-  </div>
+    {/* Mobile: single column, alternating DOTW then Static */}
+    <div className="space-y-6 md:hidden">
+      {weeklyDeals.map((d, i) => (
+        <React.Fragment key={d.id || i}>
+          <DealCard deal={d} />
+          {staticDeals[i] && <DealCard deal={staticDeals[i]} />}
+        </React.Fragment>
+      ))}
+    </div>
 
-  {/* Right column: Statics */}
-  <div className="flex flex-col gap-6">
-    {staticDeals.map((s) => (
-      <DealCard key={s.id} deal={s} />
-    ))}
-  </div>
-</div>
+    {/* md.. < xl: 2 columns — DOTWs left, Statics right */}
+    <div className="hidden md:grid xl:hidden md:grid-cols-2 md:gap-6">
+      {/* Left column: DOTWs */}
+      <div className="flex flex-col gap-6">
+        {weeklyDeals.map((d, i) => d && <DealCard key={d.id || i} deal={d} />)}
+      </div>
 
-{/* xl and up: 4 columns — DOTWs left, Statics right */}
-<div className="hidden xl:grid xl:grid-cols-4 xl:gap-6">
-  {/* Column 1: D1, D2 */}
-  <div className="flex flex-col gap-6">
-    {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
-    {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
-  </div>
+      {/* Right column: Statics */}
+      <div className="flex flex-col gap-6">
+        {staticDeals.map((s) => (
+          <DealCard key={s.id} deal={s} />
+        ))}
+      </div>
+    </div>
 
-  {/* Column 2: D3, D4 */}
-  <div className="flex flex-col gap-6">
-    {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
-    {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
-  </div>
+    {/* xl and up: 4 columns — DOTWs left, Statics right */}
+    <div className="hidden xl:grid xl:grid-cols-4 xl:gap-6">
+      {/* Column 1: D1, D2 */}
+      <div className="flex flex-col gap-6">
+        {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
+        {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
+      </div>
 
-  {/* Column 3: S1, S2 */}
-  <div className="flex flex-col gap-6">
-    {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
-    {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
-  </div>
+      {/* Column 2: D3, D4 */}
+      <div className="flex flex-col gap-6">
+        {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
+        {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
+      </div>
 
-  {/* Column 4: S3, S4 */}
-  <div className="flex flex-col gap-6">
-    {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
-    {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
-  </div>
-</div>
-    </section>
-  );
+      {/* Column 3: S1, S2 */}
+      <div className="flex flex-col gap-6">
+        {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
+        {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
+      </div>
+
+      {/* Column 4: S3, S4 */}
+      <div className="flex flex-col gap-6">
+        {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
+        {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
+      </div>
+    </div>
+  </section>
+);
 }
 
 export default Deals;

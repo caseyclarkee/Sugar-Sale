@@ -427,7 +427,7 @@ const DealCard = ({ deal }) => {
                     Name
                     <input
                       type="text"
-                      name="name"
+                      name="full name"
                       required
                       className="mt-1 w-full border-[3px] border-black p-2"
                     />

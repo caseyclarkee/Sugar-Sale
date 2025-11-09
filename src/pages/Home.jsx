@@ -106,7 +106,7 @@ const Home = () => {
         `}</style>
 
         <div className="mt-12 flex justify-center gap-10">
-          <a href="https://www.tiktok.com/@longwhite.nz" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.tiktok.com/@longwhite_nz" target="_blank" rel="noopener noreferrer">
             <img src="/icons/tiktok.png" alt="TikTok" className="w-16 h-16 icon-float icon-delay-1" />
           </a>
           <a href="https://www.instagram.com/longwhite.nz" target="_blank" rel="noopener noreferrer">

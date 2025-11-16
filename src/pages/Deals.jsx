@@ -614,7 +614,9 @@ function Deals() {
       .catch(() => {});
   }, []);
 
-// Compute weekly DOTW windows and merge content.
+  // Compute weekly DOTW windows and merge content.
+// Show "Coming soon…" for upcoming, regardless of media availability.
+// Once live, switch to media and keep it for past weeks.
 const weeklyDeals = dotwTemplates.map((t, i) => {
   const start = addWeeksNZ(baseStartNZ, i);
   const end = weekEndFromStartNZ(start);
@@ -624,10 +626,8 @@ const weeklyDeals = dotwTemplates.map((t, i) => {
   const isUpcoming = parseMaybeNZ(start) > now;
 
   const content = dotwContent[t.id] || {};
-  const hasContent =
-    !!(content.vimeoEmbed || content.vimeoId || content.image || content.title);
+  const hasMedia = !!(content.vimeoEmbed || content.vimeoId || content.image);
 
-  // Base shape
   const base = {
     ...t,
     dotw: true,
@@ -635,25 +635,32 @@ const weeklyDeals = dotwTemplates.map((t, i) => {
     end,
     live: isLive,
     status: isLive ? "live" : isUpcoming ? "upcoming" : "past",
-    // Only show placeholder when upcoming AND no content
-    placeholder: isUpcoming && !hasContent,
   };
 
-  // For live OR past, merge any content so the video/image persists
-  if (!isUpcoming && hasContent) {
+  if (isUpcoming) {
+    // 🔒 Don’t show media early; keep placeholder on.
     return {
       ...base,
-      placeholder: false,
-      title: content.title || t.title,
+      placeholder: true,
+      title: content.title || t.title, // optional: let the title update
+      // (intentionally NOT attaching vimeo/image yet)
+    };
+  }
+
+  // Live or past: show media if we have it; never show "coming soon".
+  return {
+    ...base,
+    placeholder: false,
+    title: content.title || t.title,
+    ...(hasMedia && {
       vimeoEmbed: content.vimeoEmbed,
       vimeoId: content.vimeoId,
       vimeoHash: content.vimeoHash,
       image: content.image,
-    };
-  }
-
-  return base;
+    }),
+  };
 });
+
 
 // Move whichever deal is live this week to the front automatically
 const liveIndex = weeklyDeals.findIndex((d) => d.live);

@@ -530,7 +530,7 @@ const DealCard = ({ deal }) => {
 
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
-  // First DOTW goes live 9am 6 Nov 2025 NZ, then weekly
+  // First DOTW goes live 9am 10 Nov 2025 NZ, then weekly
   const baseStartNZ = "2025-11-10T09:00:00";
 
   // DOTW placeholders (coming soon) — 4 only
@@ -614,31 +614,48 @@ function Deals() {
       .catch(() => {});
   }, []);
 
-  // Compute weekly DOTW windows and merge live content when in window
-  const weeklyDeals = dotwTemplates.map((t, i) => {
-    const start = addWeeksNZ(baseStartNZ, i);
-    const end = weekEndFromStartNZ(start);
-    const live = isLiveNowNZ(start, end);
-    const content = dotwContent[t.id] || {};
-    return {
-      ...t,
-      dotw: true,
-      start,
-      end,
-      ...(live
-        ? {
-            placeholder: false,
-            title: content.title || t.title,
-            vimeoEmbed: content.vimeoEmbed,
-            vimeoId: content.vimeoId,
-            vimeoHash: content.vimeoHash,
-            image: content.image,
-          }
-        : {}),
-    };
-  });
+// Compute weekly DOTW windows and merge content.
+const weeklyDeals = dotwTemplates.map((t, i) => {
+  const start = addWeeksNZ(baseStartNZ, i);
+  const end = weekEndFromStartNZ(start);
 
-  // Move whichever deal is live this week to the front automatically
+  const now = new Date();
+  const isLive = isLiveNowNZ(start, end);
+  const isUpcoming = parseMaybeNZ(start) > now;
+
+  const content = dotwContent[t.id] || {};
+  const hasContent =
+    !!(content.vimeoEmbed || content.vimeoId || content.image || content.title);
+
+  // Base shape
+  const base = {
+    ...t,
+    dotw: true,
+    start,
+    end,
+    live: isLive,
+    status: isLive ? "live" : isUpcoming ? "upcoming" : "past",
+    // Only show placeholder when upcoming AND no content
+    placeholder: isUpcoming && !hasContent,
+  };
+
+  // For live OR past, merge any content so the video/image persists
+  if (!isUpcoming && hasContent) {
+    return {
+      ...base,
+      placeholder: false,
+      title: content.title || t.title,
+      vimeoEmbed: content.vimeoEmbed,
+      vimeoId: content.vimeoId,
+      vimeoHash: content.vimeoHash,
+      image: content.image,
+    };
+  }
+
+  return base;
+});
+
+// Move whichever deal is live this week to the front automatically
 const liveIndex = weeklyDeals.findIndex((d) => d.live);
 const weeklyDealsOrdered =
   liveIndex > 0
@@ -648,6 +665,7 @@ const weeklyDealsOrdered =
         ...weeklyDeals.slice(liveIndex + 1),
       ]
     : weeklyDeals;
+
 
 /* ---------------- Layouts ----------------
    - Mobile (< md): 1 column, alternating DOTW -> Static
@@ -686,32 +704,33 @@ return (
       </div>
     </div>
 
-    {/* xl and up: 4 columns — DOTWs left, Statics right */}
-    <div className="hidden xl:grid xl:grid-cols-4 xl:gap-6">
-      {/* Column 1: D1, D2 */}
-      <div className="flex flex-col gap-6">
-        {weeklyDeals[0] && <DealCard deal={weeklyDeals[0]} />}
-        {weeklyDeals[1] && <DealCard deal={weeklyDeals[1]} />}
-      </div>
+   {/* xl and up: 4 columns — DOTWs left, Statics right */}
+<div className="hidden xl:grid xl:grid-cols-4 xl:gap-6">
+  {/* Column 1: D1, D2 */}
+  <div className="flex flex-col gap-6">
+    {weeklyDealsOrdered[0] && <DealCard deal={weeklyDealsOrdered[0]} />}
+    {weeklyDealsOrdered[1] && <DealCard deal={weeklyDealsOrdered[1]} />}
+  </div>
 
-      {/* Column 2: D3, D4 */}
-      <div className="flex flex-col gap-6">
-        {weeklyDeals[2] && <DealCard deal={weeklyDeals[2]} />}
-        {weeklyDeals[3] && <DealCard deal={weeklyDeals[3]} />}
-      </div>
+  {/* Column 2: D3, D4 */}
+  <div className="flex flex-col gap-6">
+    {weeklyDealsOrdered[2] && <DealCard deal={weeklyDealsOrdered[2]} />}
+    {weeklyDealsOrdered[3] && <DealCard deal={weeklyDealsOrdered[3]} />}
+  </div>
 
-      {/* Column 3: S1, S2 */}
-      <div className="flex flex-col gap-6">
-        {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
-        {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
-      </div>
+  {/* Column 3: S1, S2 */}
+  <div className="flex flex-col gap-6">
+    {staticDeals[0] && <DealCard deal={staticDeals[0]} />}
+    {staticDeals[1] && <DealCard deal={staticDeals[1]} />}
+  </div>
 
-      {/* Column 4: S3, S4 */}
-      <div className="flex flex-col gap-6">
-        {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
-        {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
-      </div>
-    </div>
+  {/* Column 4: S3, S4 */}
+  <div className="flex flex-col gap-6">
+    {staticDeals[2] && <DealCard deal={staticDeals[2]} />}
+    {staticDeals[3] && <DealCard deal={staticDeals[3]} />}
+  </div>
+</div>
+
   </section>
 );
 }

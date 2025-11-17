@@ -638,14 +638,15 @@ const weeklyDeals = dotwTemplates.map((t, i) => {
   };
 
   if (isUpcoming) {
-    // 🔒 Don’t show media early; keep placeholder on.
-    return {
-      ...base,
-      placeholder: true,
-      title: content.title || t.title, // optional: let the title update
-      // (intentionally NOT attaching vimeo/image yet)
-    };
-  }
+  // 🔒 Hide title until live
+  return {
+    ...base,
+    placeholder: true,
+    // always use generic title for upcoming
+    title: t.title,
+    // (don't attach any media or real title yet)
+  };
+}
 
   // Live or past: show media if we have it; never show "coming soon".
   return {

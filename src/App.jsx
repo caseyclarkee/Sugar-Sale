@@ -49,17 +49,15 @@ const Marquee = ({ text }) => (
   </div>
 );
 
-/* Header — stacks on mobile, wraps on desktop, no clipping */
+/* Header */
 const Header = () => (
   <header className="sticky top-0 z-50 grid gap-4 border-b-[4px] border-grey bg-white/95 backdrop-blur py-4 w-full overflow-visible">
-    {/* Logo + button row */}
     <div className="flex items-center justify-between w-full px-4 sm:px-8">
       <img
         src="/images/sugar-lockup.png"
         alt="Sugar Liquidation Sale"
         className="h-28 sm:h-36 w-auto"
       />
-
       <button
         onClick={() => {
           const urls = [
@@ -76,7 +74,6 @@ const Header = () => (
       </button>
     </div>
 
-    {/* Nav: grid on small, wraps on md+; given its own height & z so it can't be overlapped */}
     <nav className="w-full relative z-[60] py-2">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:justify-center gap-3 min-h-[48px]">
@@ -110,47 +107,89 @@ const Header = () => (
   </header>
 );
 
-/* Fixed side rails (lg+) */
-const LeftRail = () => (
-  <aside className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] flex-col justify-between border-r-[4px] border-grey bg-yellow p-4 text-center z-40">
-    <div className="mt-20">
-        {/* Burst badge */}
-      <svg class="size-6 animate-bounce ...">
-      <Burst className="mx-auto mb-6 h-24 w-24">
-        <span className="text-lg">ALL SUGAR MUST GO</span>
-      </Burst>
-        </svg>
-      <p className="font-black uppercase mb-4">We didn't use any sugar in</p>
-      <div className="aspect-square w-full overflow-hidden rounded-full border-[4px] border-grey shadow-[4px_4px_0_#000] mb-4">
-        <img
-          src="https://placehold.co/300x300/png?text=Can"
-          alt="X Can"
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <p className="font-black uppercase">So Gary needs to sell the sugar</p>
-    </div>
-  </aside>
-);
+/* Fixed Left Rail */
+const LeftRail = () => {
+  const railRef = React.useRef(null);
+  const [heights, setHeights] = React.useState([]);
+  const ratiosRef = React.useRef([]);
 
+  const panels = [
+    { src: "/images/left-rail/Left01.png", alt: "X can" },
+    { src: "/images/left-rail/Left02.gif", alt: "Sale on now" },
+    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
+    { src: "/images/left-rail/Left04.gif", alt: "All Sugar badge" },
+    { src: "/images/left-rail/Left05.png", alt: "Gary’s sugar hotline" },
+  ];
+
+  const recalc = React.useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const H = rail.clientHeight;
+    const ratios = ratiosRef.current;
+
+    if (ratios.length !== panels.length || ratios.some((r) => !r)) {
+      const even = Array(panels.length).fill(H / panels.length);
+      setHeights(even);
+      return;
+    }
+
+    const total = ratios.reduce((a, b) => a + b, 0) || 1;
+    setHeights(ratios.map((r) => (r / total) * H));
+  }, [panels.length]);
+
+  React.useEffect(() => {
+    const onResize = () => recalc();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [recalc]);
+
+  React.useEffect(() => {
+    window.addEventListener("load", recalc);
+    return () => window.removeEventListener("load", recalc);
+  }, [recalc]);
+
+  const onImgLoad = (idx, e) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    ratiosRef.current[idx] = h / Math.max(1, w);
+    recalc();
+  };
+
+  return (
+    <aside
+      ref={railRef}
+      className="hidden lg:flex fixed left-0 top-0 h-full w-[200px] border-r-[4px] border-black bg-yellow p-0 z-40"
+    >
+      <div className="h-full w-full flex flex-col">
+        {panels.map((p, i) => (
+          <div
+            key={i}
+            style={{ height: heights[i] ?? 0, transition: "height 200ms ease" }}
+            className="relative border-b-[0px] border-black last:border-b-0 overflow-hidden bg-yellow"
+          >
+            <img
+              src={p.src}
+              alt={p.alt}
+              className="w-full h-full object-contain block select-none pointer-events-none"
+              draggable="false"
+              onLoad={(e) => onImgLoad(i, e)}
+            />
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+};
+
+/* Fixed Right Rail */
 const RightRail = () => (
   <aside className="hidden lg:flex fixed right-0 top-0 h-full w-[200px] flex-col justify-between border-l-[4px] border-grey bg-purple p-4 text-center text-white z-40">
     <div className="mt-20">
-      {/* Burst badge */}
       <Burst className="mx-auto mb-6 h-24 w-24">
         <span className="text-lg">Sale On Now!</span>
       </Burst>
-
-      {/* Gary GIF — no border or shadow */}
       <div className="aspect-[1/1] overflow-hidden rounded-xl mb-6">
-        <img
-          src="/images/gary.gif"
-          alt="Gary"
-          className="h-full w-full object-cover"
-        />
+        <img src="/images/gary.gif" alt="Gary" className="h-full w-full object-cover" />
       </div>
-
-      {/* Footer label */}
       <p className="font-black uppercase bg-yellow text-grey border-[4px] border-grey px-2 py-1 shadow-[3px_3px_0_#000]">
         Liquidate responsibly
       </p>
@@ -158,8 +197,7 @@ const RightRail = () => (
   </aside>
 );
 
-
-/* Pages (inline versions) */
+/* Pages */
 const Home = () => (
   <section className="py-10 px-4 sm:px-8">
     <div className="relative w-full rounded-2xl border-[4px] border-grey bg-purple-300 shadow-[6px_6px_0_#000] p-6 sm:p-8 text-center text-yellow">
@@ -186,164 +224,29 @@ const Home = () => (
   </section>
 );
 
-const Merch = () => (
-  <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-black mb-6">Merch</h3>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <div
-          key={i}
-          className="rounded-xl border-[4px] border-grey bg-white p-4 shadow-[4px_4px_0_#000]"
-        >
-          <div className="aspect-square rounded-lg border-[3px] border-grey bg-gray-100 grid place-items-center">
-            <span className="text-gray-500">Item {i}</span>
-          </div>
-          <button className="mt-4 w-full rounded-lg border-[3px] border-grey bg-yellow px-3 py-2 font-black uppercase shadow-[3px_3px_0_#000]">
-            Register interest
-          </button>
-        </div>
-      ))}
-    </div>
-  </section>
-);
-
-const About = () => (
-  <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-20xl font-black mb-4">About X</h3>
-    <p className="max-w-2xl">
-      I’m Gary.
-I used to handle the sugar orders for Long White. Good job, steady hours, sweet perks (literally). Then one morning, marketing strolls in all excited saying the delicious new RTD is “going to be zero sugar!”
-Zero. Sugar.
-
-Now I’ve got tonnes of the stuff sitting in storage, and not a single drink that needs it. I tried mixing it into my coffee, then my cereal, then my compost. Nothing made a dent.
-
-So I decided to take matters into my own sticky hands.
-Welcome to the Sugar Liquidation Sale, the clearance event powered entirely by panic and desperation. Everything must go: bagged sugar, boxed sugar, sculpted sugar, mystery sugar. If I can make it out of sugar, I’ll sell it.
-
-Meanwhile, X by Long White’s out there bragging about being zero sugar and “light and refreshing.” Good for them. I’m here, knee-deep in syrup, trying to keep the ants off the forklift.
-
-Buy some sugar, will <i>you?</i> You’ll make a grown man sleep better tonight.
-</p>
-    <p>
-      P.S. Yes, the RTD tastes good. Yes, you should buy it at your local liquor store. But please take my sugar first.
-    </p>
-    <p>P.P.S. I  was the ninth runner up in the central auckland's salesman of the year awards in 2004.</p>
-
-      {/* FAQ */}
-          <div className="mt-6">
-            <h2 className="font-black uppercase text-xl mb-3">FAQ (Frequently Asked Quibbles)</h2>
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">Is any of this sugar used in the drink?</summary>
-              <div className="mt-2 text-sm">Absolutely not. X by Long White is zero sugar. Hence… this website.</div>
-            </details>
-            <details className="rounded-xl border-[4px] border-grey bg-purple p-4 shadow-[4px_4px_0_#000] mb-3">
-              <summary className="cursor-pointer font-black">Is the sugar good quality?</summary>
-              <div className="mt-2 text-sm">Yes. It’s the good stuff. Please do not build furniture out of it. (I (Gary) will.)</div>
-            </details>
-            <details className="rounded-xl border-[4px] border-grey bg-yellow p-4 shadow-[4px_4px_0_#000]">
-              <summary className="cursor-pointer font-black">Can I haggle?</summary>
-              <div className="mt-2 text-sm">If you bring a wheelbarrow, we’ll talk.</div>
-            </details>
-          </div>
-    
-  </section>
-
-       
-);
-
-const SugarSale = () => (
-  <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">Sugar Sale</h3>
-    <div className="rounded-2xl border-[4px] border-grey bg-yellow-200 p-6 shadow-[4px_4px_0_#000]">
-      <p className="text-grey">Buy a 10-pack and get the sugar free—limited time only.</p>
-    </div>
-  </section>
-);
-
-const Events = () => (
-  <section className="px-4 sm:px-8 py-12">
-    <h3 className="text-3xl font-black mb-4">Events</h3>
-    <ul className="space-y-3">
-      {["Pop-up tasting — Sat 2pm", "Demo day — Sun 12pm", "Warehouse tour — Next Fri"].map(
-        (t, i) => (
-          <li
-            key={i}
-            className="rounded-lg border-[4px] border-grey bg-white px-4 py-3 shadow-[3px_3px_0_#000]"
-          >
-            {t}
-          </li>
-        )
-      )}
-    </ul>
-  </section>
-);
-
-/* ===== MAIN APP (exported) ===== */
+/* ===== MAIN APP ===== */
 export default function SugarSaleSite() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[url('https://placehold.co/40x40/png?text=*')] bg-repeat scroll-smooth overflow-x-hidden">
-        {/* 🔒 Age gate overlay */}<div className="min-h-screen bg-white/90">
-          <LeftRail />
-          <RightRail />
+      <div className="min-h-screen bg-white bg-repeat scroll-smooth overflow-x-hidden">
+        {/* Background overlay behind rails */}
+        <div className="fixed inset-0 bg-white/90 -z-10" />
+        <LeftRail />
+        <RightRail />
 
-          {/* Content gets side spacing only at lg+ so rails don’t overlap */}
-          <div className="min-h-screen flex flex-col w-auto lg:ml-[200px] lg:mr-[200px]">
-            <Header />
-
-            {/* Marquee below the sticky header so it can’t overlap nav */}
-            <div className="mt-2">
-              <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
-            </div>
-
-            <main className="flex flex-col w-full">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/merch" element={<Merch />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/sugar-sale" element={<SugarSale />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/deals" element={<Deals />} />
-                <Route path="*" element={<Home />} />
-              </Routes>
-            </main>
-
-            <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
-              <div className="w-full flex flex-col items-center justify-between gap-3 md:flex-row">
-                <p className="text-center text-sm font-medium md:text-left">
-                  © {new Date().getFullYear()} Long White X Zero Sugar.
-                </p>
-                <div className="flex items-center gap-3">
-                <a
-  href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
->
-  Website Terms of Use
-</a>
-
-<a
-  href="https://www.asahibeverages.com/privacy-collection-notice"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-yellow px-3 py-1 text-sm font-black uppercase shadow-[3px_3px_0_#000]"
->
-  Privacy Collection Notice
-</a>
-
-<a
-  href="https://www.asahibeverages.com/privacy-policy"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-lg border-[4px] border-grey bg-purple px-3 py-1 text-sm font-black uppercase text-white shadow-[3px_3px_0_#000]"
->
-  Privacy Policy
-</a>
-                </div>
-              </div>
-            </footer>
+        <div className="min-h-screen flex flex-col w-auto lg:ml-[200px] lg:mr-[200px] relative z-10">
+          <Header />
+          <div className="mt-2">
+            <Marquee text="All Sugar Must Go — Liquidate Responsibly" />
           </div>
+
+          <main className="flex flex-col w-full">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/deals" element={<Deals />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </main>
         </div>
       </div>
     </HashRouter>

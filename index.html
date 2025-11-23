@@ -15,7 +15,7 @@
   <!-- Age Gate Overlay -->
 <div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
   <div class="age-card">
-    <h2 id="age-title">Are you 18 or older? Enter your date of birth</h2>
+    <h2 id="age-title">Are you 18 or older? Enter your date of birth.</h2>
     <form id="age-gate-form">
       <div class="row">
         <input type="number" id="birth-day" name="birth-day" placeholder="DD" min="1" max="31" inputmode="numeric" required />
@@ -145,3 +145,36 @@
 <div aria-hidden="true" id="sugar-cursor"></div>
 <script src="/scripts/sugar-cursor.js"></script>
 <script defer="True" src="/scripts/sugar-cursor-after-agegate.js"></script></body>
+
+<!-- Netlify: register forms at build time -->
+<form name="deal-entry-dotw-1" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="deal-entry-dotw-1" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-2" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="deal-entry-dotw-2" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-3" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="deal-entry-dotw-3" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-4" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="deal-entry-dotw-4" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+
+<form name="waitlist-entry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="waitlist-entry" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <input name="name" />
+  <input name="email" />
+  <input name="deal" />
+  <input name="deal_id" />
+  <input name="kind" />
+</form>
+

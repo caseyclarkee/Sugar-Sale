@@ -194,7 +194,7 @@ const WeekCountdown = ({ start, end }) => {
   }, [start, end]);
 
   if (state === "upcoming") return <Badge tone="yellow">Goes live in {left}</Badge>;
-  if (state === "live") return <Badge tone="red">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
+  if (state === "live") return <Badge tone="blue">LIVE THIS WEEK 🔥 Ends in {left}</Badge>;
   if (state === "expired") return <Badge tone="gray">Expired</Badge>;
   return null;
 };
@@ -395,6 +395,27 @@ const DealCard = ({ deal }) => {
                     />
                   </label>
 
+                  {/* Added fields */}
+                  <label className="font-black">
+                    Phone
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder="e.g. 021 234 5678"
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
+                  </label>
+
+                  <label className="font-black">
+                    Post code
+                    <input
+                      type="text"
+                      name="postcode"
+                      placeholder="e.g. 1011"
+                      className="mt-1 w-full border-[3px] border-black p-2"
+                    />
+                  </label>
+
                   <div className="mt-4 flex justify-end gap-2">
                     <button
                       type="button"
@@ -463,7 +484,7 @@ const DealCard = ({ deal }) => {
 /* ------------------------------ Page ------------------------------ */
 function Deals() {
   // First DOTW goes live 9am 27th NZ, then weekly
-  const baseStartNZ = "2025-10-27T09:00:00";
+  const baseStartNZ = "2025-11-10T09:00:00";
 
   // DOTW placeholders (coming soon)
   const dotwTemplates = [

@@ -1,15 +1,18 @@
+# netlify.toml
+
 [build]
-  publish = "public"
-  command = ""
+  command = "npm install --no-fund --no-audit && npm run build"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_VERSION = "10"
+  NPM_VERSION  = "10"
 
+# (Optional: keep these the same)
 [context.deploy-preview]
-  publish = "dist"
   command = "npm install --no-fund --no-audit && npm run build"
+  publish = "dist"
 
 [context.branch-deploy]
-  publish = "dist"
   command = "npm install --no-fund --no-audit && npm run build"
+  publish = "dist"

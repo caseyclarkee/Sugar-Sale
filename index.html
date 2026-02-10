@@ -1,180 +1,281 @@
- <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Sugar Liquidation Sale</title>
-<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="/scripts/sugar-cursor.css" rel="stylesheet"/>
-<!-- Adobe Fonts -->
-<link href="https://use.typekit.net/sdg5fiu.css" rel="stylesheet"/>
-<!-- Age gate pre-lock + stylesheet -->
-<script>(function(){try{document.documentElement.classList.add('agegate-active');}catch(e){}})();</script>
-<link href="/agegate.css" rel="stylesheet"/>
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sugar Liquidation Sale</title>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/scripts/sugar-cursor.css" rel="stylesheet" />
 
-  <!-- Age Gate Overlay -->
-<div id="age-gate-overlay" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
-  <div class="age-card">
-    <h2 id="age-title">Are you 18 or older? Enter your date of birth.</h2>
-    <form id="age-gate-form">
-      <div class="row">
-        <input type="number" id="birth-day" name="birth-day" placeholder="DD" min="1" max="31" inputmode="numeric" required />
-        <input type="number" id="birth-month" name="birth-month" placeholder="MM" min="1" max="12" inputmode="numeric" required />
-        <input type="number" id="birth-year" name="birth-year" placeholder="YYYY" min="1900" inputmode="numeric" required />
-        <button type="submit" class="cta">Continue</button>
-      </div>
-      <p id="age-error" class="error" aria-live="polite"></p>
-      <small class="muted"></small>
-    </form>
-  </div>
-</div>
+    <!-- Adobe Fonts -->
+    <link href="https://use.typekit.net/sdg5fiu.css" rel="stylesheet" />
 
-<!-- React mount point -->
-<div id="root"></div>
-<!-- Age gate logic -->
-<script>
-(function(){
-  if (window.__ageGateInit) return; 
-  window.__ageGateInit = true;
-
-  function unlock(){ 
-    try { document.documentElement.classList.remove('agegate-active'); } catch(e) {}
-    const ov = document.getElementById('age-gate-overlay');
-    if (ov) ov.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  function validDate(d, m, y) {
-    const day = +d, month = +m, year = +y;
-    if (!day || !month || !year) return false;
-    if (year < 1900 || year > new Date().getFullYear()) return false;
-    if (month < 1 || month > 12) return false;
-    const daysInMonth = new Date(year, month, 0).getDate();
-    return day >= 1 && day <= daysInMonth;
-  }
-
-  function is18OrOlder(d, m, y) {
-    const birth = new Date(y, m - 1, d);
-    const today = new Date();
-    const eighteenYearsAgo = new Date(
-      today.getFullYear() - 18, 
-      today.getMonth(), 
-      today.getDate()
-    );
-    return birth <= eighteenYearsAgo;
-  }
-
-  function getPass(){ 
-    try { return JSON.parse(localStorage.getItem('ageGatePass') || 'null'); } 
-    catch(e) { return null; } 
-  }
-
-  function setPass(){ 
-    try { localStorage.setItem('ageGatePass', JSON.stringify({ ts: Date.now() })); } 
-    catch(e) {} 
-  }
-
-  function isPassValid(p){ 
-    return p && p.ts && (Date.now() - p.ts) < (60*60*1000); // 1 hour
-  }
-
-  function init(){
-    const pass = getPass(); 
-    if (pass && isPassValid(pass)) return unlock();
-
-    document.body.style.overflow = 'hidden';
-
-    const form = document.getElementById('age-gate-form');
-    const err = document.getElementById('age-error');
-    const dayInput = document.getElementById('birth-day');
-    const monthInput = document.getElementById('birth-month');
-    const yearInput = document.getElementById('birth-year');
-
-    if (!form || !yearInput) return;
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      err.textContent = '';
-
-      const d = (dayInput.value || '').trim();
-      const m = (monthInput.value || '').trim();
-      const y = (yearInput.value || '').trim();
-
-      if (!validDate(d, m, y)) {
-        err.textContent = 'Please enter a valid date of birth.';
-        return;
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y63MDFL4YL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
       }
-
-      if (!is18OrOlder(d, m, y)) {
-        err.textContent = 'Sorry, you must be 18 or older.';
-        return;
-      }
-
-      setPass(); 
-      unlock();
-    });
-
-    try { dayInput.focus(); } catch(e) {}
-  }
-
-  if (document.readyState === 'loading') 
-    document.addEventListener('DOMContentLoaded', init); 
-  else 
-    init();
-})();
-</script>
-
-<!-- Safety guard -->
-<script>
-    (function(){
-      function ensureNotStuck(){
-        if (document.documentElement.classList.contains('agegate-active') &&
-            !document.getElementById('age-gate-overlay')) {
-          document.documentElement.classList.remove('agegate-active');
-          if (document.body) document.body.style.overflow='';
-          console.warn('[age-gate] overlay missing; pre-lock removed');
-        }
-      }
-      if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', ensureNotStuck);
-      else ensureNotStuck();
-    })();
+      gtag("js", new Date());
+      gtag("config", "G-Y63MDFL4YL", { send_page_view: false });
     </script>
-<!-- Vite entry -->
-<script src="/src/main.jsx" type="module"></script>
-<canvas id="sugar-stage"></canvas>
-<div aria-hidden="true" id="sugar-cursor"></div>
-<script src="/scripts/sugar-cursor.js"></script>
-<script defer="True" src="/scripts/sugar-cursor-after-agegate.js"></script></body>
 
-<!-- Netlify: register forms at build time -->
-<form name="deal-entry-dotw-1" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="deal-entry-dotw-1" />
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
-</form>
-<form name="deal-entry-dotw-2" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="deal-entry-dotw-2" />
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
-</form>
-<form name="deal-entry-dotw-3" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="deal-entry-dotw-3" />
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
-</form>
-<form name="deal-entry-dotw-4" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="deal-entry-dotw-4" />
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-  <input name="name" /><input name="email" /><input name="deal" /><input name="deal_id" /><input name="kind" />
-</form>
+    <!-- Age gate pre-lock + stylesheet -->
+    <script>
+      (function () {
+        try {
+          document.documentElement.classList.add("agegate-active");
+        } catch (e) {}
+      })();
+    </script>
+    <link href="/agegate.css" rel="stylesheet" />
+  </head>
 
-<form name="waitlist-entry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="waitlist-entry" />
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <body>
+    <!-- Age Gate Overlay -->
+    <div
+      id="age-gate-overlay"
+      class="age-gate"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="age-title"
+    >
+      <div class="age-card">
+        <h2 id="age-title">Are you 18 or older? Enter your date of birth.</h2>
+        <form id="age-gate-form">
+          <div class="row">
+            <input
+              type="number"
+              id="birth-day"
+              name="birth-day"
+              placeholder="DD"
+              min="1"
+              max="31"
+              inputmode="numeric"
+              required
+            />
+            <input
+              type="number"
+              id="birth-month"
+              name="birth-month"
+              placeholder="MM"
+              min="1"
+              max="12"
+              inputmode="numeric"
+              required
+            />
+            <input
+              type="number"
+              id="birth-year"
+              name="birth-year"
+              placeholder="YYYY"
+              min="1900"
+              inputmode="numeric"
+              required
+            />
+            <button type="submit" class="cta">Continue</button>
+          </div>
+          <p id="age-error" class="error" aria-live="polite"></p>
+          <small class="muted"></small>
+        </form>
+      </div>
+    </div>
+
+    <!-- React mount point -->
+    <div id="root"></div>
+
+    <!-- Age gate logic -->
+    <script>
+      (function () {
+        if (window.__ageGateInit) return;
+        window.__ageGateInit = true;
+
+        function unlock() {
+          try {
+            document.documentElement.classList.remove("agegate-active");
+          } catch (e) {}
+          const ov = document.getElementById("age-gate-overlay");
+          if (ov) ov.style.display = "none";
+          document.body.style.overflow = "";
+
+          // Fire first GA page_view now that user is through the gate
+          try {
+            gtag("event", "page_view", {
+              page_location: location.href,
+              page_path: location.pathname + location.hash,
+              page_title: document.title,
+            });
+            gtag("event", "age_gate_passed", { method: "dob_form" });
+          } catch (e) {}
+        }
+
+        function validDate(d, m, y) {
+          const day = +d,
+            month = +m,
+            year = +y;
+          if (!day || !month || !year) return false;
+          if (year < 1900 || year > new Date().getFullYear()) return false;
+          if (month < 1 || month > 12) return false;
+          const daysInMonth = new Date(year, month, 0).getDate();
+          return day >= 1 && day <= daysInMonth;
+        }
+
+        function is18OrOlder(d, m, y) {
+          const birth = new Date(y, m - 1, d);
+          const today = new Date();
+          const cutoff = new Date(
+            today.getFullYear() - 18,
+            today.getMonth(),
+            today.getDate()
+          );
+          return birth <= cutoff;
+        }
+
+        function getPass() {
+          try {
+            return JSON.parse(localStorage.getItem("ageGatePass") || "null");
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function setPass() {
+          try {
+            localStorage.setItem(
+              "ageGatePass",
+              JSON.stringify({ ts: Date.now() })
+            );
+          } catch (e) {}
+        }
+
+        function isPassValid(p) {
+          return p && p.ts && Date.now() - p.ts < 60 * 60 * 1000; // 1h
+        }
+
+        function init() {
+          const pass = getPass();
+          if (pass && isPassValid(pass)) return unlock();
+
+          document.body.style.overflow = "hidden";
+
+          const form = document.getElementById("age-gate-form");
+          const err = document.getElementById("age-error");
+          const d = document.getElementById("birth-day");
+          const m = document.getElementById("birth-month");
+          const y = document.getElementById("birth-year");
+
+          if (!form) return;
+
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            err.textContent = "";
+            if (!validDate(d.value, m.value, y.value)) {
+              err.textContent = "Please enter a valid date of birth.";
+              return;
+            }
+            if (!is18OrOlder(d.value, m.value, y.value)) {
+              err.textContent = "Sorry, you must be 18 or older.";
+              return;
+            }
+            setPass();
+            unlock();
+          });
+          try {
+            d.focus();
+          } catch (e) {}
+        }
+
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", init);
+        else init();
+      })();
+    </script>
+
+    <!-- Safety guard -->
+    <script>
+      (function () {
+        function ensureNotStuck() {
+          if (
+            document.documentElement.classList.contains("agegate-active") &&
+            !document.getElementById("age-gate-overlay")
+          ) {
+            document.documentElement.classList.remove("agegate-active");
+            if (document.body) document.body.style.overflow = "";
+            console.warn("[age-gate] overlay missing; pre-lock removed");
+          }
+        }
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", ensureNotStuck);
+        else ensureNotStuck();
+      })();
+    </script>
+
+    <!-- Vite entry -->
+    <script src="/src/main.jsx" type="module"></script>
+    <canvas id="sugar-stage"></canvas>
+    <div aria-hidden="true" id="sugar-cursor"></div>
+    <script src="/scripts/sugar-cursor.js"></script>
+    <script defer src="/scripts/sugar-cursor-after-agegate.js"></script>
+
+  <!-- Netlify hidden forms (register all fields & buckets at build time) -->
+<!-- Shared Draw form -->
+<form name="deal-entry" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input name="name" />
   <input name="email" />
+  <input name="phone" />
+  <input name="postcode" />
   <input name="deal" />
   <input name="deal_id" />
   <input name="kind" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
 </form>
 
+<!-- Waitlist form -->
+<form name="waitlist-entry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="name" />
+  <input name="email" />
+  <input name="phone" />
+  <input name="postcode" />
+  <input name="deal" />
+  <input name="deal_id" />
+  <input name="kind" />
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+</form>
+
+<!-- Per-DOTW form buckets (so they show separately in the dashboard) -->
+<form name="deal-entry-dotw-1" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-2" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-3" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+<form name="deal-entry-dotw-4" data-netlify="true" hidden>
+  <input name="name" /><input name="email" /><input name="phone" /><input name="postcode" />
+  <input name="deal" /><input name="deal_id" /><input name="kind" />
+</form>
+
+<form
+  name="gary-fanmail"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  hidden
+>
+  <input type="hidden" name="form-name" value="gary-fanmail" />
+  <p class="hidden">
+    <label>Don’t fill this out: <input name="bot-field" /></label>
+  </p>
+  <input name="name" />
+  <input name="email" />
+  <textarea name="message"></textarea>
+</form>
+   
+  </body>
+</html>

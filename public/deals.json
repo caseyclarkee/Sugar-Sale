@@ -1,37 +1,22 @@
-[
-  {
-    "id": 1,
-    "title": "Deal 1 \u2014 Free Sugar Bag",
-    "platform": "instagram",
-    "postUrl": "https://www.instagram.com/p/DH7IDe5SwuD/",
-    "expires": "2025-09-30"
+{
+  "dotw-1": {
+    "title": "Free Grandma",
+    "vimeoId": "https://player.vimeo.com/video/1131590662?h=95b90608b7",
+    "poster": "/images/deals/dotw-1.jpg"
   },
-  {
-    "id": 2,
-    "title": "Deal 2 \u2014 Sweet Discount",
-    "platform": "tiktok",
-    "postUrl": "https://www.tiktok.com/@scout2015/video/6718335390845095173",
-    "expires": "2025-10-01"
+  "dotw-2": {
+    "title": "10kg of Sugar – Free!",
+    "vimeoId": "987654321",
+    "poster": "/images/deals/dotw-2.jpg"
   },
-  {
-    "id": 3,
-    "title": "Deal 3 \u2014 Mystery Prize",
-    "image": "https://placehold.co/400x400/png?text=Mystery",
-    "expires": "2025-10-05"
+  "dotw-3": {
+    "title": "Office Chair (Lightly Used)",
+    "vimeoId": "192837465",
+    "poster": "/images/deals/dotw-3.jpg"
   },
-  {
-    "id": 4,
-    "title": "Coming Soon #1",
-    "comingSoon": true
-  },
-  {
-    "id": 5,
-    "title": "Coming Soon #2",
-    "comingSoon": true
-  },
-  {
-    "id": 6,
-    "title": "Coming Soon #3",
-    "comingSoon": true
+  "dotw-4": {
+    "title": "Cup of Sugar",
+    "vimeoId": "564738291",
+    "poster": "/images/deals/dotw-4.jpg"
   }
-]
+}

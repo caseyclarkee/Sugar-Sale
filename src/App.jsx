@@ -1,10 +1,43 @@
 import React from "react";
-import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
+import { HashRouter, Routes, Route, NavLink, useLocation } from "react-router-dom";
 import Deals from "./pages/Deals.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import X from "./pages/X.jsx";
 import Merch from "./pages/Merch.jsx";
+
+/* ---------------- GA Listener ---------------- */
+function GAListener() {
+  const { pathname } = useLocation();
+  const [hash, setHash] = React.useState(
+    typeof window !== "undefined" ? window.location.hash : ""
+  );
+
+  // Keep local hash state in sync with real hash
+  React.useEffect(() => {
+    const onHash = () => setHash(window.location.hash || "");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  // Fire page_view on route/hash changes after age gate is cleared
+  React.useEffect(() => {
+    // Don’t track behind the age gate
+    const gated = document.documentElement.classList.contains("agegate-active");
+    if (gated) return;
+
+    // Only fire if gtag is available
+    if (typeof window.gtag !== "function") return;
+
+    window.gtag("event", "page_view", {
+      page_location: window.location.href,
+      page_path: pathname + (hash || ""),
+      page_title: document.title,
+    });
+  }, [pathname, hash]);
+
+  return null;
+}
 
 /* Little round badge */
 const Burst = ({ children, className = "" }) => (
@@ -53,7 +86,6 @@ const Marquee = ({ text }) => (
   </div>
 );
 
-/* Header */
 /* Header (drop-in replacement) */
 const Header = () => {
   const unxpectedClasses =
@@ -86,18 +118,18 @@ const Header = () => {
           className={unxpectedClasses}
         />
 
-    {/* Lockup → link to home */}
-<NavLink
-  to="/"
-  aria-label="Home"
-  className="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg"
->
-  <img
-    src="/images/lockup.gif"
-    alt="Gary's Sugar Liquidation Sale"
-    className={lockupClasses + " cursor-pointer"}
-  />
-</NavLink>
+        {/* Lockup → link to home */}
+        <NavLink
+          to="/"
+          aria-label="Home"
+          className="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-lg"
+        >
+          <img
+            src="/images/lockup.gif"
+            alt="Gary's Sugar Liquidation Sale"
+            className={lockupClasses + " cursor-pointer"}
+          />
+        </NavLink>
         <img src="/images/lwlogo.gif" alt="X by Long White" className={lwClasses} />
       </div>
 
@@ -126,7 +158,7 @@ const Header = () => {
                         "text-xl font-black uppercase",
                         "shadow-[4px_4px_0_#000] hover:shadow-[5px_5px_0_#000] transition-shadow",
                         "active:translate-y-[1px]",
-                        "bg-yellow text-black", // or use item.tone to keep purple
+                        "bg-yellow text-black",
                         isActive ? "ring-2 ring-grey ring-offset-2 ring-offset-white" : "",
                       ].join(" ")
                     }
@@ -181,7 +213,6 @@ const Header = () => {
 
         {/* Sticker animation CSS (pure CSS; no Tailwind config needed) */}
         <style>{`
-          /* Wiggle on first paint */
           @keyframes sticker-wiggle {
             0%   { transform: rotate(-14deg) scale(1); }
             20%  { transform: rotate(-18deg) scale(1.05); }
@@ -189,28 +220,17 @@ const Header = () => {
             80%  { transform: rotate(-16deg) scale(1.03); }
             100% { transform: rotate(-14deg) scale(1); }
           }
-
-          /* Base pose + initial wiggle once */
           .coming-soon-sticker {
             transform: rotate(-14deg);
             animation: sticker-wiggle 600ms ease-in-out 1;
           }
-
-          /* Subtle tilt/scale on hover of the whole button/pill */
           .group:hover .coming-soon-sticker {
             transform: rotate(-8deg) scale(1.05);
             transition: transform 200ms ease-out;
           }
-
-          /* Respect reduced-motion */
           @media (prefers-reduced-motion: reduce) {
-            .coming-soon-sticker {
-              animation: none !important;
-            }
-            .group:hover .coming-soon-sticker {
-              transform: rotate(-14deg) !important;
-              transition: none !important;
-            }
+            .coming-soon-sticker { animation: none !important; }
+            .group:hover .coming-soon-sticker { transform: rotate(-14deg) !important; transition: none !important; }
           }
         `}</style>
       </nav>
@@ -235,9 +255,9 @@ const LeftRail = () => {
   const ratiosRef = React.useRef([]);
 
   const panels = [
-    { src: "/images/Left-Rail/xbylw.png", alt: "lw logo" },
     { src: "/images/left-rail/Left01.gif", alt: "saleonnow" },
-    { src: "/images/left-rail/Left03.png", alt: "All sugar must go" },
+    { src: "/images/Left-Rail/Left02.gif", alt: "hotline" },
+    { src: "/images/left-rail/Left03lw.png", alt: "All sugar must go" },
   ];
 
   const recalc = React.useCallback(() => {
@@ -247,7 +267,6 @@ const LeftRail = () => {
     const ratios = ratiosRef.current;
 
     if (ratios.length !== panels.length || ratios.some((r) => !r)) {
-      // Fallback: show immediately with equal slices so it doesn't look empty
       setHeights(Array(panels.length).fill(H / panels.length));
       return;
     }
@@ -256,12 +275,10 @@ const LeftRail = () => {
     setHeights(ratios.map((r) => (r / total) * H));
   }, [panels.length]);
 
-  // 1) Run immediately on mount so rails are visible on first paint
   React.useLayoutEffect(() => {
     recalc();
   }, [recalc]);
 
-  // 2) Recalc on viewport resize and rail size changes
   React.useEffect(() => {
     const onResize = () => recalc();
     window.addEventListener("resize", onResize);
@@ -270,7 +287,6 @@ const LeftRail = () => {
 
   useResizeObserver(railRef, recalc);
 
-  // 3) Record image aspect ratios as they load, then recalc
   const onImgLoad = (idx, e) => {
     const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
     ratiosRef.current[idx] = h / Math.max(1, w);
@@ -278,10 +294,10 @@ const LeftRail = () => {
   };
 
   return (
-<aside
-  ref={railRef}
-  className="hidden md:flex fixed left-0 top-0 h-screen w-[140px] lg:w-[200px] border-r-[4px] border-grey bg-purple p-0 z-40"
->
+    <aside
+      ref={railRef}
+      className="hidden md:flex fixed left-0 top-0 h-screen w-[140px] lg:w-[200px] border-r-[4px] border-grey bg-purple p-0 z-40"
+    >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
           <div
@@ -351,9 +367,9 @@ const RightRail = () => {
 
   return (
     <aside
-  ref={railRef}
-  className="hidden md:flex fixed right-0 top-0 h-screen w-[140px] lg:w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
->
+      ref={railRef}
+      className="hidden md:flex fixed right-0 top-0 h-screen w-[140px] lg:w-[200px] border-l-[4px] border-grey bg-purple p-0 z-40"
+    >
       <div className="h-full w-full flex flex-col">
         {panels.map((p, i) => (
           <div
@@ -380,6 +396,7 @@ const MobileImageMarquee = ({ speedSec = 60, itemHeight = "h-20" }) => {
     // Left rail
     { src: "/images/lwlogo.gif", alt: "lwlogogif" },
     { src: "/images/left-rail/Left01.gif", alt: "Sale On Now badge" },
+    { src: "/images/Left-Rail/Left02.gif", alt: "Sale On Now badge" },
     { src: "/images/right-rail/Right01.gif", alt: "Sale On Now!" },
     { src: "/images/right-rail/Right02.gif", alt: "That’s Unexpected" },
     { src: "/images/right-rail/Right03.gif", alt: "Liquidate Responsibly" },
@@ -459,6 +476,9 @@ export default function SugarSaleSite() {
 
   return (
     <HashRouter>
+      {/* GA4 SPA tracker */}
+      <GAListener />
+
       <div className="min-h-screen bg-white bg-repeat scroll-smooth overflow-x-hidden">
         {/* Background overlay behind rails */}
         <div className="fixed inset-0 bg-white/90 -z-10" />
@@ -484,66 +504,65 @@ export default function SugarSaleSite() {
           </main>
 
           {/* Mobile-only image marquee below all page content */}
-<MobileImageMarquee />
+          <MobileImageMarquee />
 
           <footer className="border-t-[4px] border-grey bg-gray-100 py-8 w-full px-4 sm:px-8">
-  <div className="w-full flex flex-col items-center justify-center gap-3">
-    {/* Links row (compact + centered) */}
-    <div className="flex flex-wrap items-center justify-center gap-2 max-w-[640px] mx-auto text-xs">
-      <a
-        href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
-        target="_blank" rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
-      >
-        NZ Promotional Terms and Conditions
-      </a>
-      <a
-        href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
-        target="_blank" rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-      >
-        Website Terms of Use
-      </a>
-      <a
-        href="https://www.asahibeverages.com/privacy-collection-notice"
-        target="_blank" rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
-      >
-        Privacy Collection Notice
-      </a>
-      <a
-        href="https://www.asahibeverages.com/privacy-policy"
-        target="_blank" rel="noopener noreferrer"
-        className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-      >
-        Privacy Policy
-      </a>
-    </div>
+            <div className="w-full flex flex-col items-center justify-center gap-3">
+              {/* Links row (compact + centered) */}
+              <div className="flex flex-wrap items-center justify-center gap-2 max-w-[640px] mx-auto text-xs">
+                <a
+                  href="https://www.asahibeverages.com/nz-promotional-terms-conditions"
+                  target="_blank" rel="noopener noreferrer"
+                  className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
+                >
+                  NZ Promotional Terms and Conditions
+                </a>
+                <a
+                  href="https://www.asahibeverages.com/website-terms-of-use-new-zealand"
+                  target="_blank" rel="noopener noreferrer"
+                  className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                >
+                  Website Terms of Use
+                </a>
+                <a
+                  href="https://www.asahibeverages.com/privacy-collection-notice"
+                  target="_blank" rel="noopener noreferrer"
+                  className="rounded-lg border-[4px] border-grey bg-yellow px-2 py-1 font-black uppercase shadow-[3px_3px_0_#000]"
+                >
+                  Privacy Collection Notice
+                </a>
+                <a
+                  href="https://www.asahibeverages.com/privacy-policy"
+                  target="_blank" rel="noopener noreferrer"
+                  className="rounded-lg border-[4px] border-grey bg-purple px-2 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                >
+                  Privacy Policy
+                </a>
+              </div>
 
-    {/* © + Cheers inline, below */}
-    <div className="flex items-center justify-center gap-2 mt-2">
-      <p className="text-sm font-medium">
-        © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
-      </p>
-      <a
-        href="https://cheers.org.nz"
-        target="_blank" rel="noopener noreferrer"
-        className="inline-flex items-center"
-        aria-label="Cheers.org.nz"
-      >
-        <img
-          src="/images/Cheers-logo-BLK-URL.png"
-          alt="Cheers.org.nz"
-          className="h-6 w-auto"
-        />
-      </a>
-    </div>
-  </div>
-</footer>
+              {/* © + Cheers inline, below */}
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <p className="text-sm font-medium">
+                  © {new Date().getFullYear()} Asahi Beverages. All rights reserved.
+                </p>
+                <a
+                  href="https://cheers.org.nz"
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center"
+                  aria-label="Cheers.org.nz"
+                >
+                  <img
+                    src="/images/Cheers-logo-BLK-URL.png"
+                    alt="Cheers.org.nz"
+                    className="h-6 w-auto"
+                  />
+                </a>
+              </div>
+            </div>
+          </footer>
 
         </div>
       </div>
     </HashRouter>
   );
 }
-

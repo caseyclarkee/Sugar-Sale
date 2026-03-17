@@ -1,22 +1,79 @@
 [
   {
-    "id": "gary-tee",
-    "title": "Gary Tee",
-    "image": "/images/merch/gary-tee.png",
-    "badges": [
-      { "text": "Merch", "tone": "yellow" },
-      { "text": "Enter to Win", "tone": "blue" }
-    ],
-    "ribbon": { "text": "Free Entry", "tone": "purple" }
+    "id": "tee-1",
+    "title": "Gary Tee 01",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
   },
   {
-    "id": "liquidation-cap",
-    "title": "Liquidation Cap",
-    "image": "/images/merch/liquidation-cap.png",
-    "badges": [
-      { "text": "Merch", "tone": "yellow" },
-      { "text": "Enter to Win", "tone": "blue" }
-    ],
-    "ribbon": { "text": "Warehouse Find", "tone": "red" }
+    "id": "tee-2",
+    "title": "Gary Tee 02",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "tee-3",
+    "title": "Gary Tee 03",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "crop",
+    "title": "Women's Crop Tee",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "hood-ecru",
+    "title": "Relax Hood (Ecru)",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "hood-black",
+    "title": "Relax Hood (Black)",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "trackpants-ecru",
+    "title": "Women's Track Pants (Ecru)",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "trackpants-black",
+    "title": "Women's Track Pants (Black)",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "bomber",
+    "title": "Bomber Jacket",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "coveralls",
+    "title": "Canvas Coveralls",
+    "image": "/images/placeholder-merch-front.png",
+    "image2": "/images/placeholder-merch-back.png"
+  },
+  {
+    "id": "socks-1",
+    "title": "Gary Socks 01",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "socks-2",
+    "title": "Gary Socks 02",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "socks-3",
+    "title": "Gary Socks 03",
+    "image": "/images/placeholder-merch-front.png"
+  },
+  {
+    "id": "bottle",
+    "title": "Liquidation Drink Bottle",
+    "image": "/images/placeholder-merch-front.png"
   }
 ]

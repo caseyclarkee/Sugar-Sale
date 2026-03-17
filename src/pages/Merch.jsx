@@ -1,289 +1,129 @@
 import React from "react";
 
-const cx = (...cs) => cs.filter(Boolean).join(" ");
-
-const encode = (data) =>
-  Object.keys(data)
-    .map(
-      (key) =>
-        encodeURIComponent(key) + "=" + encodeURIComponent(data[key] ?? "")
-    )
-    .join("&");
-
-const DRAW_FORM_NAME = "deal-entry";
-
-const Badge = ({ children, tone = "yellow" }) => {
-  const toneClasses =
-    tone === "yellow"
-      ? "bg-yellow text-black"
-      : tone === "purple"
-      ? "bg-purple text-white"
-      : tone === "red"
-      ? "bg-red text-white"
-      : tone === "blue"
-      ? "bg-blue-500 text-white"
-      : "bg-gray-300 text-black";
-
-  return (
-    <span
-      className={cx(
-        "rounded-full border-[2px] border-black px-3 py-1 text-[12px] sm:text-[13px] font-black uppercase shadow-[2px_2px_0_#000]",
-        toneClasses
-      )}
-    >
-      {children}
-    </span>
-  );
-};
-
-const Ribbon = ({ text, tone = "red" }) => {
-  const toneClasses =
-    tone === "red"
-      ? "bg-red-500 text-white"
-      : tone === "blue"
-      ? "bg-blue-500 text-white"
-      : tone === "yellow"
-      ? "bg-yellow text-black"
-      : tone === "purple"
-      ? "bg-purple text-white"
-      : "";
-
-  return (
-    <div
-      className={cx(
-        "absolute left-[-6px] top-2 rotate-[-6deg] border-[2px] border-black px-3 py-1 text-[12px] sm:text-[13px] md:text-[14px] font-black uppercase shadow-[2px_2px_0_#000]",
-        toneClasses
-      )}
-    >
-      {text}
-    </div>
-  );
-};
-
-const MediaFrame = ({ children }) => (
-  <div className="relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5 transition-shadow">
-    <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-      <div className="pt-[125%]" />
-      <div className="absolute inset-0 min-h-0 min-w-0">{children}</div>
-    </div>
-  </div>
-);
-
-const ImageWithFallback = ({ src, alt, className }) => {
-  const [source, setSource] = React.useState(
-    /\.[a-zA-Z0-9]{3,4}$/.test(src || "") ? src : `${src}.png`
-  );
-
-  return (
-    <img
-      src={source}
-      alt={alt}
-      className={className}
-      onError={() => {
-        if (source.endsWith(".png")) setSource(source.replace(/\.png$/, ".jpg"));
-      }}
-    />
-  );
-};
-
-const MerchCard = ({ item }) => {
-  const [open, setOpen] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const [done, setDone] = React.useState(false);
-
-  React.useEffect(() => {
-    document.body.classList.toggle("overflow-hidden", open);
-    return () => document.body.classList.remove("overflow-hidden");
-  }, [open]);
-
-  const onSubmitNetlify = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      const form = e.currentTarget;
-      const data = new FormData(form);
-      if (!data.get("form-name")) data.set("form-name", DRAW_FORM_NAME);
-
-      const payload = {};
-      for (const [k, v] of data.entries()) payload[k] = v;
-
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode(payload),
-      });
-
-      setDone(true);
-    } catch (err) {
-      console.error("Netlify form submit failed:", err);
-      alert("Sorry — something went wrong submitting the form.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="relative flex h-full flex-col rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]">
-      <MediaFrame>
-        {item.ribbon && <Ribbon text={item.ribbon.text} tone={item.ribbon.tone} />}
-        <ImageWithFallback
-          src={item.image}
-          alt={item.title}
-          className="h-full w-full object-cover"
-        />
-      </MediaFrame>
-
-      <div className="flex flex-1 flex-col gap-2 min-h-[140px]">
-        <h3 className="text-lg font-black leading-tight max-h-[3.2rem] overflow-hidden">
-          {item.title}
-        </h3>
-
-        <div className="flex flex-wrap items-center gap-2 min-h-[28px]">
-          {item.badges?.map((b, i) => (
-            <Badge key={i} tone={b.tone}>
-              {b.text}
-            </Badge>
-          ))}
-        </div>
-
-        <div className="mt-auto flex flex-wrap gap-3 pt-2 pb-1">
-          <button
-            onClick={() => {
-              setOpen(true);
-              setDone(false);
-            }}
-            className="rounded-xl border-[3px] border-black bg-purple px-3 py-1 font-black uppercase text-white shadow-[3px_3px_0_#000]"
-          >
-            Enter Draw
-          </button>
-        </div>
-      </div>
-
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative max-h-[90vh] w-full max-w-md overflow-auto rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-            {!done ? (
-              <>
-                <h3 className="mb-4 text-xl font-black">{item.title}</h3>
-
-                <form
-                  name={DRAW_FORM_NAME}
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
-                  className="grid gap-3"
-                  onSubmit={onSubmitNetlify}
-                >
-                  <input type="hidden" name="form-name" value={DRAW_FORM_NAME} />
-                  <input type="hidden" name="deal" value={item.title} />
-                  <input type="hidden" name="deal_id" value={item.id} />
-                  <input type="hidden" name="kind" value="merch-draw" />
-                  <input type="hidden" name="collection" value="merch" />
-
-                  <p className="hidden">
-                    <label>
-                      Don’t fill this out: <input name="bot-field" />
-                    </label>
-                  </p>
-
-                  <label className="font-black">
-                    Full Name
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <label className="font-black">
-                    Email
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <label className="font-black">
-                    Phone
-                    <input
-                      type="text"
-                      name="phone"
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <label className="font-black">
-                    Post code
-                    <input
-                      type="text"
-                      name="postcode"
-                      className="mt-1 w-full border-[3px] border-black p-2"
-                    />
-                  </label>
-
-                  <div className="mt-4 flex justify-end gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setOpen(false)}
-                      className="rounded-xl border-[3px] border-black bg-gray-300 px-3 py-1 font-bold"
-                      disabled={submitting}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      type="submit"
-                      className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]"
-                      disabled={submitting}
-                    >
-                      {submitting ? "Submitting…" : "Enter Draw"}
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              <div className="grid gap-4 text-center">
-                <div className="text-2xl font-black">You’re in the draw! 🎉</div>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="mx-auto rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
 export default function Merch() {
   const [items, setItems] = React.useState([]);
+  const [activeItem, setActiveItem] = React.useState(null);
+  const [activeImage, setActiveImage] = React.useState(null);
 
   React.useEffect(() => {
     fetch("/merch.json")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((json) => setItems(json || []))
-      .catch(() => {});
+      .then((r) => r.json())
+      .then((data) => setItems(data));
   }, []);
 
   return (
     <section className="space-y-8 px-4 py-12 sm:px-8">
       <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-        Gary's Merch Draws
+        Gary's Merch Draw
       </h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         {items.map((item) => (
-          <MerchCard key={item.id} item={item} />
+          <div
+            key={item.id}
+            className="rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
+          >
+            <div className="relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5">
+              <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
+                <div className="pt-[125%]" />
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
+            <h3 className="text-lg font-black">{item.title}</h3>
+
+            <button
+              onClick={() => {
+                setActiveItem(item);
+                setActiveImage(item.image);
+              }}
+              className="mt-4 w-full rounded-xl border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+            >
+              Enter Draw
+            </button>
+          </div>
         ))}
       </div>
+
+      {activeItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-md rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+
+            <h3 className="text-xl font-black mb-4">{activeItem.title}</h3>
+
+            <div className="relative mb-4 border-[3px] border-black">
+              <div className="pt-[125%]" />
+              <img
+                src={activeImage}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+
+            {activeItem.image2 && (
+              <div className="flex gap-2 mb-4">
+                <button
+                  onClick={() => setActiveImage(activeItem.image)}
+                  className="rounded-lg border-[2px] border-black bg-yellow px-3 py-1 font-black"
+                >
+                  Front
+                </button>
+
+                <button
+                  onClick={() => setActiveImage(activeItem.image2)}
+                  className="rounded-lg border-[2px] border-black bg-white px-3 py-1 font-black"
+                >
+                  Back
+                </button>
+              </div>
+            )}
+
+            <form
+              name="merch-draw"
+              method="POST"
+              data-netlify="true"
+              className="grid gap-3"
+            >
+              <input type="hidden" name="form-name" value="merch-draw" />
+              <input type="hidden" name="item" value={activeItem.title} />
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Full name"
+                required
+                className="border-[3px] border-black p-2"
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                className="border-[3px] border-black p-2"
+              />
+
+              <button
+                type="submit"
+                className="rounded-xl border-[3px] border-black bg-yellow px-4 py-2 font-black shadow-[3px_3px_0_#000]"
+              >
+                Enter Draw
+              </button>
+            </form>
+
+            <button
+              onClick={() => setActiveItem(null)}
+              className="mt-4 text-sm underline"
+            >
+              Close
+            </button>
+
+          </div>
+        </div>
+      )}
     </section>
   );
 }

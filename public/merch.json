@@ -1,0 +1,22 @@
+[
+  {
+    "id": "gary-tee",
+    "title": "Gary Tee",
+    "image": "/images/merch/gary-tee.png",
+    "badges": [
+      { "text": "Merch", "tone": "yellow" },
+      { "text": "Enter to Win", "tone": "blue" }
+    ],
+    "ribbon": { "text": "Free Entry", "tone": "purple" }
+  },
+  {
+    "id": "liquidation-cap",
+    "title": "Liquidation Cap",
+    "image": "/images/merch/liquidation-cap.png",
+    "badges": [
+      { "text": "Merch", "tone": "yellow" },
+      { "text": "Enter to Win", "tone": "blue" }
+    ],
+    "ribbon": { "text": "Warehouse Find", "tone": "red" }
+  }
+]

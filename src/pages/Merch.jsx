@@ -29,7 +29,7 @@ export default function Merch() {
             className="group rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
           >
             <button onClick={() => openItem(item)} className="w-full">
-              <div className="relative mb-3 border-[3px] border-black">
+              <div className="relative mb-3 border-[3px] border-black overflow-hidden">
                 <div className="pt-[125%]" />
 
                 <div className="absolute inset-0">
@@ -72,38 +72,43 @@ export default function Merch() {
 
       {activeItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-4xl rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-            <div className="grid gap-6 md:grid-cols-[1fr_320px]">
-
-              <div className="relative border-[3px] border-black">
-                <div className="pt-[90%]" />
-                <img
-                  src={activeImage}
-                  alt={activeItem.title}
-                  className="absolute inset-0 h-full w-full object-contain bg-white"
-                />
-              </div>
+          <div className="w-full max-w-3xl rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+            <div className="grid gap-8 md:grid-cols-2 items-start">
 
               <div>
-                <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
+                <div className="border-[3px] border-black bg-white p-2">
+                  <img
+                    src={activeImage}
+                    alt={activeItem.title}
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
 
                 {activeItem.image2 && (
-                  <div className="mb-4 flex gap-2">
+                  <div className="mt-3 flex gap-2">
                     <button
                       onClick={() => setActiveImage(activeItem.image)}
-                      className="rounded-lg border-[2px] border-black bg-yellow px-3 py-1 font-black"
+                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                        activeImage === activeItem.image ? "bg-yellow" : "bg-white"
+                      }`}
                     >
                       Front
                     </button>
 
                     <button
                       onClick={() => setActiveImage(activeItem.image2)}
-                      className="rounded-lg border-[2px] border-black bg-white px-3 py-1 font-black"
+                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                        activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
+                      }`}
                     >
                       Back
                     </button>
                   </div>
                 )}
+              </div>
+
+              <div>
+                <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
 
                 <form
                   name="merch-draw"

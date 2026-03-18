@@ -9,7 +9,7 @@ export default function Merch() {
   React.useEffect(() => {
     fetch("/merch.json")
       .then((r) => r.json())
-      .then((data) => setItems(data));
+      .then(setItems);
   }, []);
 
   const openItem = (item) => {
@@ -33,33 +33,27 @@ export default function Merch() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="group rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
+              className="group border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
             >
-              <button
-                type="button"
-                onClick={() => openItem(item)}
-                className="w-full"
-              >
+              <button type="button" onClick={() => openItem(item)} className="w-full">
                 <div className="relative mb-3 overflow-hidden border-[3px] border-black">
                   <div className="pt-[125%]" />
 
-                  <div className="absolute inset-0">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-                        item.image2 ? "group-hover:opacity-0" : ""
-                      }`}
-                    />
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                      item.image2 ? "group-hover:opacity-0" : ""
+                    }`}
+                  />
 
-                    {item.image2 && (
-                      <img
-                        src={item.image2}
-                        alt={`${item.title} back`}
-                        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      />
-                    )}
-                  </div>
+                  {item.image2 && (
+                    <img
+                      src={item.image2}
+                      alt={`${item.title} back`}
+                      className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
+                  )}
 
                   {item.image2 && (
                     <div className="absolute right-2 top-2 rotate-3 border-[2px] border-black bg-yellow px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0_#000]">
@@ -74,7 +68,7 @@ export default function Merch() {
               <button
                 type="button"
                 onClick={() => openItem(item)}
-                className="mt-4 w-full rounded-xl border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                className="mt-4 w-full border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
               >
                 Enter Draw
               </button>
@@ -86,97 +80,91 @@ export default function Merch() {
       {activeItem &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] bg-black/70 p-3 sm:p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-2 sm:p-4"
             onClick={closeItem}
           >
-            <div className="flex min-h-full items-center justify-center">
-              <div
-                className="w-full max-h-[92vh] max-w-[min(1100px,calc(100vw-220px))] overflow-y-auto rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:p-5 lg:p-6"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
-                  <div>
-                    <div className="border-[3px] border-black bg-white p-2">
-                      <img
-                        src={activeImage}
-                        alt={activeItem.title}
-                        className="w-full h-auto object-contain"
-                      />
-                    </div>
-
-                    {activeItem.image2 && (
-                      <div className="mt-3 flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setActiveImage(activeItem.image)}
-                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                            activeImage === activeItem.image
-                              ? "bg-yellow"
-                              : "bg-white"
-                          }`}
-                        >
-                          Front
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setActiveImage(activeItem.image2)}
-                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                            activeImage === activeItem.image2
-                              ? "bg-yellow"
-                              : "bg-white"
-                          }`}
-                        >
-                          Back
-                        </button>
-                      </div>
-                    )}
+            <div
+              className="w-full max-w-4xl rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:p-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+                <div>
+                  <div className="flex max-h-[48vh] items-center justify-center border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]">
+                    <img
+                      src={activeImage}
+                      alt={activeItem.title}
+                      className="max-h-[44vh] w-auto max-w-full object-contain sm:max-h-[52vh] lg:max-h-[66vh]"
+                    />
                   </div>
 
-                  <div>
-                    <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
-
-                    <form
-                      name="merch-draw"
-                      method="POST"
-                      data-netlify="true"
-                      className="grid gap-3"
-                    >
-                      <input type="hidden" name="form-name" value="merch-draw" />
-                      <input type="hidden" name="item" value={activeItem.title} />
-
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Full name"
-                        required
-                        className="border-[3px] border-black p-3"
-                      />
-
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        required
-                        className="border-[3px] border-black p-3"
-                      />
+                  {activeItem.image2 && (
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setActiveImage(activeItem.image)}
+                        className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                          activeImage === activeItem.image ? "bg-yellow" : "bg-white"
+                        }`}
+                      >
+                        Front
+                      </button>
 
                       <button
-                        type="submit"
-                        className="rounded-xl border-[3px] border-black bg-yellow px-4 py-3 font-black shadow-[3px_3px_0_#000]"
+                        type="button"
+                        onClick={() => setActiveImage(activeItem.image2)}
+                        className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                          activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
+                        }`}
                       >
-                        Enter Draw
+                        Back
                       </button>
-                    </form>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
+
+                  <form
+                    name="merch-draw"
+                    method="POST"
+                    data-netlify="true"
+                    className="grid gap-3"
+                  >
+                    <input type="hidden" name="form-name" value="merch-draw" />
+                    <input type="hidden" name="item" value={activeItem.title} />
+
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full name"
+                      required
+                      className="border-[3px] border-black p-3"
+                    />
+
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      required
+                      className="border-[3px] border-black p-3"
+                    />
 
                     <button
-                      type="button"
-                      onClick={closeItem}
-                      className="mt-4 text-left text-sm underline"
+                      type="submit"
+                      className="rounded-xl border-[3px] border-black bg-yellow px-4 py-3 font-black shadow-[3px_3px_0_#000]"
                     >
-                      Close
+                      Enter Draw
                     </button>
-                  </div>
+                  </form>
+
+                  <button
+                    type="button"
+                    onClick={closeItem}
+                    className="mt-4 text-sm underline"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>

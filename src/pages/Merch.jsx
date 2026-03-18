@@ -21,16 +21,35 @@ export default function Merch() {
         {items.map((item) => (
           <div
             key={item.id}
-            className="rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
+            className="group rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-transform"
           >
             <div className="relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5">
               <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
                 <div className="pt-[125%]" />
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
+
+                <div className="absolute inset-0">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                      item.image2 ? "group-hover:opacity-0" : ""
+                    }`}
+                  />
+
+                  {item.image2 && (
+                    <img
+                      src={item.image2}
+                      alt={`${item.title} back`}
+                      className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
+                  )}
+                </div>
+
+                {item.image2 && (
+                  <div className="absolute right-2 top-2 z-10 rotate-[3deg] border-[2px] border-black bg-yellow px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0_#000]">
+                    View Back
+                  </div>
+                )}
               </div>
             </div>
 
@@ -52,7 +71,6 @@ export default function Merch() {
       {activeItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
           <div className="w-full max-w-md rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-
             <h3 className="text-xl font-black mb-4">{activeItem.title}</h3>
 
             <div className="relative mb-4 border-[3px] border-black">
@@ -120,7 +138,6 @@ export default function Merch() {
             >
               Close
             </button>
-
           </div>
         </div>
       )}

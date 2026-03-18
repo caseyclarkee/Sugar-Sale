@@ -2,78 +2,78 @@
   {
     "id": "tee-1",
     "title": "Gary Tee 01",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/tee-1-front.jpg",
+    "image2": "/images/merch/tee-1-back.jpg"
   },
   {
     "id": "tee-2",
     "title": "Gary Tee 02",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/tee-2-front.jpg",
+    "image2": "/images/merch/tee-2-back.jpg"
   },
   {
     "id": "tee-3",
     "title": "Gary Tee 03",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/tee-3-front.jpg",
+    "image2": "/images/merch/tee-3-back.jpg"
   },
   {
     "id": "crop",
     "title": "Women's Crop Tee",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/womens-crop-front.jpg"
   },
   {
-    "id": "hood-ecru",
-    "title": "Relax Hood (Ecru)",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "id": "hood-butter",
+    "title": "Relax Hood (Butter)",
+    "image": "/images/merch/hoodie-butter-front.jpg",
+    "image2": "/images/merch/hoodie-butter-back.jpg"
   },
   {
     "id": "hood-black",
     "title": "Relax Hood (Black)",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/hoodie-black-front.jpg",
+    "image2": "/images/merch/hoodie-black-back.jpg"
   },
   {
     "id": "trackpants-ecru",
     "title": "Women's Track Pants (Ecru)",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/trackpants-ecru.jpg"
   },
   {
     "id": "trackpants-black",
     "title": "Women's Track Pants (Black)",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/trackpants-black.jpg"
   },
   {
     "id": "bomber",
     "title": "Bomber Jacket",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/bomber-front.jpg",
+    "image2": "/images/merch/bomber-back.jpg"
   },
   {
     "id": "coveralls",
     "title": "Canvas Coveralls",
-    "image": "/images/placeholder-merch-front.png",
-    "image2": "/images/placeholder-merch-back.png"
+    "image": "/images/merch/coveralls-front.jpg",
+    "image2": "/images/merch/coveralls-back.jpg"
   },
   {
     "id": "socks-1",
     "title": "Gary Socks 01",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/socks-ecru-1.jpg"
   },
   {
     "id": "socks-2",
     "title": "Gary Socks 02",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/socks-ecru-2.jpg"
   },
   {
     "id": "socks-3",
     "title": "Gary Socks 03",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/socks-orchid-3.jpg"
   },
   {
     "id": "bottle",
     "title": "Liquidation Drink Bottle",
-    "image": "/images/placeholder-merch-front.png"
+    "image": "/images/merch/drink-bottle.jpg"
   }
 ]

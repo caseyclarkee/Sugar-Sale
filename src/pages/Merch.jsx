@@ -77,88 +77,84 @@ export default function Merch() {
       </div>
 
       {activeItem && (
-        <div className="fixed inset-0 z-50 bg-black/70 p-4">
-          <div className="flex min-h-full items-center justify-center">
-            <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:p-6">
-              <div className="grid items-start gap-6 lg:grid-cols-2">
-                <div>
-                  <div className="border-[3px] border-black bg-white p-2">
-                    <img
-                      src={activeImage}
-                      alt={activeItem.title}
-                      className="w-full h-auto object-contain"
-                    />
-                  </div>
+        <div className="fixed inset-0 z-50 bg-black/70 p-3 sm:p-4">
+          <div className="flex min-h-full items-start justify-center overflow-y-auto pt-6 sm:pt-10">
+            <div className="w-full max-w-[760px] rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:p-5">
+              <div className="grid gap-4">
+                <h3 className="text-xl font-black">{activeItem.title}</h3>
 
-                  {activeItem.image2 && (
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setActiveImage(activeItem.image)}
-                        className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                          activeImage === activeItem.image ? "bg-yellow" : "bg-white"
-                        }`}
-                      >
-                        Front
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setActiveImage(activeItem.image2)}
-                        className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                          activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
-                        }`}
-                      >
-                        Back
-                      </button>
-                    </div>
-                  )}
+                <div className="border-[3px] border-black bg-white p-2">
+                  <img
+                    src={activeImage}
+                    alt={activeItem.title}
+                    className="w-full h-auto object-contain"
+                  />
                 </div>
 
-                <div>
-                  <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
-
-                  <form
-                    name="merch-draw"
-                    method="POST"
-                    data-netlify="true"
-                    className="grid gap-3"
-                  >
-                    <input type="hidden" name="form-name" value="merch-draw" />
-                    <input type="hidden" name="item" value={activeItem.title} />
-
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Full name"
-                      required
-                      className="border-[3px] border-black p-3"
-                    />
-
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      required
-                      className="border-[3px] border-black p-3"
-                    />
+                {activeItem.image2 && (
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveImage(activeItem.image)}
+                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                        activeImage === activeItem.image ? "bg-yellow" : "bg-white"
+                      }`}
+                    >
+                      Front
+                    </button>
 
                     <button
-                      type="submit"
-                      className="rounded-xl border-[3px] border-black bg-yellow px-4 py-3 font-black shadow-[3px_3px_0_#000]"
+                      type="button"
+                      onClick={() => setActiveImage(activeItem.image2)}
+                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                        activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
+                      }`}
                     >
-                      Enter Draw
+                      Back
                     </button>
-                  </form>
+                  </div>
+                )}
+
+                <form
+                  name="merch-draw"
+                  method="POST"
+                  data-netlify="true"
+                  className="grid gap-3"
+                >
+                  <input type="hidden" name="form-name" value="merch-draw" />
+                  <input type="hidden" name="item" value={activeItem.title} />
+
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Full name"
+                    required
+                    className="border-[3px] border-black p-3"
+                  />
+
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    className="border-[3px] border-black p-3"
+                  />
 
                   <button
-                    type="button"
-                    onClick={closeItem}
-                    className="mt-4 text-sm underline"
+                    type="submit"
+                    className="rounded-xl border-[3px] border-black bg-yellow px-4 py-3 font-black shadow-[3px_3px_0_#000]"
                   >
-                    Close
+                    Enter Draw
                   </button>
-                </div>
+                </form>
+
+                <button
+                  type="button"
+                  onClick={closeItem}
+                  className="text-left text-sm underline"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>

@@ -72,8 +72,9 @@ export default function Merch() {
 
       {activeItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-3xl rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
-            <div className="grid gap-8 md:grid-cols-2 items-start">
+          <div className="w-full max-w-4xl rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+
+            <div className="grid gap-8 lg:grid-cols-2 items-start">
 
               <div>
                 <div className="border-[3px] border-black bg-white p-2">
@@ -152,6 +153,7 @@ export default function Merch() {
               </div>
 
             </div>
+
           </div>
         </div>
       )}

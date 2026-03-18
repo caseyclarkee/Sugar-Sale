@@ -11,65 +11,57 @@ export default function Merch() {
       .then((data) => setItems(data));
   }, []);
 
+  const openItem = (item) => {
+    setActiveItem(item);
+    setActiveImage(item.image);
+  };
+
   return (
     <section className="space-y-8 px-4 py-12 sm:px-8">
       <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-        Gary&apos;s Merch Draw
+        Gary's Merch Draw
       </h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         {items.map((item) => (
           <div
             key={item.id}
-            className="group rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000] transition-transform hover:-translate-y-1"
+            className="group rounded-xl border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
           >
-            <button
-              type="button"
-              onClick={() => {
-                setActiveItem(item);
-                setActiveImage(item.image);
-              }}
-              className="block w-full text-left"
-            >
-              <div className="relative mb-3 rounded-lg border-[3px] border-black bg-gray-50 p-1.5">
-                <div className="relative w-full overflow-hidden rounded-md border-[3px] border-black bg-gray-200">
-                  <div className="pt-[125%]" />
+            <button onClick={() => openItem(item)} className="w-full">
+              <div className="relative mb-3 border-[3px] border-black">
+                <div className="pt-[125%]" />
 
-                  <div className="absolute inset-0">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-                        item.image2 ? "group-hover:opacity-0" : ""
-                      }`}
-                    />
-
-                    {item.image2 && (
-                      <img
-                        src={item.image2}
-                        alt={`${item.title} back`}
-                        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      />
-                    )}
-                  </div>
+                <div className="absolute inset-0">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                      item.image2 ? "group-hover:opacity-0" : ""
+                    }`}
+                  />
 
                   {item.image2 && (
-                    <div className="absolute right-2 top-2 z-10 rotate-[3deg] border-[2px] border-black bg-yellow px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0_#000]">
-                      View Back
-                    </div>
+                    <img
+                      src={item.image2}
+                      alt="Back"
+                      className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
                   )}
                 </div>
+
+                {item.image2 && (
+                  <div className="absolute right-2 top-2 rotate-3 border-[2px] border-black bg-yellow px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0_#000]">
+                    View Back
+                  </div>
+                )}
               </div>
             </button>
 
             <h3 className="text-lg font-black">{item.title}</h3>
 
             <button
-              type="button"
-              onClick={() => {
-                setActiveItem(item);
-                setActiveImage(item.image);
-              }}
+              onClick={() => openItem(item)}
               className="mt-4 w-full rounded-xl border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
             >
               Enter Draw
@@ -80,42 +72,33 @@ export default function Merch() {
 
       {activeItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-5xl rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] md:p-6">
-            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_360px] md:items-start">
-              <div>
-                <div className="relative border-[3px] border-black bg-white">
-                  <div className="pt-[125%]" />
-                  <img
-                    src={activeImage}
-                    alt={activeItem.title}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                </div>
+          <div className="w-full max-w-4xl rounded-xl border-[4px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
+            <div className="grid gap-6 md:grid-cols-[1fr_320px]">
+
+              <div className="relative border-[3px] border-black">
+                <div className="pt-[90%]" />
+                <img
+                  src={activeImage}
+                  alt={activeItem.title}
+                  className="absolute inset-0 h-full w-full object-contain bg-white"
+                />
               </div>
 
-              <div className="flex flex-col">
-                <h3 className="mb-4 text-xl font-black leading-tight md:text-2xl">
-                  {activeItem.title}
-                </h3>
+              <div>
+                <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
 
                 {activeItem.image2 && (
                   <div className="mb-4 flex gap-2">
                     <button
-                      type="button"
                       onClick={() => setActiveImage(activeItem.image)}
-                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black ${
-                        activeImage === activeItem.image ? "bg-yellow" : "bg-white"
-                      }`}
+                      className="rounded-lg border-[2px] border-black bg-yellow px-3 py-1 font-black"
                     >
                       Front
                     </button>
 
                     <button
-                      type="button"
                       onClick={() => setActiveImage(activeItem.image2)}
-                      className={`rounded-lg border-[2px] border-black px-3 py-1 font-black ${
-                        activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
-                      }`}
+                      className="rounded-lg border-[2px] border-black bg-white px-3 py-1 font-black"
                     >
                       Back
                     </button>
@@ -156,13 +139,13 @@ export default function Merch() {
                 </form>
 
                 <button
-                  type="button"
                   onClick={() => setActiveItem(null)}
-                  className="mt-4 self-start text-sm underline"
+                  className="mt-4 text-sm underline"
                 >
                   Close
                 </button>
               </div>
+
             </div>
           </div>
         </div>

@@ -134,11 +134,11 @@ export default function Merch() {
       {activeItem &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-2 sm:p-4"
+            className="fixed inset-0 z-[9999] overflow-y-auto bg-black/70 p-2 sm:p-4"
             onClick={closeItem}
           >
             <div
-              className="w-full max-w-4xl rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:p-5"
+              className="mx-auto my-4 w-full max-w-4xl max-h-[calc(100vh-2rem)] overflow-y-auto rounded-xl border-[4px] border-black bg-white p-4 shadow-[6px_6px_0_#000] sm:my-8 sm:max-h-[90vh] sm:p-5"
               onClick={(e) => e.stopPropagation()}
             >
               {!done ? (

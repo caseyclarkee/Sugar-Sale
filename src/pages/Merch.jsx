@@ -4,8 +4,15 @@ import { createPortal } from "react-dom";
 const formNameForItem = (item) => `merch-draw-${item.id}`;
 
 const teeSizes = ["S", "M", "L", "XL", "2XL", "3XL"];
+const cropSizes = ["XS", "S", "M", "L", "XL", "2XL"];
+const trackpantsSizes = ["XS", "S", "M", "L", "XL"];
 
-const hasSizeOptions = (item) => item?.id?.startsWith("tee-");
+const sizeOptionsFor = (item) => {
+  if (item?.id?.startsWith("tee-")) return teeSizes;
+  if (item?.id === "crop") return cropSizes;
+  if (item?.id?.startsWith("trackpants-")) return trackpantsSizes;
+  return [];
+};
 
 const imageViewFor = (item, view) =>
   [item.image, item.image2].find((image) => image?.includes(`-${view}.`));
@@ -188,6 +195,7 @@ export default function Merch() {
   const activeFormName = activeItem ? formNameForItem(activeItem) : "merch-draw";
   const activeFrontImage = activeItem ? imageViewFor(activeItem, "front") : null;
   const activeBackImage = activeItem ? imageViewFor(activeItem, "back") : null;
+  const activeSizeOptions = sizeOptionsFor(activeItem);
 
   return (
     <>
@@ -352,7 +360,7 @@ export default function Merch() {
                       <input type="hidden" name="kind" value="merch-draw" />
                       <input type="hidden" name="collection" value="merch" />
 
-                      {hasSizeOptions(activeItem) && (
+                      {activeSizeOptions.length > 0 && (
                         <label className="font-black">
                           Size
                           <select
@@ -364,7 +372,7 @@ export default function Merch() {
                             <option value="" disabled>
                               Select size
                             </option>
-                            {teeSizes.map((size) => (
+                            {activeSizeOptions.map((size) => (
                               <option key={size} value={size}>
                                 {size}
                               </option>

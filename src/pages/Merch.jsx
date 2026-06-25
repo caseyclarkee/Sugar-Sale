@@ -16,6 +16,14 @@ const encode = (data) =>
 
 export default function Merch() {
   const imagePaneRef = React.useRef(null);
+  const panStateRef = React.useRef({
+    isDragging: false,
+    didDrag: false,
+    startX: 0,
+    startY: 0,
+    scrollLeft: 0,
+    scrollTop: 0,
+  });
   const [items, setItems] = React.useState([]);
   const [activeItem, setActiveItem] = React.useState(null);
   const [activeImage, setActiveImage] = React.useState(null);
@@ -64,6 +72,8 @@ export default function Merch() {
   };
 
   const focusImagePoint = (e, nextZoom = imageZoom) => {
+    if (panStateRef.current.didDrag) return;
+
     const pane = imagePaneRef.current;
     if (!pane) return;
 
@@ -94,6 +104,52 @@ export default function Merch() {
         behavior: "smooth",
       });
     });
+  };
+
+  const startImagePan = (e) => {
+    if (imageZoom === 1) return;
+
+    const pane = imagePaneRef.current;
+    if (!pane) return;
+
+    panStateRef.current = {
+      isDragging: true,
+      didDrag: false,
+      startX: e.clientX,
+      startY: e.clientY,
+      scrollLeft: pane.scrollLeft,
+      scrollTop: pane.scrollTop,
+    };
+    pane.setPointerCapture?.(e.pointerId);
+  };
+
+  const moveImagePan = (e) => {
+    const pane = imagePaneRef.current;
+    const pan = panStateRef.current;
+    if (!pane || !pan.isDragging) return;
+
+    const deltaX = e.clientX - pan.startX;
+    const deltaY = e.clientY - pan.startY;
+    if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+      pan.didDrag = true;
+    }
+
+    pane.scrollLeft = pan.scrollLeft - deltaX;
+    pane.scrollTop = pan.scrollTop - deltaY;
+  };
+
+  const stopImagePan = (e) => {
+    const pane = imagePaneRef.current;
+    const didDrag = panStateRef.current.didDrag;
+
+    panStateRef.current.isDragging = false;
+    pane?.releasePointerCapture?.(e.pointerId);
+
+    if (didDrag) {
+      window.setTimeout(() => {
+        panStateRef.current.didDrag = false;
+      }, 0);
+    }
   };
 
   const onSubmitNetlify = async (e) => {
@@ -194,13 +250,23 @@ export default function Merch() {
                   <div>
                     <div
                       ref={imagePaneRef}
-                      className="max-h-[48vh] overflow-auto border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]"
+                      onPointerDown={startImagePan}
+                      onPointerMove={moveImagePan}
+                      onPointerUp={stopImagePan}
+                      onPointerCancel={stopImagePan}
+                      className={`max-h-[48vh] overflow-auto border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh] ${
+                        imageZoom > 1 ? "cursor-grab active:cursor-grabbing" : ""
+                      }`}
+                      style={{ touchAction: imageZoom > 1 ? "none" : "auto" }}
                     >
                       <img
                         src={activeImage}
                         alt={activeItem.title}
+                        draggable="false"
                         onClick={(e) => focusImagePoint(e, imageZoom === 1 ? 2 : imageZoom)}
-                        className="mx-auto h-auto max-h-[44vh] max-w-full cursor-zoom-in object-contain transition-all sm:max-h-[52vh] lg:max-h-[66vh]"
+                        className={`mx-auto h-auto max-h-[44vh] max-w-full object-contain transition-all sm:max-h-[52vh] lg:max-h-[66vh] ${
+                          imageZoom === 1 ? "cursor-zoom-in" : ""
+                        }`}
                         style={{
                           maxHeight: imageZoom === 1 ? undefined : "none",
                           maxWidth: imageZoom === 1 ? "100%" : "none",

@@ -3,6 +3,10 @@ import { createPortal } from "react-dom";
 
 const formNameForItem = (item) => `merch-draw-${item.id}`;
 
+const teeSizes = ["S", "M", "L", "XL", "2XL", "3XL"];
+
+const hasSizeOptions = (item) => item?.id?.startsWith("tee-");
+
 const imageViewFor = (item, view) =>
   [item.image, item.image2].find((image) => image?.includes(`-${view}.`));
 
@@ -347,6 +351,27 @@ export default function Merch() {
                       <input type="hidden" name="deal_id" value={activeItem.id} />
                       <input type="hidden" name="kind" value="merch-draw" />
                       <input type="hidden" name="collection" value="merch" />
+
+                      {hasSizeOptions(activeItem) && (
+                        <label className="font-black">
+                          Size
+                          <select
+                            name="size"
+                            required
+                            defaultValue=""
+                            className="mt-1 w-full border-[3px] border-black bg-white p-2"
+                          >
+                            <option value="" disabled>
+                              Select size
+                            </option>
+                            {teeSizes.map((size) => (
+                              <option key={size} value={size}>
+                                {size}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
 
                       <p className="hidden">
                         <label>

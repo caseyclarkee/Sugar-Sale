@@ -2,20 +2,20 @@
   {
     "id": "tee-1",
     "title": "Gary Tee 01",
-    "image": "/images/merch/tee-1-front.jpg",
-    "image2": "/images/merch/tee-1-back.jpg"
+    "image": "/images/merch/tee-1-back.jpg",
+    "image2": "/images/merch/tee-1-front.jpg"
   },
   {
     "id": "tee-2",
     "title": "Gary Tee 02",
-    "image": "/images/merch/tee-2-front.jpg",
-    "image2": "/images/merch/tee-2-back.jpg"
+    "image": "/images/merch/tee-2-back.jpg",
+    "image2": "/images/merch/tee-2-front.jpg"
   },
   {
     "id": "tee-3",
     "title": "Gary Tee 03",
-    "image": "/images/merch/tee-3-front.jpg",
-    "image2": "/images/merch/tee-3-back.jpg"
+    "image": "/images/merch/tee-3-back.jpg",
+    "image2": "/images/merch/tee-3-front.jpg"
   },
   {
     "id": "crop",

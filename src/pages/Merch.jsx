@@ -18,6 +18,7 @@ export default function Merch() {
   const [items, setItems] = React.useState([]);
   const [activeItem, setActiveItem] = React.useState(null);
   const [activeImage, setActiveImage] = React.useState(null);
+  const [imageZoom, setImageZoom] = React.useState(1);
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
 
@@ -38,14 +39,21 @@ export default function Merch() {
   const openItem = (item) => {
     setActiveItem(item);
     setActiveImage(item.image);
+    setImageZoom(1);
     setDone(false);
   };
 
   const closeItem = () => {
     setActiveItem(null);
     setActiveImage(null);
+    setImageZoom(1);
     setSubmitting(false);
     setDone(false);
+  };
+
+  const showImage = (image) => {
+    setActiveImage(image);
+    setImageZoom(1);
   };
 
   const onSubmitNetlify = async (e) => {
@@ -144,41 +152,69 @@ export default function Merch() {
               {!done ? (
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
                   <div>
-                    <div className="flex max-h-[48vh] items-center justify-center border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]">
+                    <div className="max-h-[48vh] overflow-auto border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]">
                       <img
                         src={activeImage}
                         alt={activeItem.title}
-                        className="max-h-[44vh] w-auto max-w-full object-contain sm:max-h-[52vh] lg:max-h-[66vh]"
+                        className="mx-auto max-h-[44vh] w-auto max-w-full origin-top object-contain transition-transform sm:max-h-[52vh] lg:max-h-[66vh]"
+                        style={{ transform: `scale(${imageZoom})` }}
                       />
                     </div>
 
-                    {activeItem.image2 && (
-                      <div className="mt-3 flex gap-2">
-                        {activeFrontImage && (
-                          <button
-                            type="button"
-                            onClick={() => setActiveImage(activeFrontImage)}
-                            className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                              activeImage === activeFrontImage ? "bg-yellow" : "bg-white"
-                            }`}
-                          >
-                            Front
-                          </button>
-                        )}
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      {activeItem.image2 && activeFrontImage && (
+                        <button
+                          type="button"
+                          onClick={() => showImage(activeFrontImage)}
+                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                            activeImage === activeFrontImage ? "bg-yellow" : "bg-white"
+                          }`}
+                        >
+                          Front
+                        </button>
+                      )}
 
-                        {activeBackImage && (
-                          <button
-                            type="button"
-                            onClick={() => setActiveImage(activeBackImage)}
-                            className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                              activeImage === activeBackImage ? "bg-yellow" : "bg-white"
-                            }`}
-                          >
-                            Back
-                          </button>
-                        )}
+                      {activeItem.image2 && activeBackImage && (
+                        <button
+                          type="button"
+                          onClick={() => showImage(activeBackImage)}
+                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                            activeImage === activeBackImage ? "bg-yellow" : "bg-white"
+                          }`}
+                        >
+                          Back
+                        </button>
+                      )}
+
+                      <div className="ml-auto flex items-center gap-2">
+                        <button
+                          type="button"
+                          aria-label="Zoom out"
+                          onClick={() => setImageZoom((zoom) => Math.max(1, zoom - 0.25))}
+                          className="h-9 w-9 rounded-lg border-[2px] border-black bg-white font-black shadow-[2px_2px_0_#000]"
+                        >
+                          -
+                        </button>
+
+                        <button
+                          type="button"
+                          aria-label="Reset zoom"
+                          onClick={() => setImageZoom(1)}
+                          className="min-w-16 rounded-lg border-[2px] border-black bg-white px-2 py-1 font-black shadow-[2px_2px_0_#000]"
+                        >
+                          {Math.round(imageZoom * 100)}%
+                        </button>
+
+                        <button
+                          type="button"
+                          aria-label="Zoom in"
+                          onClick={() => setImageZoom((zoom) => Math.min(3, zoom + 0.25))}
+                          className="h-9 w-9 rounded-lg border-[2px] border-black bg-white font-black shadow-[2px_2px_0_#000]"
+                        >
+                          +
+                        </button>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   <div>

@@ -148,7 +148,7 @@ const Header = () => {
                   {/* Base Merch button (unchanged) */}
                   <NavLink
                     to={item.to}
-                    aria-label="Merch (coming soon)"
+                    aria-label="Merch (live now)"
                     end={item.to === "/"}
                     className={({ isActive }) =>
                       [
@@ -170,7 +170,7 @@ const Header = () => {
                   <span
                     aria-hidden="true"
                     className="coming-soon-sticker pointer-events-none absolute -top-2 -left-2 z-10"
-                    data-temp="coming-soon-ribbon"
+                    data-temp="live-now-ribbon"
                   >
                     <span
                       className="
@@ -182,7 +182,7 @@ const Header = () => {
                         shadow-[2px_2px_0_#000]
                       "
                     >
-                      Coming&nbsp;Soon
+                      Live&nbsp;Now
                     </span>
                   </span>
                 </div>

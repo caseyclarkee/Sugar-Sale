@@ -3,6 +3,9 @@ import { createPortal } from "react-dom";
 
 const formNameForItem = (item) => `merch-draw-${item.id}`;
 
+const imageViewFor = (item, view) =>
+  [item.image, item.image2].find((image) => image?.includes(`-${view}.`));
+
 const encode = (data) =>
   Object.keys(data)
     .map(
@@ -75,6 +78,8 @@ export default function Merch() {
   };
 
   const activeFormName = activeItem ? formNameForItem(activeItem) : "merch-draw";
+  const activeFrontImage = activeItem ? imageViewFor(activeItem, "front") : null;
+  const activeBackImage = activeItem ? imageViewFor(activeItem, "back") : null;
 
   return (
     <>
@@ -109,11 +114,6 @@ export default function Merch() {
                     />
                   )}
 
-                  {item.image2 && (
-                    <div className="absolute right-2 top-2 rotate-3 border-[2px] border-black bg-yellow px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0_#000]">
-                      View Back
-                    </div>
-                  )}
                 </div>
               </button>
 
@@ -154,25 +154,29 @@ export default function Merch() {
 
                     {activeItem.image2 && (
                       <div className="mt-3 flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setActiveImage(activeItem.image)}
-                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                            activeImage === activeItem.image ? "bg-yellow" : "bg-white"
-                          }`}
-                        >
-                          Front
-                        </button>
+                        {activeFrontImage && (
+                          <button
+                            type="button"
+                            onClick={() => setActiveImage(activeFrontImage)}
+                            className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                              activeImage === activeFrontImage ? "bg-yellow" : "bg-white"
+                            }`}
+                          >
+                            Front
+                          </button>
+                        )}
 
-                        <button
-                          type="button"
-                          onClick={() => setActiveImage(activeItem.image2)}
-                          className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
-                            activeImage === activeItem.image2 ? "bg-yellow" : "bg-white"
-                          }`}
-                        >
-                          Back
-                        </button>
+                        {activeBackImage && (
+                          <button
+                            type="button"
+                            onClick={() => setActiveImage(activeBackImage)}
+                            className={`rounded-lg border-[2px] border-black px-3 py-1 font-black shadow-[2px_2px_0_#000] ${
+                              activeImage === activeBackImage ? "bg-yellow" : "bg-white"
+                            }`}
+                          >
+                            Back
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>

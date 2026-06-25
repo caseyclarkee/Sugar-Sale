@@ -1,7 +1,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
-const FORM_NAME = "merch-draw";
+const formNameForItem = (item) => `merch-draw-${item.id}`;
 
 const encode = (data) =>
   Object.keys(data)
@@ -47,12 +47,14 @@ export default function Merch() {
 
   const onSubmitNetlify = async (e) => {
     e.preventDefault();
+    if (!activeItem) return;
     setSubmitting(true);
 
     try {
+      const formName = formNameForItem(activeItem);
       const form = e.currentTarget;
       const data = new FormData(form);
-      if (!data.get("form-name")) data.set("form-name", FORM_NAME);
+      if (!data.get("form-name")) data.set("form-name", formName);
 
       const payload = {};
       for (const [key, value] of data.entries()) payload[key] = value;
@@ -71,6 +73,8 @@ export default function Merch() {
       setSubmitting(false);
     }
   };
+
+  const activeFormName = activeItem ? formNameForItem(activeItem) : "merch-draw";
 
   return (
     <>
@@ -177,14 +181,14 @@ export default function Merch() {
                     <h3 className="mb-4 text-xl font-black">{activeItem.title}</h3>
 
                     <form
-                      name={FORM_NAME}
+                      name={activeFormName}
                       method="POST"
                       data-netlify="true"
                       netlify-honeypot="bot-field"
                       className="grid gap-3"
                       onSubmit={onSubmitNetlify}
                     >
-                      <input type="hidden" name="form-name" value={FORM_NAME} />
+                      <input type="hidden" name="form-name" value={activeFormName} />
                       <input type="hidden" name="deal" value={activeItem.title} />
                       <input type="hidden" name="deal_id" value={activeItem.id} />
                       <input type="hidden" name="kind" value="merch-draw" />

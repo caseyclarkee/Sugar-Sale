@@ -15,6 +15,7 @@ const encode = (data) =>
     .join("&");
 
 export default function Merch() {
+  const imagePaneRef = React.useRef(null);
   const [items, setItems] = React.useState([]);
   const [activeItem, setActiveItem] = React.useState(null);
   const [activeImage, setActiveImage] = React.useState(null);
@@ -54,6 +55,45 @@ export default function Merch() {
   const showImage = (image) => {
     setActiveImage(image);
     setImageZoom(1);
+    imagePaneRef.current?.scrollTo({ left: 0, top: 0 });
+  };
+
+  const resetZoom = () => {
+    setImageZoom(1);
+    imagePaneRef.current?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  };
+
+  const focusImagePoint = (e, nextZoom = imageZoom) => {
+    const pane = imagePaneRef.current;
+    if (!pane) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xRatio = (e.clientX - rect.left) / rect.width;
+    const yRatio = (e.clientY - rect.top) / rect.height;
+
+    setImageZoom(nextZoom);
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        pane.scrollTo({
+          left: pane.scrollWidth * xRatio - pane.clientWidth / 2,
+          top: pane.scrollHeight * yRatio - pane.clientHeight / 2,
+          behavior: "smooth",
+        });
+      });
+    });
+  };
+
+  const zoomImage = (nextZoom) => {
+    setImageZoom(nextZoom);
+    window.requestAnimationFrame(() => {
+      const pane = imagePaneRef.current;
+      if (!pane) return;
+      pane.scrollTo({
+        left: (pane.scrollWidth - pane.clientWidth) / 2,
+        top: pane.scrollTop,
+        behavior: "smooth",
+      });
+    });
   };
 
   const onSubmitNetlify = async (e) => {
@@ -152,12 +192,20 @@ export default function Merch() {
               {!done ? (
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
                   <div>
-                    <div className="max-h-[48vh] overflow-auto border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]">
+                    <div
+                      ref={imagePaneRef}
+                      className="max-h-[48vh] overflow-auto border-[3px] border-black bg-white p-2 sm:max-h-[56vh] lg:max-h-[70vh]"
+                    >
                       <img
                         src={activeImage}
                         alt={activeItem.title}
-                        className="mx-auto max-h-[44vh] w-auto max-w-full origin-top object-contain transition-transform sm:max-h-[52vh] lg:max-h-[66vh]"
-                        style={{ transform: `scale(${imageZoom})` }}
+                        onClick={(e) => focusImagePoint(e, imageZoom === 1 ? 2 : imageZoom)}
+                        className="mx-auto h-auto max-h-[44vh] max-w-full cursor-zoom-in object-contain transition-all sm:max-h-[52vh] lg:max-h-[66vh]"
+                        style={{
+                          maxHeight: imageZoom === 1 ? undefined : "none",
+                          maxWidth: imageZoom === 1 ? "100%" : "none",
+                          width: imageZoom === 1 ? "auto" : `${imageZoom * 100}%`,
+                        }}
                       />
                     </div>
 
@@ -190,7 +238,7 @@ export default function Merch() {
                         <button
                           type="button"
                           aria-label="Zoom out"
-                          onClick={() => setImageZoom((zoom) => Math.max(1, zoom - 0.25))}
+                          onClick={() => zoomImage(Math.max(1, imageZoom - 0.25))}
                           className="h-9 w-9 rounded-lg border-[2px] border-black bg-white font-black shadow-[2px_2px_0_#000]"
                         >
                           -
@@ -199,7 +247,7 @@ export default function Merch() {
                         <button
                           type="button"
                           aria-label="Reset zoom"
-                          onClick={() => setImageZoom(1)}
+                          onClick={resetZoom}
                           className="min-w-16 rounded-lg border-[2px] border-black bg-white px-2 py-1 font-black shadow-[2px_2px_0_#000]"
                         >
                           {Math.round(imageZoom * 100)}%
@@ -208,7 +256,7 @@ export default function Merch() {
                         <button
                           type="button"
                           aria-label="Zoom in"
-                          onClick={() => setImageZoom((zoom) => Math.min(3, zoom + 0.25))}
+                          onClick={() => zoomImage(Math.min(3, imageZoom + 0.25))}
                           className="h-9 w-9 rounded-lg border-[2px] border-black bg-white font-black shadow-[2px_2px_0_#000]"
                         >
                           +

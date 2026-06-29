@@ -201,7 +201,7 @@ export default function Merch() {
     <>
       <section className="space-y-8 px-4 py-12 sm:px-8">
         <h2 className="text-4xl font-black uppercase text-yellow drop-shadow-[3px_3px_0_#000]">
-          Gary&apos;s Merch Draw
+          XCLUSIVE MERCH
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -240,7 +240,7 @@ export default function Merch() {
                 onClick={() => openItem(item)}
                 className="mt-4 w-full border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
               >
-                Enter Draw
+                Register Interest
               </button>
             </div>
           ))}
@@ -442,7 +442,7 @@ export default function Merch() {
                           className="rounded-xl border-[3px] border-black bg-yellow px-3 py-1 font-bold shadow-[3px_3px_0_#000]"
                           disabled={submitting}
                         >
-                          {submitting ? "Submitting…" : "Enter Draw"}
+                          {submitting ? "Submitting…" : "Register Interest"}
                         </button>
                       </div>
                     </form>
@@ -450,9 +450,11 @@ export default function Merch() {
                 </div>
               ) : (
                 <div className="grid gap-4 text-center">
-                  <div className="text-2xl font-black">You&apos;re in the draw! 🎉</div>
+                  <div className="text-2xl font-black">
+                    You&apos;re registered! 🎉
+                  </div>
                   <p className="text-sm text-gray-700">
-                    Gary has your entry. Emotionally, he is handling this well.
+                    Gary has your interest. Emotionally, he is handling this well.
                   </p>
                   <button
                     type="button"

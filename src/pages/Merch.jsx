@@ -208,10 +208,10 @@ export default function Merch() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="group flex h-full flex-col border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
+              className="group flex h-full flex-col rounded-lg border-[3px] border-black bg-white p-3 shadow-[4px_4px_0_#000]"
             >
               <button type="button" onClick={() => openItem(item)} className="w-full">
-                <div className="relative mb-3 overflow-hidden border-[3px] border-black">
+                <div className="relative mb-3 overflow-hidden rounded-md border-[3px] border-black">
                   <div className="pt-[125%]" />
 
                   <img
@@ -240,7 +240,7 @@ export default function Merch() {
               <button
                 type="button"
                 onClick={() => openItem(item)}
-                className="mt-auto w-full border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
+                className="mt-auto w-full rounded-lg border-[3px] border-black bg-purple px-3 py-2 font-black uppercase text-white shadow-[3px_3px_0_#000]"
               >
                 Register Interest
               </button>

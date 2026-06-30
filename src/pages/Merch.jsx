@@ -9,6 +9,9 @@ const trackpantsSizes = ["XS", "S", "M", "L", "XL"];
 
 const sizeOptionsFor = (item) => {
   if (item?.id?.startsWith("tee-")) return teeSizes;
+  if (item?.id?.startsWith("hood-")) return teeSizes;
+  if (item?.id === "bomber") return teeSizes;
+  if (item?.id === "coveralls") return teeSizes;
   if (item?.id === "crop") return cropSizes;
   if (item?.id?.startsWith("trackpants-")) return trackpantsSizes;
   return [];

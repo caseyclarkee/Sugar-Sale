@@ -47,8 +47,7 @@
   {
     "id": "bomber",
     "title": "'Night Shift' Bomber Jacket",
-    "image": "/images/merch/bomber-front.jpg",
-    "image2": "/images/merch/bomber-back.jpg"
+    "image": "/images/merch/bomber-front.jpg"
   },
   {
     "id": "coveralls",

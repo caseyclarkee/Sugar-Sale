@@ -1,0 +1,78 @@
+[
+  {
+    "id": "tee-1",
+    "title": "'Family Discount' Tee",
+    "image": "/images/merch/tee-1-back.jpg",
+    "image2": "/images/merch/tee-1-front.jpg"
+  },
+  {
+    "id": "tee-2",
+    "title": "'Face of the Sale' Tee",
+    "image": "/images/merch/tee-2-back.jpg",
+    "image2": "/images/merch/tee-2-front.jpg"
+  },
+  {
+    "id": "tee-3",
+    "title": "'Buy Gary, Get Gaz Gazza Gazman Free' Tee",
+    "image": "/images/merch/tee-3-back.jpg",
+    "image2": "/images/merch/tee-3-front.jpg"
+  },
+  {
+    "id": "crop",
+    "title": "'Half Off' Women's Crop Tee",
+    "image": "/images/merch/womens-crop-front.jpg"
+  },
+  {
+    "id": "hood-butter",
+    "title": "'The Soft Sell' Hoodie (Butter)",
+    "image": "/images/merch/hoodie-butter-front.jpg",
+    "image2": "/images/merch/hoodie-butter-back.jpg"
+  },
+  {
+    "id": "hood-black",
+    "title": "'The Soft Sell' Hoodie (Black)",
+    "image": "/images/merch/hoodie-black-front.jpg",
+    "image2": "/images/merch/hoodie-black-back.jpg"
+  },
+  {
+    "id": "trackpants-ecru",
+    "title": "'Sweet Cheeks' Women's Track Pants (Ecru)",
+    "image": "/images/merch/trackpants-ecru.jpg"
+  },
+  {
+    "id": "trackpants-black",
+    "title": "'Sweet Cheeks' Women's Track Pants (Black)",
+    "image": "/images/merch/trackpants-black.jpg"
+  },
+  {
+    "id": "bomber",
+    "title": "'Night Shift' Bomber Jacket",
+    "image": "/images/merch/bomber-front.jpg"
+  },
+  {
+    "id": "coveralls",
+    "title": "'Warehouse Party' Coveralls",
+    "image": "/images/merch/coveralls-front.jpg",
+    "image2": "/images/merch/coveralls-back.jpg"
+  },
+  {
+    "id": "socks-1",
+    "title": "'Toe-tally Unxpected' Socks",
+    "image": "/images/merch/socks-ecru-1.jpg"
+  },
+  {
+    "id": "socks-2",
+    "title": "'Gary the Sole Trader' Socks",
+    "image": "/images/merch/socks-ecru-2.jpg"
+  },
+  {
+    "id": "socks-3",
+    "title": "'Liquidate Responsibly' Socks",
+    "image": "/images/merch/socks-orchid-3.jpg"
+  },
+  {
+    "id": "bottle",
+    "title": "'The 1L Liquidator' Bottle",
+    "image": "/images/merch/drink-bottle.jpg"
+  }
+]
